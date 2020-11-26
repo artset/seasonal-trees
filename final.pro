@@ -1,8 +1,8 @@
 # -------------------------------------------------
-# Project created by QtCreator 2010-08-22T14:12:19
+# Project created by QtCreator
 # -------------------------------------------------
 QT += opengl xml
-TARGET = final
+TARGET = final 
 TEMPLATE = app
 
 QMAKE_CXXFLAGS += -std=c++14
@@ -21,17 +21,40 @@ win32 {
     LIBS += -lopengl32 -lglu32
 }
 
-SOURCES += ui/mainwindow.cpp \
+SOURCES += \
     main.cpp \
     glew-1.10.0/src/glew.c \
-    ui/view.cpp \
-    ui/viewformat.cpp
+    glwidget.cpp \
+    mainwindow.cpp \
+    uniforms/uniformvariable.cpp \
+    uniforms/uniformwidget.cpp \
+    camera/orbitingcamera.cpp \
+    uniforms/varsfile.cpp \
+    lib/resourceloader.cpp \
+    gl/datatype/vbo.cpp \
+    gl/datatype/vboattribmarker.cpp \
+    shapes/openglshape.cpp \
+    gl/datatype/vao.cpp
 
-HEADERS += ui/mainwindow.h \
+HEADERS += \
     ui_mainwindow.h \
     glew-1.10.0/include/GL/glew.h \
-    ui/view.h \
-    ui/viewformat.h
+    glwidget.h \
+    mainwindow.h \
+    uniforms/uniformvariable.h \
+    lib/common.h \
+    uniforms/uniformwidget.h \
+    camera/orbitingcamera.h \
+    camera/camera.h \
+    uniforms/varsfile.h \
+    shapes/cube.h \
+    lib/resourceloader.h \
+    shapes/sphere.h \
+    shapes/openglshape.h \
+    gl/datatype/vbo.h \
+    gl/datatype/vboattribmarker.h \
+    gl/shaders/shaderattriblocations.h \
+    gl/datatype/vao.h
 
 FORMS += ui/mainwindow.ui
 INCLUDEPATH += glm ui glew-1.10.0/include
@@ -40,8 +63,7 @@ DEPENDPATH += glm ui glew-1.10.0/include
 DEFINES += _USE_MATH_DEFINES
 DEFINES += TIXML_USE_STL
 DEFINES += GLM_SWIZZLE GLM_FORCE_RADIANS
-OTHER_FILES += shaders/shader.frag \
-    shaders/shader.vert
+OTHER_FILES +=
 
 # Don't add the -pg flag unless you know what you are doing. It makes QThreadPool freeze on Mac OS X
 QMAKE_CXXFLAGS_RELEASE -= -O2

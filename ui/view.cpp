@@ -12,7 +12,7 @@ View::View(QWidget *parent) : QGLWidget(ViewFormat(), parent),
     setMouseTracking(true);
 
     // Hide the cursor
-    if (m_captureMouse) {
+    if(m_captureMouse) {
         QApplication::setOverrideCursor(Qt::BlankCursor);
     }
 
@@ -27,7 +27,8 @@ View::~View()
 {
 }
 
-void View::initializeGL() {
+void View::initializeGL()
+{
     // All OpenGL initialization *MUST* be done during or after this
     // method. Before this method is called, there is no active OpenGL
     // context and all OpenGL calls have no effect.
@@ -35,7 +36,7 @@ void View::initializeGL() {
     //initialize glew
     glewExperimental = GL_TRUE;
     GLenum err = glewInit();
-    if (GLEW_OK != err) {
+    if ( GLEW_OK != err ) {
         /* Problem: glewInit failed, something is seriously wrong. */
         std::cerr << "Something is very wrong, glew initialization failed." << std::endl;
     }
@@ -52,24 +53,27 @@ void View::initializeGL() {
     glFrontFace(GL_CCW);
 }
 
-void View::paintGL() {
+void View::paintGL()
+{
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     // TODO: Implement the demo rendering here
 }
 
-void View::resizeGL(int w, int h) {
+void View::resizeGL(int w, int h)
+{
     float ratio = static_cast<QGuiApplication *>(QCoreApplication::instance())->devicePixelRatio();
     w = static_cast<int>(w / ratio);
     h = static_cast<int>(h / ratio);
     glViewport(0, 0, w, h);
 }
 
-void View::mousePressEvent(QMouseEvent *event) {
-
+void View::mousePressEvent(QMouseEvent *event)
+{
 }
 
-void View::mouseMoveEvent(QMouseEvent *event) {
+void View::mouseMoveEvent(QMouseEvent *event)
+{
     // This starter code implements mouse capture, which gives the change in
     // mouse position since the last mouse movement. The mouse needs to be
     // recentered after every movement because it might otherwise run into
@@ -87,21 +91,23 @@ void View::mouseMoveEvent(QMouseEvent *event) {
     }
 }
 
-void View::mouseReleaseEvent(QMouseEvent *event) {
-
+void View::mouseReleaseEvent(QMouseEvent *event)
+{
 }
 
-void View::keyPressEvent(QKeyEvent *event) {
+void View::keyPressEvent(QKeyEvent *event)
+{
     if (event->key() == Qt::Key_Escape) QApplication::quit();
 
     // TODO: Handle keyboard presses here
 }
 
-void View::keyReleaseEvent(QKeyEvent *event) {
-
+void View::keyReleaseEvent(QKeyEvent *event)
+{
 }
 
-void View::tick() {
+void View::tick()
+{
     // Get the number of seconds since the last tick (variable update rate)
     float seconds = m_time.restart() * 0.001f;
 
