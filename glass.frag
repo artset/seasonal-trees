@@ -19,28 +19,26 @@ void main()
 {
     vec3 n = normalize(eyeNormal);
     vec3 cameraToVertex = normalize(vertex); //remember we are in camera space!
-    vec3 vertexToCamera = normalize(vertexToCamera);
+    vec3 v = normalize(vertexToCamera);
     // TODO: fill the rest in
 
-    mat4 cameraToWorld = inverse(model * view);
+    //Sample the cube map to determine the reflection color.
+    vec3 incident = reflect(cameraToVertex, n);
+    vec4 worldIncident = inverse(view) * vec4(incident, 0.f);
+    vec4 reflColor = texture(envMap, worldIncident.xyz);
 
-    vec3 reflected = normalize(reflect(cameraToVertex, n));
-    vec3 reflectedWsc = normalize((cameraToWorld * vec4(reflected, 0)).xyz);
-    vec4 reflectedColor = texture(envMap, reflectedWsc);
+    vec4 rDir = inverse(view) * vec4(refract(cameraToVertex, n, eta.r), 0.f);
+    vec4 gDir = inverse(view) * vec4(refract(cameraToVertex, n, eta.g), 0.f);
+    vec4 bDir = inverse(view) * vec4(refract(cameraToVertex, n, eta.b), 0.f);
 
-    vec3 R = normalize((cameraToWorld * vec4(refract(cameraToVertex, n, eta.r), 0)).xyz);
-    vec3 G = normalize((cameraToWorld * vec4(refract(cameraToVertex, n, eta.g), 0)).xyz);
-    vec3 B = normalize((cameraToWorld * vec4(refract(cameraToVertex, n, eta.b), 0)).xyz);
+    vec4 rSample = texture(envMap, rDir.xyz);
+    vec4 gSample = texture(envMap, gDir.xyz);
+    vec4 bSample = texture(envMap, bDir.xyz);
+    vec4 refracColor = vec4(rSample.x ,gSample.y, bSample.z, 0.f);
 
-    float red = texture(envMap, R).r;
-    float green = texture(envMap, G).g;
-    float blue = texture(envMap, B).b;
-    vec4 refractedColor = vec4(red, green, blue, 1);
+//    // Compute F
+    float thetaI = acos(dot(n, v)); // angle between surface normal and vector from camera to vertex
+    float F = r0 + (1 - r0) * pow(1 - thetaI, 5);
 
-    float cosTheta_i = dot(cameraToVertex, n);
-    float F = r0 + (1.0 - r0) * pow(1.0 - cosTheta_i, 5);
-
-    vec4 finalColor = mix(reflectedColor, refractedColor, F);
-
-    fragColor = finalColor;
+    fragColor = mix(refracColor, reflColor, F);
 }
