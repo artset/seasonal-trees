@@ -192,6 +192,19 @@ void GLWidget::initializeGL() {
     skybox_cube->setAttribute(ShaderAttrib::NORMAL, 3, 3*sizeof(GLfloat), VBOAttribMarker::DATA_TYPE::FLOAT, false);
     skybox_cube->buildVAO();
 
+    m_cylinder = std::make_unique<OpenGLShape>();
+
+    std::unique_ptr<Shape> cyl = std::make_unique<Cylinder>(1, 10);
+    std::vector<GLfloat> cylinderData = cyl->getData();
+    m_cylinder = std::make_unique<OpenGLShape>();
+    std::cout << "cylinder size " << cylinderData.size() << std::endl;
+    const int NUM_FLOATS_PER_VERTEX = 3;
+
+    m_cylinder->setVertexData(&cylinderData[0], cylinderData.size(), VBO::GEOMETRY_LAYOUT::LAYOUT_TRIANGLES, cylinderData.size() / NUM_FLOATS_PER_VERTEX);
+    m_cylinder->setAttribute(ShaderAttrib::POSITION, 3, 0, VBOAttribMarker::DATA_TYPE::FLOAT, false);
+    m_cylinder->setAttribute(ShaderAttrib::NORMAL, 3, 3*sizeof(GLfloat), VBOAttribMarker::DATA_TYPE::FLOAT, false);
+    m_cylinder->buildVAO();
+
     m_shape = m_sphere.get();
 }
 
@@ -306,6 +319,9 @@ void GLWidget::changeRenderMode(RenderType mode)
     case SHAPE_CUBE:
         m_shape = m_cube.get();
         break;
+    case SHAPE_TREE:
+        m_shape = m_cylinder.get();
+
     default:
         break;
     }

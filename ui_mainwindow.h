@@ -38,6 +38,7 @@ public:
     QLabel *label_2;
     QPushButton *sphereButton;
     QPushButton *cubeButton;
+    QPushButton *treeButton;
     QFrame *line_2;
     QLabel *label_3;
     QPushButton *animNoneButton;
@@ -128,6 +129,11 @@ public:
         cubeButton->setObjectName(QString::fromUtf8("cubeButton"));
 
         verticalLayout->addWidget(cubeButton);
+
+        treeButton = new QPushButton(centralWidget);
+        treeButton->setObjectName(QString::fromUtf8("treeButton"));
+
+        verticalLayout->addWidget(treeButton);
 
         line_2 = new QFrame(centralWidget);
         line_2->setObjectName(QString::fromUtf8("line_2"));
@@ -271,6 +277,7 @@ public:
         label_2->setText(QCoreApplication::translate("MainWindow", "Shapes:", nullptr));
         sphereButton->setText(QCoreApplication::translate("MainWindow", "Sphere", nullptr));
         cubeButton->setText(QCoreApplication::translate("MainWindow", "Cube", nullptr));
+        treeButton->setText(QCoreApplication::translate("MainWindow", "Tree", nullptr));
         label_3->setText(QCoreApplication::translate("MainWindow", "Animations:", nullptr));
         animNoneButton->setText(QCoreApplication::translate("MainWindow", "None", nullptr));
         animMoveButton->setText(QCoreApplication::translate("MainWindow", "Move", nullptr));

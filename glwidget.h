@@ -5,6 +5,9 @@
 #include "camera/camera.h"
 #include "uniforms/uniformvariable.h"
 #include <QTimer>
+#include "shapes/Shape.h"
+#include "shapes/Cylinder.h"
+
 
 class Cube;
 
@@ -12,7 +15,7 @@ class QGLShaderProgram;
 
 #define colorToArgs(floatArray) floatArray[0], floatArray[1], floatArray[2], floatArray[3]
 
-enum RenderType { SHAPE_SPHERE, SHAPE_CUBE};
+enum RenderType { SHAPE_SPHERE, SHAPE_CUBE, SHAPE_TREE };
 
 enum AnimType { ANIM_NONE, ANIM_MOVE, ANIM_SCALE, ANIM_MOVE_AND_SCALE, ANIM_ROTATE, ANIM_ROTATE_2};
 
@@ -72,6 +75,7 @@ protected:
 
 private:
     std::unique_ptr<OpenGLShape> m_sphere;
+    std::unique_ptr<OpenGLShape> m_cylinder;
     std::unique_ptr<OpenGLShape> m_cube;
     OpenGLShape *m_shape;
     Camera *camera;

@@ -30,6 +30,8 @@ private slots:
 
     void on_cubeButton_clicked();
 
+    void on_treeButton_clicked();
+
     void on_defaultShaderButton_clicked();
 
     void on_animMoveButton_clicked();

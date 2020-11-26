@@ -22,10 +22,17 @@ win32 {
 }
 
 SOURCES += \
+    lib/Utilities.cpp \
     main.cpp \
     glew-1.10.0/src/glew.c \
     glwidget.cpp \
     mainwindow.cpp \
+    shapes/BarrelComponent.cpp \
+    shapes/CircleComponent.cpp \
+    shapes/Cylinder.cpp \
+    shapes/Shape.cpp \
+    shapes/ShapeComponent.cpp \
+    shapes/triangle.cpp \
     uniforms/uniformvariable.cpp \
     uniforms/uniformwidget.cpp \
     camera/orbitingcamera.cpp \
@@ -37,6 +44,13 @@ SOURCES += \
     gl/datatype/vao.cpp
 
 HEADERS += \
+    lib/Utilities.h \
+    shapes/BarrelComponent.h \
+    shapes/CircleComponent.h \
+    shapes/Cylinder.h \
+    shapes/Shape.h \
+    shapes/ShapeComponent.h \
+    shapes/triangle.h \
     ui_mainwindow.h \
     glew-1.10.0/include/GL/glew.h \
     glwidget.h \

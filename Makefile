@@ -52,10 +52,17 @@ OBJECTS_DIR   = ./
 
 ####### Files
 
-SOURCES       = main.cpp \
+SOURCES       = lib/Utilities.cpp \
+		main.cpp \
 		glew-1.10.0/src/glew.c \
 		glwidget.cpp \
 		mainwindow.cpp \
+		shapes/BarrelComponent.cpp \
+		shapes/CircleComponent.cpp \
+		shapes/Cylinder.cpp \
+		shapes/Shape.cpp \
+		shapes/ShapeComponent.cpp \
+		shapes/triangle.cpp \
 		uniforms/uniformvariable.cpp \
 		uniforms/uniformwidget.cpp \
 		camera/orbitingcamera.cpp \
@@ -70,10 +77,17 @@ SOURCES       = main.cpp \
 		moc_uniformwidget.cpp \
 		moc_orbitingcamera.cpp \
 		moc_camera.cpp
-OBJECTS       = main.o \
+OBJECTS       = Utilities.o \
+		main.o \
 		glew.o \
 		glwidget.o \
 		mainwindow.o \
+		BarrelComponent.o \
+		CircleComponent.o \
+		Cylinder.o \
+		Shape.o \
+		ShapeComponent.o \
+		triangle.o \
 		uniformvariable.o \
 		uniformwidget.o \
 		orbitingcamera.o \
@@ -243,6 +257,7 @@ DIST          = shaders/normals/normals.vert \
 		../../../Qt5.14.2/5.14.2/clang_64/mkspecs/features/qt_config.prf \
 		../../../Qt5.14.2/5.14.2/clang_64/mkspecs/macx-clang/qmake.conf \
 		../../../Qt5.14.2/5.14.2/clang_64/mkspecs/features/spec_post.prf \
+		.qmake.stash \
 		../../../Qt5.14.2/5.14.2/clang_64/mkspecs/features/exclusive_builds.prf \
 		../../../Qt5.14.2/5.14.2/clang_64/mkspecs/features/mac/sdk.prf \
 		../../../Qt5.14.2/5.14.2/clang_64/mkspecs/features/toolchain.prf \
@@ -271,7 +286,14 @@ DIST          = shaders/normals/normals.vert \
 		../../../Qt5.14.2/5.14.2/clang_64/mkspecs/features/exceptions.prf \
 		../../../Qt5.14.2/5.14.2/clang_64/mkspecs/features/yacc.prf \
 		../../../Qt5.14.2/5.14.2/clang_64/mkspecs/features/lex.prf \
-		final.pro ui_mainwindow.h \
+		final.pro lib/Utilities.h \
+		shapes/BarrelComponent.h \
+		shapes/CircleComponent.h \
+		shapes/Cylinder.h \
+		shapes/Shape.h \
+		shapes/ShapeComponent.h \
+		shapes/triangle.h \
+		ui_mainwindow.h \
 		glew-1.10.0/include/GL/glew.h \
 		glwidget.h \
 		mainwindow.h \
@@ -288,10 +310,17 @@ DIST          = shaders/normals/normals.vert \
 		gl/datatype/vbo.h \
 		gl/datatype/vboattribmarker.h \
 		gl/shaders/shaderattriblocations.h \
-		gl/datatype/vao.h main.cpp \
+		gl/datatype/vao.h lib/Utilities.cpp \
+		main.cpp \
 		glew-1.10.0/src/glew.c \
 		glwidget.cpp \
 		mainwindow.cpp \
+		shapes/BarrelComponent.cpp \
+		shapes/CircleComponent.cpp \
+		shapes/Cylinder.cpp \
+		shapes/Shape.cpp \
+		shapes/ShapeComponent.cpp \
+		shapes/triangle.cpp \
 		uniforms/uniformvariable.cpp \
 		uniforms/uniformwidget.cpp \
 		camera/orbitingcamera.cpp \
@@ -471,6 +500,7 @@ Makefile: final.pro ../../../Qt5.14.2/5.14.2/clang_64/mkspecs/macx-clang/qmake.c
 		../../../Qt5.14.2/5.14.2/clang_64/mkspecs/features/qt_config.prf \
 		../../../Qt5.14.2/5.14.2/clang_64/mkspecs/macx-clang/qmake.conf \
 		../../../Qt5.14.2/5.14.2/clang_64/mkspecs/features/spec_post.prf \
+		.qmake.stash \
 		../../../Qt5.14.2/5.14.2/clang_64/mkspecs/features/exclusive_builds.prf \
 		../../../Qt5.14.2/5.14.2/clang_64/mkspecs/features/mac/sdk.prf \
 		../../../Qt5.14.2/5.14.2/clang_64/mkspecs/features/toolchain.prf \
@@ -655,6 +685,7 @@ Makefile: final.pro ../../../Qt5.14.2/5.14.2/clang_64/mkspecs/macx-clang/qmake.c
 ../../../Qt5.14.2/5.14.2/clang_64/mkspecs/features/qt_config.prf:
 ../../../Qt5.14.2/5.14.2/clang_64/mkspecs/macx-clang/qmake.conf:
 ../../../Qt5.14.2/5.14.2/clang_64/mkspecs/features/spec_post.prf:
+.qmake.stash:
 ../../../Qt5.14.2/5.14.2/clang_64/mkspecs/features/exclusive_builds.prf:
 ../../../Qt5.14.2/5.14.2/clang_64/mkspecs/features/mac/sdk.prf:
 ../../../Qt5.14.2/5.14.2/clang_64/mkspecs/features/toolchain.prf:
@@ -721,8 +752,8 @@ distdir: FORCE
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents resources.qrc $(DISTDIR)/
 	$(COPY_FILE) --parents ../../../Qt5.14.2/5.14.2/clang_64/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents ui_mainwindow.h glew-1.10.0/include/GL/glew.h glwidget.h mainwindow.h uniforms/uniformvariable.h lib/common.h uniforms/uniformwidget.h camera/orbitingcamera.h camera/camera.h uniforms/varsfile.h shapes/cube.h lib/resourceloader.h shapes/sphere.h shapes/openglshape.h gl/datatype/vbo.h gl/datatype/vboattribmarker.h gl/shaders/shaderattriblocations.h gl/datatype/vao.h $(DISTDIR)/
-	$(COPY_FILE) --parents main.cpp glew-1.10.0/src/glew.c glwidget.cpp mainwindow.cpp uniforms/uniformvariable.cpp uniforms/uniformwidget.cpp camera/orbitingcamera.cpp uniforms/varsfile.cpp lib/resourceloader.cpp gl/datatype/vbo.cpp gl/datatype/vboattribmarker.cpp shapes/openglshape.cpp gl/datatype/vao.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents lib/Utilities.h shapes/BarrelComponent.h shapes/CircleComponent.h shapes/Cylinder.h shapes/Shape.h shapes/ShapeComponent.h shapes/triangle.h ui_mainwindow.h glew-1.10.0/include/GL/glew.h glwidget.h mainwindow.h uniforms/uniformvariable.h lib/common.h uniforms/uniformwidget.h camera/orbitingcamera.h camera/camera.h uniforms/varsfile.h shapes/cube.h lib/resourceloader.h shapes/sphere.h shapes/openglshape.h gl/datatype/vbo.h gl/datatype/vboattribmarker.h gl/shaders/shaderattriblocations.h gl/datatype/vao.h $(DISTDIR)/
+	$(COPY_FILE) --parents lib/Utilities.cpp main.cpp glew-1.10.0/src/glew.c glwidget.cpp mainwindow.cpp shapes/BarrelComponent.cpp shapes/CircleComponent.cpp shapes/Cylinder.cpp shapes/Shape.cpp shapes/ShapeComponent.cpp shapes/triangle.cpp uniforms/uniformvariable.cpp uniforms/uniformwidget.cpp camera/orbitingcamera.cpp uniforms/varsfile.cpp lib/resourceloader.cpp gl/datatype/vbo.cpp gl/datatype/vboattribmarker.cpp shapes/openglshape.cpp gl/datatype/vao.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents ui/mainwindow.ui $(DISTDIR)/
 
 
@@ -733,6 +764,7 @@ clean: compiler_clean
 
 distclean: clean 
 	-$(DEL_FILE) -r final.app
+	-$(DEL_FILE) .qmake.stash
 	-$(DEL_FILE) Makefile
 
 
@@ -877,6 +909,29 @@ moc_glwidget.cpp: glwidget.h \
 		lib/common.h \
 		../../../Qt5.14.2/5.14.2/clang_64/lib/QtCore.framework/Headers/QTimer \
 		../../../Qt5.14.2/5.14.2/clang_64/lib/QtCore.framework/Headers/qtimer.h \
+		shapes/Shape.h \
+		shapes/triangle.h \
+		shapes/ShapeComponent.h \
+		gl/datatype/VAO.h \
+		gl/datatype/VBO.h \
+		gl/datatype/VBOAttribMarker.h \
+		gl/shaders/ShaderAttribLocations.h \
+		glm/gtx/transform.hpp \
+		glm/gtc/matrix_transform.hpp \
+		glm/gtc/matrix_transform.inl \
+		glm/gtx/transform.inl \
+		glm/gtx/string_cast.hpp \
+		glm/gtx/integer.hpp \
+		glm/gtx/integer.inl \
+		glm/gtx/quaternion.hpp \
+		glm/gtc/constants.hpp \
+		glm/gtc/constants.inl \
+		glm/gtc/quaternion.hpp \
+		glm/gtc/quaternion.inl \
+		glm/gtx/norm.hpp \
+		glm/gtx/norm.inl \
+		glm/gtx/quaternion.inl \
+		glm/gtx/string_cast.inl \
 		moc_predefs.h \
 		../../../Qt5.14.2/5.14.2/clang_64/bin/moc
 	/Users/ksang/Qt5.14.2/5.14.2/clang_64/bin/moc $(DEFINES) --include /Users/ksang/Documents/cs1230/cs123-final/moc_predefs.h -I/Users/ksang/Qt5.14.2/5.14.2/clang_64/mkspecs/macx-clang -I/Users/ksang/Documents/cs1230/cs123-final -I/Users/ksang/Documents/cs1230/cs123-final/glm -I/Users/ksang/Documents/cs1230/cs123-final/ui -I/Users/ksang/Documents/cs1230/cs123-final/glew-1.10.0/include -I/Users/ksang/Qt5.14.2/5.14.2/clang_64/lib/QtOpenGL.framework/Headers -I/Users/ksang/Qt5.14.2/5.14.2/clang_64/lib/QtWidgets.framework/Headers -I/Users/ksang/Qt5.14.2/5.14.2/clang_64/lib/QtGui.framework/Headers -I/Users/ksang/Qt5.14.2/5.14.2/clang_64/lib/QtXml.framework/Headers -I/Users/ksang/Qt5.14.2/5.14.2/clang_64/lib/QtCore.framework/Headers -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1 -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/11.0.3/include -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk/usr/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -F/Users/ksang/Qt5.14.2/5.14.2/clang_64/lib glwidget.h -o moc_glwidget.cpp
@@ -978,6 +1033,29 @@ moc_mainwindow.cpp: mainwindow.h \
 		lib/common.h \
 		../../../Qt5.14.2/5.14.2/clang_64/lib/QtCore.framework/Headers/QTimer \
 		../../../Qt5.14.2/5.14.2/clang_64/lib/QtCore.framework/Headers/qtimer.h \
+		shapes/Shape.h \
+		shapes/triangle.h \
+		shapes/ShapeComponent.h \
+		gl/datatype/VAO.h \
+		gl/datatype/VBO.h \
+		gl/datatype/VBOAttribMarker.h \
+		gl/shaders/ShaderAttribLocations.h \
+		glm/gtx/transform.hpp \
+		glm/gtc/matrix_transform.hpp \
+		glm/gtc/matrix_transform.inl \
+		glm/gtx/transform.inl \
+		glm/gtx/string_cast.hpp \
+		glm/gtx/integer.hpp \
+		glm/gtx/integer.inl \
+		glm/gtx/quaternion.hpp \
+		glm/gtc/constants.hpp \
+		glm/gtc/constants.inl \
+		glm/gtc/quaternion.hpp \
+		glm/gtc/quaternion.inl \
+		glm/gtx/norm.hpp \
+		glm/gtx/norm.inl \
+		glm/gtx/quaternion.inl \
+		glm/gtx/string_cast.inl \
 		moc_predefs.h \
 		../../../Qt5.14.2/5.14.2/clang_64/bin/moc
 	/Users/ksang/Qt5.14.2/5.14.2/clang_64/bin/moc $(DEFINES) --include /Users/ksang/Documents/cs1230/cs123-final/moc_predefs.h -I/Users/ksang/Qt5.14.2/5.14.2/clang_64/mkspecs/macx-clang -I/Users/ksang/Documents/cs1230/cs123-final -I/Users/ksang/Documents/cs1230/cs123-final/glm -I/Users/ksang/Documents/cs1230/cs123-final/ui -I/Users/ksang/Documents/cs1230/cs123-final/glew-1.10.0/include -I/Users/ksang/Qt5.14.2/5.14.2/clang_64/lib/QtOpenGL.framework/Headers -I/Users/ksang/Qt5.14.2/5.14.2/clang_64/lib/QtWidgets.framework/Headers -I/Users/ksang/Qt5.14.2/5.14.2/clang_64/lib/QtGui.framework/Headers -I/Users/ksang/Qt5.14.2/5.14.2/clang_64/lib/QtXml.framework/Headers -I/Users/ksang/Qt5.14.2/5.14.2/clang_64/lib/QtCore.framework/Headers -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1 -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/11.0.3/include -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk/usr/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -F/Users/ksang/Qt5.14.2/5.14.2/clang_64/lib mainwindow.h -o moc_mainwindow.cpp
@@ -1077,6 +1155,29 @@ moc_uniformwidget.cpp: uniforms/uniformwidget.h \
 		lib/common.h \
 		../../../Qt5.14.2/5.14.2/clang_64/lib/QtCore.framework/Headers/QTimer \
 		../../../Qt5.14.2/5.14.2/clang_64/lib/QtCore.framework/Headers/qtimer.h \
+		shapes/Shape.h \
+		shapes/triangle.h \
+		shapes/ShapeComponent.h \
+		gl/datatype/VAO.h \
+		gl/datatype/VBO.h \
+		gl/datatype/VBOAttribMarker.h \
+		gl/shaders/ShaderAttribLocations.h \
+		glm/gtx/transform.hpp \
+		glm/gtc/matrix_transform.hpp \
+		glm/gtc/matrix_transform.inl \
+		glm/gtx/transform.inl \
+		glm/gtx/string_cast.hpp \
+		glm/gtx/integer.hpp \
+		glm/gtx/integer.inl \
+		glm/gtx/quaternion.hpp \
+		glm/gtc/constants.hpp \
+		glm/gtc/constants.inl \
+		glm/gtc/quaternion.hpp \
+		glm/gtc/quaternion.inl \
+		glm/gtx/norm.hpp \
+		glm/gtx/norm.inl \
+		glm/gtx/quaternion.inl \
+		glm/gtx/string_cast.inl \
 		moc_predefs.h \
 		../../../Qt5.14.2/5.14.2/clang_64/bin/moc
 	/Users/ksang/Qt5.14.2/5.14.2/clang_64/bin/moc $(DEFINES) --include /Users/ksang/Documents/cs1230/cs123-final/moc_predefs.h -I/Users/ksang/Qt5.14.2/5.14.2/clang_64/mkspecs/macx-clang -I/Users/ksang/Documents/cs1230/cs123-final -I/Users/ksang/Documents/cs1230/cs123-final/glm -I/Users/ksang/Documents/cs1230/cs123-final/ui -I/Users/ksang/Documents/cs1230/cs123-final/glew-1.10.0/include -I/Users/ksang/Qt5.14.2/5.14.2/clang_64/lib/QtOpenGL.framework/Headers -I/Users/ksang/Qt5.14.2/5.14.2/clang_64/lib/QtWidgets.framework/Headers -I/Users/ksang/Qt5.14.2/5.14.2/clang_64/lib/QtGui.framework/Headers -I/Users/ksang/Qt5.14.2/5.14.2/clang_64/lib/QtXml.framework/Headers -I/Users/ksang/Qt5.14.2/5.14.2/clang_64/lib/QtCore.framework/Headers -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1 -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/11.0.3/include -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk/usr/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -F/Users/ksang/Qt5.14.2/5.14.2/clang_64/lib uniforms/uniformwidget.h -o moc_uniformwidget.cpp
@@ -1271,6 +1372,225 @@ compiler_clean: compiler_rcc_clean compiler_moc_predefs_clean compiler_moc_heade
 
 ####### Compile
 
+Utilities.o: lib/Utilities.cpp lib/Utilities.h \
+		glm/glm.hpp \
+		glm/detail/_fixes.hpp \
+		glm/fwd.hpp \
+		glm/detail/type_int.hpp \
+		glm/detail/setup.hpp \
+		glm/detail/type_float.hpp \
+		glm/detail/type_vec.hpp \
+		glm/detail/precision.hpp \
+		glm/detail/type_mat.hpp \
+		glm/vec2.hpp \
+		glm/detail/type_vec2.hpp \
+		glm/detail/_swizzle.hpp \
+		glm/detail/_swizzle_func.hpp \
+		glm/detail/type_vec2.inl \
+		glm/vec3.hpp \
+		glm/detail/type_vec3.hpp \
+		glm/detail/type_vec3.inl \
+		glm/vec4.hpp \
+		glm/detail/type_vec4.hpp \
+		glm/detail/type_vec4.inl \
+		glm/mat2x2.hpp \
+		glm/detail/type_mat2x2.hpp \
+		glm/detail/type_mat2x2.inl \
+		glm/mat2x3.hpp \
+		glm/detail/type_mat2x3.hpp \
+		glm/detail/type_mat2x3.inl \
+		glm/mat2x4.hpp \
+		glm/detail/type_mat2x4.hpp \
+		glm/detail/type_mat2x4.inl \
+		glm/mat3x2.hpp \
+		glm/detail/type_mat3x2.hpp \
+		glm/detail/type_mat3x2.inl \
+		glm/mat3x3.hpp \
+		glm/detail/type_mat3x3.hpp \
+		glm/detail/type_mat3x3.inl \
+		glm/mat3x4.hpp \
+		glm/detail/type_mat3x4.hpp \
+		glm/detail/type_mat3x4.inl \
+		glm/mat4x2.hpp \
+		glm/detail/type_mat4x2.hpp \
+		glm/detail/type_mat4x2.inl \
+		glm/mat4x3.hpp \
+		glm/detail/type_mat4x3.hpp \
+		glm/detail/type_mat4x3.inl \
+		glm/mat4x4.hpp \
+		glm/detail/type_mat4x4.hpp \
+		glm/detail/type_mat4x4.inl \
+		glm/trigonometric.hpp \
+		glm/detail/func_trigonometric.hpp \
+		glm/detail/func_trigonometric.inl \
+		glm/detail/_vectorize.hpp \
+		glm/detail/type_vec1.hpp \
+		glm/detail/type_vec1.inl \
+		glm/exponential.hpp \
+		glm/detail/func_exponential.hpp \
+		glm/detail/func_exponential.inl \
+		glm/detail/func_vector_relational.hpp \
+		glm/detail/func_vector_relational.inl \
+		glm/common.hpp \
+		glm/detail/func_common.hpp \
+		glm/detail/func_common.inl \
+		glm/packing.hpp \
+		glm/detail/func_packing.hpp \
+		glm/detail/func_packing.inl \
+		glm/detail/type_half.hpp \
+		glm/detail/type_half.inl \
+		glm/geometric.hpp \
+		glm/detail/func_geometric.hpp \
+		glm/detail/func_geometric.inl \
+		glm/matrix.hpp \
+		glm/detail/func_matrix.hpp \
+		glm/detail/func_matrix.inl \
+		glm/vector_relational.hpp \
+		glm/integer.hpp \
+		glm/detail/func_integer.hpp \
+		glm/detail/func_integer.inl \
+		glew-1.10.0/include/GL/glew.h \
+		glm/ext.hpp \
+		glm/gtc/constants.hpp \
+		glm/gtc/constants.inl \
+		glm/gtc/epsilon.hpp \
+		glm/gtc/epsilon.inl \
+		glm/gtc/quaternion.hpp \
+		glm/gtc/quaternion.inl \
+		glm/gtc/matrix_access.hpp \
+		glm/gtc/matrix_access.inl \
+		glm/gtc/matrix_integer.hpp \
+		glm/gtc/matrix_inverse.hpp \
+		glm/gtc/matrix_inverse.inl \
+		glm/gtc/matrix_transform.hpp \
+		glm/gtc/matrix_transform.inl \
+		glm/gtc/noise.hpp \
+		glm/gtc/noise.inl \
+		glm/detail/_noise.hpp \
+		glm/gtc/packing.hpp \
+		glm/gtc/type_precision.hpp \
+		glm/gtc/type_precision.inl \
+		glm/gtc/packing.inl \
+		glm/gtc/random.hpp \
+		glm/gtc/random.inl \
+		glm/gtc/reciprocal.hpp \
+		glm/gtc/reciprocal.inl \
+		glm/gtc/type_ptr.hpp \
+		glm/gtc/type_ptr.inl \
+		glm/gtc/ulp.hpp \
+		glm/gtc/ulp.inl \
+		glm/gtx/associated_min_max.hpp \
+		glm/gtx/associated_min_max.inl \
+		glm/gtx/bit.hpp \
+		glm/gtx/bit.inl \
+		glm/gtx/closest_point.hpp \
+		glm/gtx/closest_point.inl \
+		glm/gtx/color_space.hpp \
+		glm/gtx/color_space.inl \
+		glm/gtx/color_space_YCoCg.hpp \
+		glm/gtx/color_space_YCoCg.inl \
+		glm/gtx/compatibility.hpp \
+		glm/gtx/compatibility.inl \
+		glm/gtx/component_wise.hpp \
+		glm/gtx/component_wise.inl \
+		glm/gtx/dual_quaternion.hpp \
+		glm/gtx/dual_quaternion.inl \
+		glm/gtx/euler_angles.hpp \
+		glm/gtx/euler_angles.inl \
+		glm/gtx/extend.hpp \
+		glm/gtx/extend.inl \
+		glm/gtx/extented_min_max.hpp \
+		glm/gtx/extented_min_max.inl \
+		glm/gtx/fast_exponential.hpp \
+		glm/gtx/fast_exponential.inl \
+		glm/gtx/fast_square_root.hpp \
+		glm/gtx/fast_square_root.inl \
+		glm/gtx/fast_trigonometry.hpp \
+		glm/gtx/fast_trigonometry.inl \
+		glm/gtx/gradient_paint.hpp \
+		glm/gtx/optimum_pow.hpp \
+		glm/gtx/optimum_pow.inl \
+		glm/gtx/gradient_paint.inl \
+		glm/gtx/handed_coordinate_space.hpp \
+		glm/gtx/handed_coordinate_space.inl \
+		glm/gtx/inertia.hpp \
+		glm/gtx/inertia.inl \
+		glm/gtx/int_10_10_10_2.hpp \
+		glm/gtx/raw_data.hpp \
+		glm/gtx/raw_data.inl \
+		glm/gtx/int_10_10_10_2.inl \
+		glm/gtx/integer.hpp \
+		glm/gtx/integer.inl \
+		glm/gtx/intersect.hpp \
+		glm/gtx/intersect.inl \
+		glm/gtx/log_base.hpp \
+		glm/gtx/log_base.inl \
+		glm/gtx/matrix_cross_product.hpp \
+		glm/gtx/matrix_cross_product.inl \
+		glm/gtx/matrix_interpolation.hpp \
+		glm/gtx/matrix_interpolation.inl \
+		glm/gtx/matrix_major_storage.hpp \
+		glm/gtx/matrix_major_storage.inl \
+		glm/gtx/matrix_operation.hpp \
+		glm/gtx/matrix_operation.inl \
+		glm/gtx/matrix_query.hpp \
+		glm/gtx/vector_query.hpp \
+		glm/gtx/vector_query.inl \
+		glm/gtx/matrix_query.inl \
+		glm/gtx/mixed_product.hpp \
+		glm/gtx/mixed_product.inl \
+		glm/gtx/multiple.hpp \
+		glm/gtx/multiple.inl \
+		glm/gtx/norm.hpp \
+		glm/gtx/quaternion.hpp \
+		glm/gtx/quaternion.inl \
+		glm/gtx/norm.inl \
+		glm/gtx/normal.hpp \
+		glm/gtx/normal.inl \
+		glm/gtx/normalize_dot.hpp \
+		glm/gtx/normalize_dot.inl \
+		glm/gtx/number_precision.hpp \
+		glm/gtx/number_precision.inl \
+		glm/gtx/orthonormalize.hpp \
+		glm/gtx/orthonormalize.inl \
+		glm/gtx/perpendicular.hpp \
+		glm/gtx/projection.hpp \
+		glm/gtx/projection.inl \
+		glm/gtx/perpendicular.inl \
+		glm/gtx/polar_coordinates.hpp \
+		glm/gtx/polar_coordinates.inl \
+		glm/gtx/rotate_vector.hpp \
+		glm/gtx/transform.hpp \
+		glm/gtx/transform.inl \
+		glm/gtx/rotate_vector.inl \
+		glm/gtx/spline.hpp \
+		glm/gtx/spline.inl \
+		glm/gtx/std_based_type.hpp \
+		glm/gtx/std_based_type.inl \
+		glm/gtx/string_cast.hpp \
+		glm/gtx/string_cast.inl \
+		glm/gtx/transform2.hpp \
+		glm/gtx/transform2.inl \
+		glm/gtx/vec1.hpp \
+		glm/gtx/vec1.inl \
+		glm/gtx/vector_angle.hpp \
+		glm/gtx/vector_angle.inl \
+		glm/gtx/wrap.hpp \
+		glm/gtx/wrap.inl \
+		glm/gtx/simd_vec4.hpp \
+		glm/detail/intrinsic_common.hpp \
+		glm/detail/intrinsic_common.inl \
+		glm/detail/intrinsic_geometric.hpp \
+		glm/detail/intrinsic_geometric.inl \
+		glm/detail/intrinsic_integer.hpp \
+		glm/detail/intrinsic_integer.inl \
+		glm/gtx/simd_vec4.inl \
+		glm/gtx/simd_mat4.hpp \
+		glm/detail/intrinsic_matrix.hpp \
+		glm/detail/intrinsic_matrix.inl \
+		glm/gtx/simd_mat4.inl
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o Utilities.o lib/Utilities.cpp
+
 main.o: main.cpp ../../../Qt5.14.2/5.14.2/clang_64/lib/QtWidgets.framework/Headers/QApplication \
 		../../../Qt5.14.2/5.14.2/clang_64/lib/QtWidgets.framework/Headers/qapplication.h \
 		mainwindow.h \
@@ -1369,7 +1689,30 @@ main.o: main.cpp ../../../Qt5.14.2/5.14.2/clang_64/lib/QtWidgets.framework/Heade
 		../../../Qt5.14.2/5.14.2/clang_64/lib/QtGui.framework/Headers/qopenglfunctions.h \
 		lib/common.h \
 		../../../Qt5.14.2/5.14.2/clang_64/lib/QtCore.framework/Headers/QTimer \
-		../../../Qt5.14.2/5.14.2/clang_64/lib/QtCore.framework/Headers/qtimer.h
+		../../../Qt5.14.2/5.14.2/clang_64/lib/QtCore.framework/Headers/qtimer.h \
+		shapes/Shape.h \
+		shapes/triangle.h \
+		shapes/ShapeComponent.h \
+		gl/datatype/VAO.h \
+		gl/datatype/VBO.h \
+		gl/datatype/VBOAttribMarker.h \
+		gl/shaders/ShaderAttribLocations.h \
+		glm/gtx/transform.hpp \
+		glm/gtc/matrix_transform.hpp \
+		glm/gtc/matrix_transform.inl \
+		glm/gtx/transform.inl \
+		glm/gtx/string_cast.hpp \
+		glm/gtx/integer.hpp \
+		glm/gtx/integer.inl \
+		glm/gtx/quaternion.hpp \
+		glm/gtc/constants.hpp \
+		glm/gtc/constants.inl \
+		glm/gtc/quaternion.hpp \
+		glm/gtc/quaternion.inl \
+		glm/gtx/norm.hpp \
+		glm/gtx/norm.inl \
+		glm/gtx/quaternion.inl \
+		glm/gtx/string_cast.inl
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o main.cpp
 
 glew.o: glew-1.10.0/src/glew.c glew-1.10.0/include/GL/glew.h \
@@ -1471,6 +1814,29 @@ glwidget.o: glwidget.cpp glwidget.h \
 		lib/common.h \
 		../../../Qt5.14.2/5.14.2/clang_64/lib/QtCore.framework/Headers/QTimer \
 		../../../Qt5.14.2/5.14.2/clang_64/lib/QtCore.framework/Headers/qtimer.h \
+		shapes/Shape.h \
+		shapes/triangle.h \
+		shapes/ShapeComponent.h \
+		gl/datatype/VAO.h \
+		gl/datatype/VBO.h \
+		gl/datatype/VBOAttribMarker.h \
+		gl/shaders/ShaderAttribLocations.h \
+		glm/gtx/transform.hpp \
+		glm/gtc/matrix_transform.hpp \
+		glm/gtc/matrix_transform.inl \
+		glm/gtx/transform.inl \
+		glm/gtx/string_cast.hpp \
+		glm/gtx/integer.hpp \
+		glm/gtx/integer.inl \
+		glm/gtx/quaternion.hpp \
+		glm/gtc/constants.hpp \
+		glm/gtc/constants.inl \
+		glm/gtc/quaternion.hpp \
+		glm/gtc/quaternion.inl \
+		glm/gtx/norm.hpp \
+		glm/gtx/norm.inl \
+		glm/gtx/quaternion.inl \
+		glm/gtx/string_cast.inl \
 		../../../Qt5.14.2/5.14.2/clang_64/lib/QtGui.framework/Headers/QMouseEvent \
 		../../../Qt5.14.2/5.14.2/clang_64/lib/QtGui.framework/Headers/qevent.h \
 		shapes/sphere.h \
@@ -1486,13 +1852,7 @@ glwidget.o: glwidget.cpp glwidget.h \
 		../../../Qt5.14.2/5.14.2/clang_64/lib/QtCore.framework/Headers/qstring.h \
 		gl/shaders/shaderattriblocations.h \
 		glm/gtc/type_ptr.hpp \
-		glm/gtc/quaternion.hpp \
-		glm/gtc/constants.hpp \
-		glm/gtc/constants.inl \
-		glm/gtc/quaternion.inl \
-		glm/gtc/type_ptr.inl \
-		glm/gtc/matrix_transform.hpp \
-		glm/gtc/matrix_transform.inl
+		glm/gtc/type_ptr.inl
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o glwidget.o glwidget.cpp
 
 mainwindow.o: mainwindow.cpp mainwindow.h \
@@ -1592,6 +1952,29 @@ mainwindow.o: mainwindow.cpp mainwindow.h \
 		lib/common.h \
 		../../../Qt5.14.2/5.14.2/clang_64/lib/QtCore.framework/Headers/QTimer \
 		../../../Qt5.14.2/5.14.2/clang_64/lib/QtCore.framework/Headers/qtimer.h \
+		shapes/Shape.h \
+		shapes/triangle.h \
+		shapes/ShapeComponent.h \
+		gl/datatype/VAO.h \
+		gl/datatype/VBO.h \
+		gl/datatype/VBOAttribMarker.h \
+		gl/shaders/ShaderAttribLocations.h \
+		glm/gtx/transform.hpp \
+		glm/gtc/matrix_transform.hpp \
+		glm/gtc/matrix_transform.inl \
+		glm/gtx/transform.inl \
+		glm/gtx/string_cast.hpp \
+		glm/gtx/integer.hpp \
+		glm/gtx/integer.inl \
+		glm/gtx/quaternion.hpp \
+		glm/gtc/constants.hpp \
+		glm/gtc/constants.inl \
+		glm/gtc/quaternion.hpp \
+		glm/gtc/quaternion.inl \
+		glm/gtx/norm.hpp \
+		glm/gtx/norm.inl \
+		glm/gtx/quaternion.inl \
+		glm/gtx/string_cast.inl \
 		ui_mainwindow.h \
 		uniforms/uniformwidget.h \
 		../../../Qt5.14.2/5.14.2/clang_64/lib/QtWidgets.framework/Headers/QMessageBox \
@@ -1605,6 +1988,601 @@ mainwindow.o: mainwindow.cpp mainwindow.h \
 		../../../Qt5.14.2/5.14.2/clang_64/lib/QtCore.framework/Headers/QUrl \
 		../../../Qt5.14.2/5.14.2/clang_64/lib/QtCore.framework/Headers/qurl.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mainwindow.o mainwindow.cpp
+
+BarrelComponent.o: shapes/BarrelComponent.cpp shapes/BarrelComponent.h \
+		shapes/ShapeComponent.h \
+		glm/glm.hpp \
+		glm/detail/_fixes.hpp \
+		glm/fwd.hpp \
+		glm/detail/type_int.hpp \
+		glm/detail/setup.hpp \
+		glm/detail/type_float.hpp \
+		glm/detail/type_vec.hpp \
+		glm/detail/precision.hpp \
+		glm/detail/type_mat.hpp \
+		glm/vec2.hpp \
+		glm/detail/type_vec2.hpp \
+		glm/detail/_swizzle.hpp \
+		glm/detail/_swizzle_func.hpp \
+		glm/detail/type_vec2.inl \
+		glm/vec3.hpp \
+		glm/detail/type_vec3.hpp \
+		glm/detail/type_vec3.inl \
+		glm/vec4.hpp \
+		glm/detail/type_vec4.hpp \
+		glm/detail/type_vec4.inl \
+		glm/mat2x2.hpp \
+		glm/detail/type_mat2x2.hpp \
+		glm/detail/type_mat2x2.inl \
+		glm/mat2x3.hpp \
+		glm/detail/type_mat2x3.hpp \
+		glm/detail/type_mat2x3.inl \
+		glm/mat2x4.hpp \
+		glm/detail/type_mat2x4.hpp \
+		glm/detail/type_mat2x4.inl \
+		glm/mat3x2.hpp \
+		glm/detail/type_mat3x2.hpp \
+		glm/detail/type_mat3x2.inl \
+		glm/mat3x3.hpp \
+		glm/detail/type_mat3x3.hpp \
+		glm/detail/type_mat3x3.inl \
+		glm/mat3x4.hpp \
+		glm/detail/type_mat3x4.hpp \
+		glm/detail/type_mat3x4.inl \
+		glm/mat4x2.hpp \
+		glm/detail/type_mat4x2.hpp \
+		glm/detail/type_mat4x2.inl \
+		glm/mat4x3.hpp \
+		glm/detail/type_mat4x3.hpp \
+		glm/detail/type_mat4x3.inl \
+		glm/mat4x4.hpp \
+		glm/detail/type_mat4x4.hpp \
+		glm/detail/type_mat4x4.inl \
+		glm/trigonometric.hpp \
+		glm/detail/func_trigonometric.hpp \
+		glm/detail/func_trigonometric.inl \
+		glm/detail/_vectorize.hpp \
+		glm/detail/type_vec1.hpp \
+		glm/detail/type_vec1.inl \
+		glm/exponential.hpp \
+		glm/detail/func_exponential.hpp \
+		glm/detail/func_exponential.inl \
+		glm/detail/func_vector_relational.hpp \
+		glm/detail/func_vector_relational.inl \
+		glm/common.hpp \
+		glm/detail/func_common.hpp \
+		glm/detail/func_common.inl \
+		glm/packing.hpp \
+		glm/detail/func_packing.hpp \
+		glm/detail/func_packing.inl \
+		glm/detail/type_half.hpp \
+		glm/detail/type_half.inl \
+		glm/geometric.hpp \
+		glm/detail/func_geometric.hpp \
+		glm/detail/func_geometric.inl \
+		glm/matrix.hpp \
+		glm/detail/func_matrix.hpp \
+		glm/detail/func_matrix.inl \
+		glm/vector_relational.hpp \
+		glm/integer.hpp \
+		glm/detail/func_integer.hpp \
+		glm/detail/func_integer.inl \
+		glew-1.10.0/include/GL/glew.h \
+		shapes/triangle.h \
+		gl/datatype/VAO.h \
+		gl/datatype/VBO.h \
+		gl/datatype/VBOAttribMarker.h \
+		gl/shaders/ShaderAttribLocations.h \
+		glm/gtx/transform.hpp \
+		glm/gtc/matrix_transform.hpp \
+		glm/gtc/matrix_transform.inl \
+		glm/gtx/transform.inl \
+		glm/gtx/string_cast.hpp \
+		glm/gtx/integer.hpp \
+		glm/gtx/integer.inl \
+		glm/gtx/quaternion.hpp \
+		glm/gtc/constants.hpp \
+		glm/gtc/constants.inl \
+		glm/gtc/quaternion.hpp \
+		glm/gtc/quaternion.inl \
+		glm/gtx/norm.hpp \
+		glm/gtx/norm.inl \
+		glm/gtx/quaternion.inl \
+		glm/gtx/string_cast.inl
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o BarrelComponent.o shapes/BarrelComponent.cpp
+
+CircleComponent.o: shapes/CircleComponent.cpp shapes/CircleComponent.h \
+		shapes/ShapeComponent.h \
+		glm/glm.hpp \
+		glm/detail/_fixes.hpp \
+		glm/fwd.hpp \
+		glm/detail/type_int.hpp \
+		glm/detail/setup.hpp \
+		glm/detail/type_float.hpp \
+		glm/detail/type_vec.hpp \
+		glm/detail/precision.hpp \
+		glm/detail/type_mat.hpp \
+		glm/vec2.hpp \
+		glm/detail/type_vec2.hpp \
+		glm/detail/_swizzle.hpp \
+		glm/detail/_swizzle_func.hpp \
+		glm/detail/type_vec2.inl \
+		glm/vec3.hpp \
+		glm/detail/type_vec3.hpp \
+		glm/detail/type_vec3.inl \
+		glm/vec4.hpp \
+		glm/detail/type_vec4.hpp \
+		glm/detail/type_vec4.inl \
+		glm/mat2x2.hpp \
+		glm/detail/type_mat2x2.hpp \
+		glm/detail/type_mat2x2.inl \
+		glm/mat2x3.hpp \
+		glm/detail/type_mat2x3.hpp \
+		glm/detail/type_mat2x3.inl \
+		glm/mat2x4.hpp \
+		glm/detail/type_mat2x4.hpp \
+		glm/detail/type_mat2x4.inl \
+		glm/mat3x2.hpp \
+		glm/detail/type_mat3x2.hpp \
+		glm/detail/type_mat3x2.inl \
+		glm/mat3x3.hpp \
+		glm/detail/type_mat3x3.hpp \
+		glm/detail/type_mat3x3.inl \
+		glm/mat3x4.hpp \
+		glm/detail/type_mat3x4.hpp \
+		glm/detail/type_mat3x4.inl \
+		glm/mat4x2.hpp \
+		glm/detail/type_mat4x2.hpp \
+		glm/detail/type_mat4x2.inl \
+		glm/mat4x3.hpp \
+		glm/detail/type_mat4x3.hpp \
+		glm/detail/type_mat4x3.inl \
+		glm/mat4x4.hpp \
+		glm/detail/type_mat4x4.hpp \
+		glm/detail/type_mat4x4.inl \
+		glm/trigonometric.hpp \
+		glm/detail/func_trigonometric.hpp \
+		glm/detail/func_trigonometric.inl \
+		glm/detail/_vectorize.hpp \
+		glm/detail/type_vec1.hpp \
+		glm/detail/type_vec1.inl \
+		glm/exponential.hpp \
+		glm/detail/func_exponential.hpp \
+		glm/detail/func_exponential.inl \
+		glm/detail/func_vector_relational.hpp \
+		glm/detail/func_vector_relational.inl \
+		glm/common.hpp \
+		glm/detail/func_common.hpp \
+		glm/detail/func_common.inl \
+		glm/packing.hpp \
+		glm/detail/func_packing.hpp \
+		glm/detail/func_packing.inl \
+		glm/detail/type_half.hpp \
+		glm/detail/type_half.inl \
+		glm/geometric.hpp \
+		glm/detail/func_geometric.hpp \
+		glm/detail/func_geometric.inl \
+		glm/matrix.hpp \
+		glm/detail/func_matrix.hpp \
+		glm/detail/func_matrix.inl \
+		glm/vector_relational.hpp \
+		glm/integer.hpp \
+		glm/detail/func_integer.hpp \
+		glm/detail/func_integer.inl \
+		glew-1.10.0/include/GL/glew.h \
+		shapes/triangle.h \
+		gl/datatype/VAO.h \
+		gl/datatype/VBO.h \
+		gl/datatype/VBOAttribMarker.h \
+		gl/shaders/ShaderAttribLocations.h \
+		glm/gtx/transform.hpp \
+		glm/gtc/matrix_transform.hpp \
+		glm/gtc/matrix_transform.inl \
+		glm/gtx/transform.inl \
+		glm/gtx/string_cast.hpp \
+		glm/gtx/integer.hpp \
+		glm/gtx/integer.inl \
+		glm/gtx/quaternion.hpp \
+		glm/gtc/constants.hpp \
+		glm/gtc/constants.inl \
+		glm/gtc/quaternion.hpp \
+		glm/gtc/quaternion.inl \
+		glm/gtx/norm.hpp \
+		glm/gtx/norm.inl \
+		glm/gtx/quaternion.inl \
+		glm/gtx/string_cast.inl
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o CircleComponent.o shapes/CircleComponent.cpp
+
+Cylinder.o: shapes/Cylinder.cpp shapes/Cylinder.h \
+		shapes/Shape.h \
+		glm/glm.hpp \
+		glm/detail/_fixes.hpp \
+		glm/fwd.hpp \
+		glm/detail/type_int.hpp \
+		glm/detail/setup.hpp \
+		glm/detail/type_float.hpp \
+		glm/detail/type_vec.hpp \
+		glm/detail/precision.hpp \
+		glm/detail/type_mat.hpp \
+		glm/vec2.hpp \
+		glm/detail/type_vec2.hpp \
+		glm/detail/_swizzle.hpp \
+		glm/detail/_swizzle_func.hpp \
+		glm/detail/type_vec2.inl \
+		glm/vec3.hpp \
+		glm/detail/type_vec3.hpp \
+		glm/detail/type_vec3.inl \
+		glm/vec4.hpp \
+		glm/detail/type_vec4.hpp \
+		glm/detail/type_vec4.inl \
+		glm/mat2x2.hpp \
+		glm/detail/type_mat2x2.hpp \
+		glm/detail/type_mat2x2.inl \
+		glm/mat2x3.hpp \
+		glm/detail/type_mat2x3.hpp \
+		glm/detail/type_mat2x3.inl \
+		glm/mat2x4.hpp \
+		glm/detail/type_mat2x4.hpp \
+		glm/detail/type_mat2x4.inl \
+		glm/mat3x2.hpp \
+		glm/detail/type_mat3x2.hpp \
+		glm/detail/type_mat3x2.inl \
+		glm/mat3x3.hpp \
+		glm/detail/type_mat3x3.hpp \
+		glm/detail/type_mat3x3.inl \
+		glm/mat3x4.hpp \
+		glm/detail/type_mat3x4.hpp \
+		glm/detail/type_mat3x4.inl \
+		glm/mat4x2.hpp \
+		glm/detail/type_mat4x2.hpp \
+		glm/detail/type_mat4x2.inl \
+		glm/mat4x3.hpp \
+		glm/detail/type_mat4x3.hpp \
+		glm/detail/type_mat4x3.inl \
+		glm/mat4x4.hpp \
+		glm/detail/type_mat4x4.hpp \
+		glm/detail/type_mat4x4.inl \
+		glm/trigonometric.hpp \
+		glm/detail/func_trigonometric.hpp \
+		glm/detail/func_trigonometric.inl \
+		glm/detail/_vectorize.hpp \
+		glm/detail/type_vec1.hpp \
+		glm/detail/type_vec1.inl \
+		glm/exponential.hpp \
+		glm/detail/func_exponential.hpp \
+		glm/detail/func_exponential.inl \
+		glm/detail/func_vector_relational.hpp \
+		glm/detail/func_vector_relational.inl \
+		glm/common.hpp \
+		glm/detail/func_common.hpp \
+		glm/detail/func_common.inl \
+		glm/packing.hpp \
+		glm/detail/func_packing.hpp \
+		glm/detail/func_packing.inl \
+		glm/detail/type_half.hpp \
+		glm/detail/type_half.inl \
+		glm/geometric.hpp \
+		glm/detail/func_geometric.hpp \
+		glm/detail/func_geometric.inl \
+		glm/matrix.hpp \
+		glm/detail/func_matrix.hpp \
+		glm/detail/func_matrix.inl \
+		glm/vector_relational.hpp \
+		glm/integer.hpp \
+		glm/detail/func_integer.hpp \
+		glm/detail/func_integer.inl \
+		glew-1.10.0/include/GL/glew.h \
+		shapes/triangle.h \
+		shapes/ShapeComponent.h \
+		gl/datatype/VAO.h \
+		gl/datatype/VBO.h \
+		gl/datatype/VBOAttribMarker.h \
+		gl/shaders/ShaderAttribLocations.h \
+		glm/gtx/transform.hpp \
+		glm/gtc/matrix_transform.hpp \
+		glm/gtc/matrix_transform.inl \
+		glm/gtx/transform.inl \
+		glm/gtx/string_cast.hpp \
+		glm/gtx/integer.hpp \
+		glm/gtx/integer.inl \
+		glm/gtx/quaternion.hpp \
+		glm/gtc/constants.hpp \
+		glm/gtc/constants.inl \
+		glm/gtc/quaternion.hpp \
+		glm/gtc/quaternion.inl \
+		glm/gtx/norm.hpp \
+		glm/gtx/norm.inl \
+		glm/gtx/quaternion.inl \
+		glm/gtx/string_cast.inl \
+		shapes/CircleComponent.h \
+		shapes/BarrelComponent.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o Cylinder.o shapes/Cylinder.cpp
+
+Shape.o: shapes/Shape.cpp shapes/Shape.h \
+		glm/glm.hpp \
+		glm/detail/_fixes.hpp \
+		glm/fwd.hpp \
+		glm/detail/type_int.hpp \
+		glm/detail/setup.hpp \
+		glm/detail/type_float.hpp \
+		glm/detail/type_vec.hpp \
+		glm/detail/precision.hpp \
+		glm/detail/type_mat.hpp \
+		glm/vec2.hpp \
+		glm/detail/type_vec2.hpp \
+		glm/detail/_swizzle.hpp \
+		glm/detail/_swizzle_func.hpp \
+		glm/detail/type_vec2.inl \
+		glm/vec3.hpp \
+		glm/detail/type_vec3.hpp \
+		glm/detail/type_vec3.inl \
+		glm/vec4.hpp \
+		glm/detail/type_vec4.hpp \
+		glm/detail/type_vec4.inl \
+		glm/mat2x2.hpp \
+		glm/detail/type_mat2x2.hpp \
+		glm/detail/type_mat2x2.inl \
+		glm/mat2x3.hpp \
+		glm/detail/type_mat2x3.hpp \
+		glm/detail/type_mat2x3.inl \
+		glm/mat2x4.hpp \
+		glm/detail/type_mat2x4.hpp \
+		glm/detail/type_mat2x4.inl \
+		glm/mat3x2.hpp \
+		glm/detail/type_mat3x2.hpp \
+		glm/detail/type_mat3x2.inl \
+		glm/mat3x3.hpp \
+		glm/detail/type_mat3x3.hpp \
+		glm/detail/type_mat3x3.inl \
+		glm/mat3x4.hpp \
+		glm/detail/type_mat3x4.hpp \
+		glm/detail/type_mat3x4.inl \
+		glm/mat4x2.hpp \
+		glm/detail/type_mat4x2.hpp \
+		glm/detail/type_mat4x2.inl \
+		glm/mat4x3.hpp \
+		glm/detail/type_mat4x3.hpp \
+		glm/detail/type_mat4x3.inl \
+		glm/mat4x4.hpp \
+		glm/detail/type_mat4x4.hpp \
+		glm/detail/type_mat4x4.inl \
+		glm/trigonometric.hpp \
+		glm/detail/func_trigonometric.hpp \
+		glm/detail/func_trigonometric.inl \
+		glm/detail/_vectorize.hpp \
+		glm/detail/type_vec1.hpp \
+		glm/detail/type_vec1.inl \
+		glm/exponential.hpp \
+		glm/detail/func_exponential.hpp \
+		glm/detail/func_exponential.inl \
+		glm/detail/func_vector_relational.hpp \
+		glm/detail/func_vector_relational.inl \
+		glm/common.hpp \
+		glm/detail/func_common.hpp \
+		glm/detail/func_common.inl \
+		glm/packing.hpp \
+		glm/detail/func_packing.hpp \
+		glm/detail/func_packing.inl \
+		glm/detail/type_half.hpp \
+		glm/detail/type_half.inl \
+		glm/geometric.hpp \
+		glm/detail/func_geometric.hpp \
+		glm/detail/func_geometric.inl \
+		glm/matrix.hpp \
+		glm/detail/func_matrix.hpp \
+		glm/detail/func_matrix.inl \
+		glm/vector_relational.hpp \
+		glm/integer.hpp \
+		glm/detail/func_integer.hpp \
+		glm/detail/func_integer.inl \
+		glew-1.10.0/include/GL/glew.h \
+		shapes/triangle.h \
+		shapes/ShapeComponent.h \
+		gl/datatype/VAO.h \
+		gl/datatype/VBO.h \
+		gl/datatype/VBOAttribMarker.h \
+		gl/shaders/ShaderAttribLocations.h \
+		glm/gtx/transform.hpp \
+		glm/gtc/matrix_transform.hpp \
+		glm/gtc/matrix_transform.inl \
+		glm/gtx/transform.inl \
+		glm/gtx/string_cast.hpp \
+		glm/gtx/integer.hpp \
+		glm/gtx/integer.inl \
+		glm/gtx/quaternion.hpp \
+		glm/gtc/constants.hpp \
+		glm/gtc/constants.inl \
+		glm/gtc/quaternion.hpp \
+		glm/gtc/quaternion.inl \
+		glm/gtx/norm.hpp \
+		glm/gtx/norm.inl \
+		glm/gtx/quaternion.inl \
+		glm/gtx/string_cast.inl
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o Shape.o shapes/Shape.cpp
+
+ShapeComponent.o: shapes/ShapeComponent.cpp shapes/ShapeComponent.h \
+		glm/glm.hpp \
+		glm/detail/_fixes.hpp \
+		glm/fwd.hpp \
+		glm/detail/type_int.hpp \
+		glm/detail/setup.hpp \
+		glm/detail/type_float.hpp \
+		glm/detail/type_vec.hpp \
+		glm/detail/precision.hpp \
+		glm/detail/type_mat.hpp \
+		glm/vec2.hpp \
+		glm/detail/type_vec2.hpp \
+		glm/detail/_swizzle.hpp \
+		glm/detail/_swizzle_func.hpp \
+		glm/detail/type_vec2.inl \
+		glm/vec3.hpp \
+		glm/detail/type_vec3.hpp \
+		glm/detail/type_vec3.inl \
+		glm/vec4.hpp \
+		glm/detail/type_vec4.hpp \
+		glm/detail/type_vec4.inl \
+		glm/mat2x2.hpp \
+		glm/detail/type_mat2x2.hpp \
+		glm/detail/type_mat2x2.inl \
+		glm/mat2x3.hpp \
+		glm/detail/type_mat2x3.hpp \
+		glm/detail/type_mat2x3.inl \
+		glm/mat2x4.hpp \
+		glm/detail/type_mat2x4.hpp \
+		glm/detail/type_mat2x4.inl \
+		glm/mat3x2.hpp \
+		glm/detail/type_mat3x2.hpp \
+		glm/detail/type_mat3x2.inl \
+		glm/mat3x3.hpp \
+		glm/detail/type_mat3x3.hpp \
+		glm/detail/type_mat3x3.inl \
+		glm/mat3x4.hpp \
+		glm/detail/type_mat3x4.hpp \
+		glm/detail/type_mat3x4.inl \
+		glm/mat4x2.hpp \
+		glm/detail/type_mat4x2.hpp \
+		glm/detail/type_mat4x2.inl \
+		glm/mat4x3.hpp \
+		glm/detail/type_mat4x3.hpp \
+		glm/detail/type_mat4x3.inl \
+		glm/mat4x4.hpp \
+		glm/detail/type_mat4x4.hpp \
+		glm/detail/type_mat4x4.inl \
+		glm/trigonometric.hpp \
+		glm/detail/func_trigonometric.hpp \
+		glm/detail/func_trigonometric.inl \
+		glm/detail/_vectorize.hpp \
+		glm/detail/type_vec1.hpp \
+		glm/detail/type_vec1.inl \
+		glm/exponential.hpp \
+		glm/detail/func_exponential.hpp \
+		glm/detail/func_exponential.inl \
+		glm/detail/func_vector_relational.hpp \
+		glm/detail/func_vector_relational.inl \
+		glm/common.hpp \
+		glm/detail/func_common.hpp \
+		glm/detail/func_common.inl \
+		glm/packing.hpp \
+		glm/detail/func_packing.hpp \
+		glm/detail/func_packing.inl \
+		glm/detail/type_half.hpp \
+		glm/detail/type_half.inl \
+		glm/geometric.hpp \
+		glm/detail/func_geometric.hpp \
+		glm/detail/func_geometric.inl \
+		glm/matrix.hpp \
+		glm/detail/func_matrix.hpp \
+		glm/detail/func_matrix.inl \
+		glm/vector_relational.hpp \
+		glm/integer.hpp \
+		glm/detail/func_integer.hpp \
+		glm/detail/func_integer.inl \
+		glew-1.10.0/include/GL/glew.h \
+		shapes/triangle.h \
+		gl/datatype/VAO.h \
+		gl/datatype/VBO.h \
+		gl/datatype/VBOAttribMarker.h \
+		gl/shaders/ShaderAttribLocations.h \
+		glm/gtx/transform.hpp \
+		glm/gtc/matrix_transform.hpp \
+		glm/gtc/matrix_transform.inl \
+		glm/gtx/transform.inl \
+		glm/gtx/string_cast.hpp \
+		glm/gtx/integer.hpp \
+		glm/gtx/integer.inl \
+		glm/gtx/quaternion.hpp \
+		glm/gtc/constants.hpp \
+		glm/gtc/constants.inl \
+		glm/gtc/quaternion.hpp \
+		glm/gtc/quaternion.inl \
+		glm/gtx/norm.hpp \
+		glm/gtx/norm.inl \
+		glm/gtx/quaternion.inl \
+		glm/gtx/string_cast.inl \
+		glm/gtc/type_ptr.hpp \
+		glm/gtc/type_ptr.inl \
+		lib/Utilities.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ShapeComponent.o shapes/ShapeComponent.cpp
+
+triangle.o: shapes/triangle.cpp shapes/triangle.h \
+		glm/glm.hpp \
+		glm/detail/_fixes.hpp \
+		glm/fwd.hpp \
+		glm/detail/type_int.hpp \
+		glm/detail/setup.hpp \
+		glm/detail/type_float.hpp \
+		glm/detail/type_vec.hpp \
+		glm/detail/precision.hpp \
+		glm/detail/type_mat.hpp \
+		glm/vec2.hpp \
+		glm/detail/type_vec2.hpp \
+		glm/detail/_swizzle.hpp \
+		glm/detail/_swizzle_func.hpp \
+		glm/detail/type_vec2.inl \
+		glm/vec3.hpp \
+		glm/detail/type_vec3.hpp \
+		glm/detail/type_vec3.inl \
+		glm/vec4.hpp \
+		glm/detail/type_vec4.hpp \
+		glm/detail/type_vec4.inl \
+		glm/mat2x2.hpp \
+		glm/detail/type_mat2x2.hpp \
+		glm/detail/type_mat2x2.inl \
+		glm/mat2x3.hpp \
+		glm/detail/type_mat2x3.hpp \
+		glm/detail/type_mat2x3.inl \
+		glm/mat2x4.hpp \
+		glm/detail/type_mat2x4.hpp \
+		glm/detail/type_mat2x4.inl \
+		glm/mat3x2.hpp \
+		glm/detail/type_mat3x2.hpp \
+		glm/detail/type_mat3x2.inl \
+		glm/mat3x3.hpp \
+		glm/detail/type_mat3x3.hpp \
+		glm/detail/type_mat3x3.inl \
+		glm/mat3x4.hpp \
+		glm/detail/type_mat3x4.hpp \
+		glm/detail/type_mat3x4.inl \
+		glm/mat4x2.hpp \
+		glm/detail/type_mat4x2.hpp \
+		glm/detail/type_mat4x2.inl \
+		glm/mat4x3.hpp \
+		glm/detail/type_mat4x3.hpp \
+		glm/detail/type_mat4x3.inl \
+		glm/mat4x4.hpp \
+		glm/detail/type_mat4x4.hpp \
+		glm/detail/type_mat4x4.inl \
+		glm/trigonometric.hpp \
+		glm/detail/func_trigonometric.hpp \
+		glm/detail/func_trigonometric.inl \
+		glm/detail/_vectorize.hpp \
+		glm/detail/type_vec1.hpp \
+		glm/detail/type_vec1.inl \
+		glm/exponential.hpp \
+		glm/detail/func_exponential.hpp \
+		glm/detail/func_exponential.inl \
+		glm/detail/func_vector_relational.hpp \
+		glm/detail/func_vector_relational.inl \
+		glm/common.hpp \
+		glm/detail/func_common.hpp \
+		glm/detail/func_common.inl \
+		glm/packing.hpp \
+		glm/detail/func_packing.hpp \
+		glm/detail/func_packing.inl \
+		glm/detail/type_half.hpp \
+		glm/detail/type_half.inl \
+		glm/geometric.hpp \
+		glm/detail/func_geometric.hpp \
+		glm/detail/func_geometric.inl \
+		glm/matrix.hpp \
+		glm/detail/func_matrix.hpp \
+		glm/detail/func_matrix.inl \
+		glm/vector_relational.hpp \
+		glm/integer.hpp \
+		glm/detail/func_integer.hpp \
+		glm/detail/func_integer.inl \
+		glew-1.10.0/include/GL/glew.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o triangle.o shapes/triangle.cpp
 
 uniformvariable.o: uniforms/uniformvariable.cpp uniforms/uniformvariable.h \
 		glew-1.10.0/include/GL/glew.h \
@@ -1700,6 +2678,29 @@ uniformvariable.o: uniforms/uniformvariable.cpp uniforms/uniformvariable.h \
 		../../../Qt5.14.2/5.14.2/clang_64/lib/QtCore.framework/Headers/qobject.h \
 		../../../Qt5.14.2/5.14.2/clang_64/lib/QtCore.framework/Headers/QTimer \
 		../../../Qt5.14.2/5.14.2/clang_64/lib/QtCore.framework/Headers/qtimer.h \
+		shapes/Shape.h \
+		shapes/triangle.h \
+		shapes/ShapeComponent.h \
+		gl/datatype/VAO.h \
+		gl/datatype/VBO.h \
+		gl/datatype/VBOAttribMarker.h \
+		gl/shaders/ShaderAttribLocations.h \
+		glm/gtx/transform.hpp \
+		glm/gtc/matrix_transform.hpp \
+		glm/gtc/matrix_transform.inl \
+		glm/gtx/transform.inl \
+		glm/gtx/string_cast.hpp \
+		glm/gtx/integer.hpp \
+		glm/gtx/integer.inl \
+		glm/gtx/quaternion.hpp \
+		glm/gtc/constants.hpp \
+		glm/gtc/constants.inl \
+		glm/gtc/quaternion.hpp \
+		glm/gtc/quaternion.inl \
+		glm/gtx/norm.hpp \
+		glm/gtx/norm.inl \
+		glm/gtx/quaternion.inl \
+		glm/gtx/string_cast.inl \
 		../../../Qt5.14.2/5.14.2/clang_64/lib/QtCore.framework/Headers/QFileInfo \
 		../../../Qt5.14.2/5.14.2/clang_64/lib/QtCore.framework/Headers/qfileinfo.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o uniformvariable.o uniforms/uniformvariable.cpp
@@ -1799,6 +2800,29 @@ uniformwidget.o: uniforms/uniformwidget.cpp uniforms/uniformwidget.h \
 		lib/common.h \
 		../../../Qt5.14.2/5.14.2/clang_64/lib/QtCore.framework/Headers/QTimer \
 		../../../Qt5.14.2/5.14.2/clang_64/lib/QtCore.framework/Headers/qtimer.h \
+		shapes/Shape.h \
+		shapes/triangle.h \
+		shapes/ShapeComponent.h \
+		gl/datatype/VAO.h \
+		gl/datatype/VBO.h \
+		gl/datatype/VBOAttribMarker.h \
+		gl/shaders/ShaderAttribLocations.h \
+		glm/gtx/transform.hpp \
+		glm/gtc/matrix_transform.hpp \
+		glm/gtc/matrix_transform.inl \
+		glm/gtx/transform.inl \
+		glm/gtx/string_cast.hpp \
+		glm/gtx/integer.hpp \
+		glm/gtx/integer.inl \
+		glm/gtx/quaternion.hpp \
+		glm/gtc/constants.hpp \
+		glm/gtc/constants.inl \
+		glm/gtc/quaternion.hpp \
+		glm/gtc/quaternion.inl \
+		glm/gtx/norm.hpp \
+		glm/gtx/norm.inl \
+		glm/gtx/quaternion.inl \
+		glm/gtx/string_cast.inl \
 		../../../Qt5.14.2/5.14.2/clang_64/lib/QtWidgets.framework/Headers/QHBoxLayout \
 		../../../Qt5.14.2/5.14.2/clang_64/lib/QtWidgets.framework/Headers/qboxlayout.h \
 		../../../Qt5.14.2/5.14.2/clang_64/lib/QtWidgets.framework/Headers/QLineEdit \

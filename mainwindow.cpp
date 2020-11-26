@@ -74,6 +74,11 @@ void MainWindow::on_sphereButton_clicked() {
     m_glwidget->changeRenderMode(SHAPE_SPHERE);
 }
 
+
+void MainWindow::on_treeButton_clicked() {
+    m_glwidget->changeRenderMode(SHAPE_TREE);
+}
+
 void MainWindow::on_cubeButton_clicked() {
     m_glwidget->changeRenderMode(SHAPE_CUBE);
 }
