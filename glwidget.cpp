@@ -26,7 +26,8 @@ UniformVariable *GLWidget::s_mouse = NULL;
 std::vector<UniformVariable*> *GLWidget::s_staticVars = NULL;
 
 GLWidget::GLWidget(QGLFormat format, QWidget *parent)
-    : QGLWidget(format, parent), m_sphere(nullptr), m_cube(nullptr), m_shape(nullptr), skybox_cube(nullptr)
+    : QGLWidget(format, parent), m_sphere(nullptr), m_cube(nullptr), m_shape(nullptr), skybox_cube(nullptr),
+      m_tree(std::make_unique<Tree>())
 {
     camera = new OrbitingCamera();
     QObject::connect(camera, SIGNAL(viewChanged(glm::mat4)), this, SLOT(viewChanged(glm::mat4)));
@@ -295,55 +296,11 @@ void GLWidget::renderWireframe() {
 }
 void GLWidget::drawTree() {
 
-    // temporarily hardcoded here to just check rendering, the goal is to move this
-    // into tree class, where the LSystem will be parsed and create a list
-    // of mat4s that we can send to the uniform.
-
     //  Note: the wireframes won't work because it's not connected to that,
     // must choose a shader to get it working.
-    std::vector<glm::mat4> trans;
-    trans.reserve(3);
 
-    const glm::vec3 SCALE_FACTOR = glm::vec3(.5f, .8f, .5f);
-    const float ANGLE = degreesToRadians(65);
-
-    // Trunk
-
-    // Get the two children branches
-    // TODO:recursive in Tree class.
-//    glm::mat4 child1 = original;
-//    child1 = glm::scale(child1, SCALE_FACTOR);
-//    child1 = glm::translate(child1, glm::vec3(-3.f, 1.f, 0.f));
-
-//    glm::mat4 child2 = original;
-//    child2 = glm::scale(child2, SCALE_FACTOR);
-//    child2 = glm::translate(child2, glm::vec3(3.f, 1.f, 0.f));
-//    trans.insert(trans.end(), {original, child1, child2});
-
-
-    glm::mat4 original =  model;
-    glm::mat4 initScale = glm::scale(original, glm::vec3(.4f, .7f, .4f));
-    original = initScale * original;
-
-    glm::mat4 child1 = original;
-    glm::mat4 child2 = original;
-
-    glm::mat4 scale = glm::scale(original, SCALE_FACTOR);
-    glm::mat4 rotate1 = glm::rotate(-ANGLE, glm::vec3(0.f, 1.f, 1.f));
-    glm::mat4 rotate2 = glm::rotate(ANGLE, glm::vec3(0.f, 1.f, 1.f));
-
-
-    child1 =  rotate1 * scale * child1;
-    child1 = glm::translate(child1, glm::vec3(0.f, .7f, 0.f));
-
-    child2 =  rotate2 * scale * child2;
-    child2 = glm::translate(child2, glm::vec3(0.f, .7f, 0.f));
-
-
-    original = initScale * original;
-    trans.insert(trans.end(), {original, child1, child2});
-
-    // This is the only part of the function that should exist here
+    std::vector<glm::mat4> trans = m_tree->buildTree(model);
+    glm::mat4 original = model;
 
     for (int i = 0; i < static_cast<int>(trans.size()); i++) {
         model = trans[i];
@@ -352,16 +309,11 @@ void GLWidget::drawTree() {
         bindAndUpdateShader(); // needed before calling draw.
         m_shape->draw();
     }
-    model = original;
-
-
-
+    model = original; // resets model back to the init
 }
 
 void GLWidget::paintGL() {
     handleAnimation();
-
-
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     if (m_shape) {

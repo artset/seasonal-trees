@@ -7,7 +7,7 @@
 #include <QTimer>
 #include "shapes/Shape.h"
 #include "shapes/Cylinder.h"
-
+#include "tree/Tree.h"
 
 class Cube;
 
@@ -111,6 +111,7 @@ private:
     RenderType m_renderMode;
 
     bool mouseDown;
+    std::unique_ptr<Tree> m_tree;
 
 };
 
