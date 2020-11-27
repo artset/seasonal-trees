@@ -22,6 +22,7 @@ win32 {
 }
 
 SOURCES += \
+    LSystem/LSystem.cpp \
     lib/Utilities.cpp \
     main.cpp \
     glew-1.10.0/src/glew.c \
@@ -45,6 +46,7 @@ SOURCES += \
     gl/datatype/vao.cpp
 
 HEADERS += \
+    LSystem/LSystem.h \
     lib/Utilities.h \
     shapes/BarrelComponent.h \
     shapes/CircleComponent.h \
