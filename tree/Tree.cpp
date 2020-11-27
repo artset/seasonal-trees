@@ -1,5 +1,4 @@
 #include "Tree.h"
-#include "uniforms/varsfile.h"
 #include "glm/gtx/transform.hpp"
 
 Tree::Tree()
@@ -13,7 +12,7 @@ Tree::~Tree() {
 
 /// arbitrarily chosen based on appearances
 const glm::vec3 Tree::SCALE_FACTOR = glm::vec3(.5f, .8f, .5f);
-const float Tree::ANGLE = degreesToRadians(65);
+const float Tree::ANGLE = glm::radians(65.f);
 
 std::vector<glm::mat4> Tree::buildTree(const glm::mat4 &model) {
 

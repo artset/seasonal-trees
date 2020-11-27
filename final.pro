@@ -103,6 +103,7 @@ RESOURCES += \
     resources.qrc
 
 DISTFILES += \
+    README.md \
     shaders/normals/normals.vert \
     shaders/normals/normals.frag \
     shaders/normals/normals.gsh \
