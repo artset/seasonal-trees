@@ -35,15 +35,14 @@ std::vector<glm::mat4> Tree::buildTree(const glm::mat4 &model) {
     glm::mat4 child2 = original;
 
     glm::mat4 scale = glm::scale(original, Tree::SCALE_FACTOR);
-    glm::mat4 rotate1 = glm::rotate(-Tree::ANGLE, glm::vec3(0.f, 1.f, 1.f));
-    glm::mat4 rotate2 = glm::rotate(Tree::ANGLE, glm::vec3(0.f, 1.f, 1.f));
+    glm::mat4 rotate1 = glm::rotate(-Tree::ANGLE, glm::vec3(1.f, 0.f, 0.f));
+    glm::mat4 rotate2 = glm::rotate(Tree::ANGLE, glm::vec3(1.f, 0.f, 0.f));
+    glm::mat4 translate1 = glm::translate(glm::mat4(), glm::vec3(0.f, .2f, -.2f));
+    glm::mat4 translate2 = glm::translate(glm::mat4(), glm::vec3(0.f, .2f, .2f));
 
     // Two child branches.
-    child1 =  rotate1 * scale * child1;
-    child1 = glm::translate(child1, glm::vec3(0.f, .7f, 0.f));
-
-    child2 =  rotate2 * scale * child2;
-    child2 = glm::translate(child2, glm::vec3(0.f, .7f, 0.f));
+    child1 =  translate1 * rotate1 * scale * child1;
+    child2 =  translate2 * rotate2  * scale * child2;
 
     original = initScale * original;
     trans.insert(trans.end(), {original, child1, child2});
