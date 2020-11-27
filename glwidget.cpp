@@ -10,6 +10,11 @@
 #include "gl/shaders/shaderattriblocations.h"
 #include "glm/gtc/type_ptr.hpp"
 #include "glm/gtc/matrix_transform.hpp"
+#include "GL/glew.h"
+#include "glm/glm.hpp"            // glm::vec*, mat*, and basic glm functions
+#include "glm/gtx/transform.hpp"  // glm::translate, scale, rotate
+#include "glm/gtc/type_ptr.hpp" // glm::value_ptr
+
 
 UniformVariable *GLWidget::s_skybox = NULL;
 UniformVariable *GLWidget::s_projection = NULL;
@@ -197,7 +202,6 @@ void GLWidget::initializeGL() {
     std::unique_ptr<Shape> cyl = std::make_unique<Cylinder>(1, 10);
     std::vector<GLfloat> cylinderData = cyl->getData();
     m_cylinder = std::make_unique<OpenGLShape>();
-    std::cout << "cylinder size " << cylinderData.size() << std::endl;
     const int NUM_FLOATS_PER_VERTEX = 3;
 
     m_cylinder->setVertexData(&cylinderData[0], cylinderData.size(), VBO::GEOMETRY_LAYOUT::LAYOUT_TRIANGLES, cylinderData.size() / NUM_FLOATS_PER_VERTEX);
@@ -254,31 +258,72 @@ void GLWidget::handleAnimation() {
     modelviewProjectionChanged(camera->getProjectionMatrix() * camera->getModelviewMatrix());
 }
 
-void GLWidget::paintGL() {
-    handleAnimation();
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+void GLWidget::bindAndUpdateShader() {
+    if (current_shader) {
+        current_shader->bind();
 
-    skybox_shader->bind();
-    s_skybox->setValue(skybox_shader);
-    s_projection->setValue(skybox_shader);
-    s_view->setValue(skybox_shader);
-    glCullFace(GL_FRONT);
-    skybox_cube->draw();
-    glCullFace(GL_BACK);
-    skybox_shader->release();
-
-    // Geometry
-    if (m_shape) {
-
-        if (current_shader) {
-            current_shader->bind();
-
-            foreach (const UniformVariable *var, *activeUniforms) {
-                var->setValue(current_shader);
-            }
+        foreach (const UniformVariable *var, *activeUniforms) {
+            var->setValue(current_shader);
         }
+    }
+}
+
+
+void GLWidget::drawTree() {
+
+    glm::mat4 original = model;
+    std::vector<glm::mat4> trans;
+    trans.reserve(3);
+
+    original = glm::scale(original, glm::vec3(.3f, 1.f, .3f));
+
+    float angle = M_PI_4;
+    trans.push_back(original);
+//    glm::mat4 nextLevel = glm::scale(original, glm::vec3(.3f, 1.f, .3f));
+//    glm::mat4 child1 = glm::rotate(nextLevel, angle, glm::vec3(1.f, 0.f, 0.f));
+//    glm::mat4 child2 = glm::rotate(nextLevel, -angle, glm::vec3(1.f, 0.f, 0.f));
+
+    glm::mat4 child1 = glm::translate(original, glm::vec3(1.f, 0.f, 0.f));
+    glm::mat4 child2 = glm::translate(original, glm::vec3(-1.f, 0.f, 0.f));
+
+    trans.push_back(child1);
+    trans.push_back(child2);
+
+
+    for (int i = 0; i < trans.size(); i++) {
+        std::cout << glm::to_string(trans[i]) << std::endl;
+        model = trans[i];
+        modelChanged(model);
+        modelviewProjectionChanged(camera->getProjectionMatrix() * camera->getModelviewMatrix());
+
+        bindAndUpdateShader();
 
         m_shape->draw();
+    }
+
+}
+
+void GLWidget::paintGL() {
+    handleAnimation();
+
+
+
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+
+    if (m_shape) {
+
+
+        if (m_renderMode == SHAPE_TREE) {
+            m_shape->draw();
+            drawTree();
+        } else {
+            bindAndUpdateShader();
+            m_shape->draw();
+        }
+
+
+
         if (current_shader) {
             current_shader->release();
         }
@@ -307,6 +352,15 @@ void GLWidget::paintGL() {
             glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
         }
     }
+
+    skybox_shader->bind();
+    s_skybox->setValue(skybox_shader);
+    s_projection->setValue(skybox_shader);
+    s_view->setValue(skybox_shader);
+    glCullFace(GL_FRONT);
+    skybox_cube->draw();
+    glCullFace(GL_BACK);
+    skybox_shader->release();
 }
 
 void GLWidget::changeRenderMode(RenderType mode)

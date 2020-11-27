@@ -73,6 +73,9 @@ protected:
     void mouseMoveEvent(QMouseEvent *event);
     void wheelEvent(QWheelEvent *event);
 
+    void drawTree();
+    void bindAndUpdateShader();
+
 private:
     std::unique_ptr<OpenGLShape> m_sphere;
     std::unique_ptr<OpenGLShape> m_cylinder;

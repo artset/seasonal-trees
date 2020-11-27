@@ -45,15 +45,11 @@ std::vector<GLfloat> Cylinder::getData() {
     std::vector<GLfloat> data;
     data = s->getData();
 
-    std::cout << data.size() << std::endl;
     std::vector<GLfloat> s1Data = s1->getData();
     data.insert(std::end(data), std::begin(s1Data), std::end(s1Data));
 
-    std::cout << data.size() << std::endl;
-
     std::vector<GLfloat> s2Data = s2->getData();
     data.insert(std::end(data), std::begin(s2Data), std::end(s2Data));
-    std::cout << data.size() << std::endl;
 
     return data;
 

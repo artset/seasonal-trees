@@ -63,6 +63,7 @@ SOURCES       = lib/Utilities.cpp \
 		shapes/Shape.cpp \
 		shapes/ShapeComponent.cpp \
 		shapes/triangle.cpp \
+		uniforms/Tree.cpp \
 		uniforms/uniformvariable.cpp \
 		uniforms/uniformwidget.cpp \
 		camera/orbitingcamera.cpp \
@@ -88,6 +89,7 @@ OBJECTS       = Utilities.o \
 		Shape.o \
 		ShapeComponent.o \
 		triangle.o \
+		Tree.o \
 		uniformvariable.o \
 		uniformwidget.o \
 		orbitingcamera.o \
@@ -297,6 +299,7 @@ DIST          = shaders/normals/normals.vert \
 		glew-1.10.0/include/GL/glew.h \
 		glwidget.h \
 		mainwindow.h \
+		uniforms/Tree.h \
 		uniforms/uniformvariable.h \
 		lib/common.h \
 		uniforms/uniformwidget.h \
@@ -321,6 +324,7 @@ DIST          = shaders/normals/normals.vert \
 		shapes/Shape.cpp \
 		shapes/ShapeComponent.cpp \
 		shapes/triangle.cpp \
+		uniforms/Tree.cpp \
 		uniforms/uniformvariable.cpp \
 		uniforms/uniformwidget.cpp \
 		camera/orbitingcamera.cpp \
@@ -752,8 +756,8 @@ distdir: FORCE
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents resources.qrc $(DISTDIR)/
 	$(COPY_FILE) --parents ../../../Qt5.14.2/5.14.2/clang_64/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents lib/Utilities.h shapes/BarrelComponent.h shapes/CircleComponent.h shapes/Cylinder.h shapes/Shape.h shapes/ShapeComponent.h shapes/triangle.h ui_mainwindow.h glew-1.10.0/include/GL/glew.h glwidget.h mainwindow.h uniforms/uniformvariable.h lib/common.h uniforms/uniformwidget.h camera/orbitingcamera.h camera/camera.h uniforms/varsfile.h shapes/cube.h lib/resourceloader.h shapes/sphere.h shapes/openglshape.h gl/datatype/vbo.h gl/datatype/vboattribmarker.h gl/shaders/shaderattriblocations.h gl/datatype/vao.h $(DISTDIR)/
-	$(COPY_FILE) --parents lib/Utilities.cpp main.cpp glew-1.10.0/src/glew.c glwidget.cpp mainwindow.cpp shapes/BarrelComponent.cpp shapes/CircleComponent.cpp shapes/Cylinder.cpp shapes/Shape.cpp shapes/ShapeComponent.cpp shapes/triangle.cpp uniforms/uniformvariable.cpp uniforms/uniformwidget.cpp camera/orbitingcamera.cpp uniforms/varsfile.cpp lib/resourceloader.cpp gl/datatype/vbo.cpp gl/datatype/vboattribmarker.cpp shapes/openglshape.cpp gl/datatype/vao.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents lib/Utilities.h shapes/BarrelComponent.h shapes/CircleComponent.h shapes/Cylinder.h shapes/Shape.h shapes/ShapeComponent.h shapes/triangle.h ui_mainwindow.h glew-1.10.0/include/GL/glew.h glwidget.h mainwindow.h uniforms/Tree.h uniforms/uniformvariable.h lib/common.h uniforms/uniformwidget.h camera/orbitingcamera.h camera/camera.h uniforms/varsfile.h shapes/cube.h lib/resourceloader.h shapes/sphere.h shapes/openglshape.h gl/datatype/vbo.h gl/datatype/vboattribmarker.h gl/shaders/shaderattriblocations.h gl/datatype/vao.h $(DISTDIR)/
+	$(COPY_FILE) --parents lib/Utilities.cpp main.cpp glew-1.10.0/src/glew.c glwidget.cpp mainwindow.cpp shapes/BarrelComponent.cpp shapes/CircleComponent.cpp shapes/Cylinder.cpp shapes/Shape.cpp shapes/ShapeComponent.cpp shapes/triangle.cpp uniforms/Tree.cpp uniforms/uniformvariable.cpp uniforms/uniformwidget.cpp camera/orbitingcamera.cpp uniforms/varsfile.cpp lib/resourceloader.cpp gl/datatype/vbo.cpp gl/datatype/vboattribmarker.cpp shapes/openglshape.cpp gl/datatype/vao.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents ui/mainwindow.ui $(DISTDIR)/
 
 
@@ -912,10 +916,9 @@ moc_glwidget.cpp: glwidget.h \
 		shapes/Shape.h \
 		shapes/triangle.h \
 		shapes/ShapeComponent.h \
-		gl/datatype/VAO.h \
-		gl/datatype/VBO.h \
-		gl/datatype/VBOAttribMarker.h \
-		gl/shaders/ShaderAttribLocations.h \
+		lib/Utilities.h \
+		gl/datatype/vao.h \
+		gl/shaders/shaderattriblocations.h \
 		glm/gtx/transform.hpp \
 		glm/gtc/matrix_transform.hpp \
 		glm/gtc/matrix_transform.inl \
@@ -932,6 +935,9 @@ moc_glwidget.cpp: glwidget.h \
 		glm/gtx/norm.inl \
 		glm/gtx/quaternion.inl \
 		glm/gtx/string_cast.inl \
+		shapes/Cylinder.h \
+		shapes/CircleComponent.h \
+		shapes/BarrelComponent.h \
 		moc_predefs.h \
 		../../../Qt5.14.2/5.14.2/clang_64/bin/moc
 	/Users/ksang/Qt5.14.2/5.14.2/clang_64/bin/moc $(DEFINES) --include /Users/ksang/Documents/cs1230/cs123-final/moc_predefs.h -I/Users/ksang/Qt5.14.2/5.14.2/clang_64/mkspecs/macx-clang -I/Users/ksang/Documents/cs1230/cs123-final -I/Users/ksang/Documents/cs1230/cs123-final/glm -I/Users/ksang/Documents/cs1230/cs123-final/ui -I/Users/ksang/Documents/cs1230/cs123-final/glew-1.10.0/include -I/Users/ksang/Qt5.14.2/5.14.2/clang_64/lib/QtOpenGL.framework/Headers -I/Users/ksang/Qt5.14.2/5.14.2/clang_64/lib/QtWidgets.framework/Headers -I/Users/ksang/Qt5.14.2/5.14.2/clang_64/lib/QtGui.framework/Headers -I/Users/ksang/Qt5.14.2/5.14.2/clang_64/lib/QtXml.framework/Headers -I/Users/ksang/Qt5.14.2/5.14.2/clang_64/lib/QtCore.framework/Headers -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1 -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/11.0.3/include -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk/usr/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -F/Users/ksang/Qt5.14.2/5.14.2/clang_64/lib glwidget.h -o moc_glwidget.cpp
@@ -1036,10 +1042,9 @@ moc_mainwindow.cpp: mainwindow.h \
 		shapes/Shape.h \
 		shapes/triangle.h \
 		shapes/ShapeComponent.h \
-		gl/datatype/VAO.h \
-		gl/datatype/VBO.h \
-		gl/datatype/VBOAttribMarker.h \
-		gl/shaders/ShaderAttribLocations.h \
+		lib/Utilities.h \
+		gl/datatype/vao.h \
+		gl/shaders/shaderattriblocations.h \
 		glm/gtx/transform.hpp \
 		glm/gtc/matrix_transform.hpp \
 		glm/gtc/matrix_transform.inl \
@@ -1056,6 +1061,9 @@ moc_mainwindow.cpp: mainwindow.h \
 		glm/gtx/norm.inl \
 		glm/gtx/quaternion.inl \
 		glm/gtx/string_cast.inl \
+		shapes/Cylinder.h \
+		shapes/CircleComponent.h \
+		shapes/BarrelComponent.h \
 		moc_predefs.h \
 		../../../Qt5.14.2/5.14.2/clang_64/bin/moc
 	/Users/ksang/Qt5.14.2/5.14.2/clang_64/bin/moc $(DEFINES) --include /Users/ksang/Documents/cs1230/cs123-final/moc_predefs.h -I/Users/ksang/Qt5.14.2/5.14.2/clang_64/mkspecs/macx-clang -I/Users/ksang/Documents/cs1230/cs123-final -I/Users/ksang/Documents/cs1230/cs123-final/glm -I/Users/ksang/Documents/cs1230/cs123-final/ui -I/Users/ksang/Documents/cs1230/cs123-final/glew-1.10.0/include -I/Users/ksang/Qt5.14.2/5.14.2/clang_64/lib/QtOpenGL.framework/Headers -I/Users/ksang/Qt5.14.2/5.14.2/clang_64/lib/QtWidgets.framework/Headers -I/Users/ksang/Qt5.14.2/5.14.2/clang_64/lib/QtGui.framework/Headers -I/Users/ksang/Qt5.14.2/5.14.2/clang_64/lib/QtXml.framework/Headers -I/Users/ksang/Qt5.14.2/5.14.2/clang_64/lib/QtCore.framework/Headers -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1 -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/11.0.3/include -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk/usr/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -F/Users/ksang/Qt5.14.2/5.14.2/clang_64/lib mainwindow.h -o moc_mainwindow.cpp
@@ -1158,10 +1166,9 @@ moc_uniformwidget.cpp: uniforms/uniformwidget.h \
 		shapes/Shape.h \
 		shapes/triangle.h \
 		shapes/ShapeComponent.h \
-		gl/datatype/VAO.h \
-		gl/datatype/VBO.h \
-		gl/datatype/VBOAttribMarker.h \
-		gl/shaders/ShaderAttribLocations.h \
+		lib/Utilities.h \
+		gl/datatype/vao.h \
+		gl/shaders/shaderattriblocations.h \
 		glm/gtx/transform.hpp \
 		glm/gtc/matrix_transform.hpp \
 		glm/gtc/matrix_transform.inl \
@@ -1178,6 +1185,9 @@ moc_uniformwidget.cpp: uniforms/uniformwidget.h \
 		glm/gtx/norm.inl \
 		glm/gtx/quaternion.inl \
 		glm/gtx/string_cast.inl \
+		shapes/Cylinder.h \
+		shapes/CircleComponent.h \
+		shapes/BarrelComponent.h \
 		moc_predefs.h \
 		../../../Qt5.14.2/5.14.2/clang_64/bin/moc
 	/Users/ksang/Qt5.14.2/5.14.2/clang_64/bin/moc $(DEFINES) --include /Users/ksang/Documents/cs1230/cs123-final/moc_predefs.h -I/Users/ksang/Qt5.14.2/5.14.2/clang_64/mkspecs/macx-clang -I/Users/ksang/Documents/cs1230/cs123-final -I/Users/ksang/Documents/cs1230/cs123-final/glm -I/Users/ksang/Documents/cs1230/cs123-final/ui -I/Users/ksang/Documents/cs1230/cs123-final/glew-1.10.0/include -I/Users/ksang/Qt5.14.2/5.14.2/clang_64/lib/QtOpenGL.framework/Headers -I/Users/ksang/Qt5.14.2/5.14.2/clang_64/lib/QtWidgets.framework/Headers -I/Users/ksang/Qt5.14.2/5.14.2/clang_64/lib/QtGui.framework/Headers -I/Users/ksang/Qt5.14.2/5.14.2/clang_64/lib/QtXml.framework/Headers -I/Users/ksang/Qt5.14.2/5.14.2/clang_64/lib/QtCore.framework/Headers -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1 -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/11.0.3/include -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk/usr/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -F/Users/ksang/Qt5.14.2/5.14.2/clang_64/lib uniforms/uniformwidget.h -o moc_uniformwidget.cpp
@@ -1693,10 +1703,9 @@ main.o: main.cpp ../../../Qt5.14.2/5.14.2/clang_64/lib/QtWidgets.framework/Heade
 		shapes/Shape.h \
 		shapes/triangle.h \
 		shapes/ShapeComponent.h \
-		gl/datatype/VAO.h \
-		gl/datatype/VBO.h \
-		gl/datatype/VBOAttribMarker.h \
-		gl/shaders/ShaderAttribLocations.h \
+		lib/Utilities.h \
+		gl/datatype/vao.h \
+		gl/shaders/shaderattriblocations.h \
 		glm/gtx/transform.hpp \
 		glm/gtc/matrix_transform.hpp \
 		glm/gtc/matrix_transform.inl \
@@ -1712,7 +1721,10 @@ main.o: main.cpp ../../../Qt5.14.2/5.14.2/clang_64/lib/QtWidgets.framework/Heade
 		glm/gtx/norm.hpp \
 		glm/gtx/norm.inl \
 		glm/gtx/quaternion.inl \
-		glm/gtx/string_cast.inl
+		glm/gtx/string_cast.inl \
+		shapes/Cylinder.h \
+		shapes/CircleComponent.h \
+		shapes/BarrelComponent.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o main.cpp
 
 glew.o: glew-1.10.0/src/glew.c glew-1.10.0/include/GL/glew.h \
@@ -1817,10 +1829,9 @@ glwidget.o: glwidget.cpp glwidget.h \
 		shapes/Shape.h \
 		shapes/triangle.h \
 		shapes/ShapeComponent.h \
-		gl/datatype/VAO.h \
-		gl/datatype/VBO.h \
-		gl/datatype/VBOAttribMarker.h \
-		gl/shaders/ShaderAttribLocations.h \
+		lib/Utilities.h \
+		gl/datatype/vao.h \
+		gl/shaders/shaderattriblocations.h \
 		glm/gtx/transform.hpp \
 		glm/gtc/matrix_transform.hpp \
 		glm/gtc/matrix_transform.inl \
@@ -1837,6 +1848,9 @@ glwidget.o: glwidget.cpp glwidget.h \
 		glm/gtx/norm.inl \
 		glm/gtx/quaternion.inl \
 		glm/gtx/string_cast.inl \
+		shapes/Cylinder.h \
+		shapes/CircleComponent.h \
+		shapes/BarrelComponent.h \
 		../../../Qt5.14.2/5.14.2/clang_64/lib/QtGui.framework/Headers/QMouseEvent \
 		../../../Qt5.14.2/5.14.2/clang_64/lib/QtGui.framework/Headers/qevent.h \
 		shapes/sphere.h \
@@ -1850,7 +1864,6 @@ glwidget.o: glwidget.cpp glwidget.h \
 		../../../Qt5.14.2/5.14.2/clang_64/lib/QtCore.framework/Headers/qlist.h \
 		../../../Qt5.14.2/5.14.2/clang_64/lib/QtCore.framework/Headers/QString \
 		../../../Qt5.14.2/5.14.2/clang_64/lib/QtCore.framework/Headers/qstring.h \
-		gl/shaders/shaderattriblocations.h \
 		glm/gtc/type_ptr.hpp \
 		glm/gtc/type_ptr.inl
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o glwidget.o glwidget.cpp
@@ -1955,10 +1968,9 @@ mainwindow.o: mainwindow.cpp mainwindow.h \
 		shapes/Shape.h \
 		shapes/triangle.h \
 		shapes/ShapeComponent.h \
-		gl/datatype/VAO.h \
-		gl/datatype/VBO.h \
-		gl/datatype/VBOAttribMarker.h \
-		gl/shaders/ShaderAttribLocations.h \
+		lib/Utilities.h \
+		gl/datatype/vao.h \
+		gl/shaders/shaderattriblocations.h \
 		glm/gtx/transform.hpp \
 		glm/gtc/matrix_transform.hpp \
 		glm/gtc/matrix_transform.inl \
@@ -1975,6 +1987,9 @@ mainwindow.o: mainwindow.cpp mainwindow.h \
 		glm/gtx/norm.inl \
 		glm/gtx/quaternion.inl \
 		glm/gtx/string_cast.inl \
+		shapes/Cylinder.h \
+		shapes/CircleComponent.h \
+		shapes/BarrelComponent.h \
 		ui_mainwindow.h \
 		uniforms/uniformwidget.h \
 		../../../Qt5.14.2/5.14.2/clang_64/lib/QtWidgets.framework/Headers/QMessageBox \
@@ -2068,11 +2083,12 @@ BarrelComponent.o: shapes/BarrelComponent.cpp shapes/BarrelComponent.h \
 		glm/detail/func_integer.hpp \
 		glm/detail/func_integer.inl \
 		glew-1.10.0/include/GL/glew.h \
+		lib/Utilities.h \
 		shapes/triangle.h \
-		gl/datatype/VAO.h \
-		gl/datatype/VBO.h \
-		gl/datatype/VBOAttribMarker.h \
-		gl/shaders/ShaderAttribLocations.h \
+		gl/datatype/vao.h \
+		gl/datatype/vbo.h \
+		gl/datatype/vboattribmarker.h \
+		gl/shaders/shaderattriblocations.h \
 		glm/gtx/transform.hpp \
 		glm/gtc/matrix_transform.hpp \
 		glm/gtc/matrix_transform.inl \
@@ -2170,11 +2186,12 @@ CircleComponent.o: shapes/CircleComponent.cpp shapes/CircleComponent.h \
 		glm/detail/func_integer.hpp \
 		glm/detail/func_integer.inl \
 		glew-1.10.0/include/GL/glew.h \
+		lib/Utilities.h \
 		shapes/triangle.h \
-		gl/datatype/VAO.h \
-		gl/datatype/VBO.h \
-		gl/datatype/VBOAttribMarker.h \
-		gl/shaders/ShaderAttribLocations.h \
+		gl/datatype/vao.h \
+		gl/datatype/vbo.h \
+		gl/datatype/vboattribmarker.h \
+		gl/shaders/shaderattriblocations.h \
 		glm/gtx/transform.hpp \
 		glm/gtc/matrix_transform.hpp \
 		glm/gtc/matrix_transform.inl \
@@ -2274,10 +2291,11 @@ Cylinder.o: shapes/Cylinder.cpp shapes/Cylinder.h \
 		glew-1.10.0/include/GL/glew.h \
 		shapes/triangle.h \
 		shapes/ShapeComponent.h \
-		gl/datatype/VAO.h \
-		gl/datatype/VBO.h \
-		gl/datatype/VBOAttribMarker.h \
-		gl/shaders/ShaderAttribLocations.h \
+		lib/Utilities.h \
+		gl/datatype/vao.h \
+		gl/datatype/vbo.h \
+		gl/datatype/vboattribmarker.h \
+		gl/shaders/shaderattriblocations.h \
 		glm/gtx/transform.hpp \
 		glm/gtc/matrix_transform.hpp \
 		glm/gtc/matrix_transform.inl \
@@ -2378,10 +2396,11 @@ Shape.o: shapes/Shape.cpp shapes/Shape.h \
 		glew-1.10.0/include/GL/glew.h \
 		shapes/triangle.h \
 		shapes/ShapeComponent.h \
-		gl/datatype/VAO.h \
-		gl/datatype/VBO.h \
-		gl/datatype/VBOAttribMarker.h \
-		gl/shaders/ShaderAttribLocations.h \
+		lib/Utilities.h \
+		gl/datatype/vao.h \
+		gl/datatype/vbo.h \
+		gl/datatype/vboattribmarker.h \
+		gl/shaders/shaderattriblocations.h \
 		glm/gtx/transform.hpp \
 		glm/gtc/matrix_transform.hpp \
 		glm/gtc/matrix_transform.inl \
@@ -2478,11 +2497,12 @@ ShapeComponent.o: shapes/ShapeComponent.cpp shapes/ShapeComponent.h \
 		glm/detail/func_integer.hpp \
 		glm/detail/func_integer.inl \
 		glew-1.10.0/include/GL/glew.h \
+		lib/Utilities.h \
 		shapes/triangle.h \
-		gl/datatype/VAO.h \
-		gl/datatype/VBO.h \
-		gl/datatype/VBOAttribMarker.h \
-		gl/shaders/ShaderAttribLocations.h \
+		gl/datatype/vao.h \
+		gl/datatype/vbo.h \
+		gl/datatype/vboattribmarker.h \
+		gl/shaders/shaderattriblocations.h \
 		glm/gtx/transform.hpp \
 		glm/gtc/matrix_transform.hpp \
 		glm/gtc/matrix_transform.inl \
@@ -2500,8 +2520,7 @@ ShapeComponent.o: shapes/ShapeComponent.cpp shapes/ShapeComponent.h \
 		glm/gtx/quaternion.inl \
 		glm/gtx/string_cast.inl \
 		glm/gtc/type_ptr.hpp \
-		glm/gtc/type_ptr.inl \
-		lib/Utilities.h
+		glm/gtc/type_ptr.inl
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ShapeComponent.o shapes/ShapeComponent.cpp
 
 triangle.o: shapes/triangle.cpp shapes/triangle.h \
@@ -2583,6 +2602,9 @@ triangle.o: shapes/triangle.cpp shapes/triangle.h \
 		glm/detail/func_integer.inl \
 		glew-1.10.0/include/GL/glew.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o triangle.o shapes/triangle.cpp
+
+Tree.o: uniforms/Tree.cpp uniforms/Tree.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o Tree.o uniforms/Tree.cpp
 
 uniformvariable.o: uniforms/uniformvariable.cpp uniforms/uniformvariable.h \
 		glew-1.10.0/include/GL/glew.h \
@@ -2681,10 +2703,9 @@ uniformvariable.o: uniforms/uniformvariable.cpp uniforms/uniformvariable.h \
 		shapes/Shape.h \
 		shapes/triangle.h \
 		shapes/ShapeComponent.h \
-		gl/datatype/VAO.h \
-		gl/datatype/VBO.h \
-		gl/datatype/VBOAttribMarker.h \
-		gl/shaders/ShaderAttribLocations.h \
+		lib/Utilities.h \
+		gl/datatype/vao.h \
+		gl/shaders/shaderattriblocations.h \
 		glm/gtx/transform.hpp \
 		glm/gtc/matrix_transform.hpp \
 		glm/gtc/matrix_transform.inl \
@@ -2701,6 +2722,9 @@ uniformvariable.o: uniforms/uniformvariable.cpp uniforms/uniformvariable.h \
 		glm/gtx/norm.inl \
 		glm/gtx/quaternion.inl \
 		glm/gtx/string_cast.inl \
+		shapes/Cylinder.h \
+		shapes/CircleComponent.h \
+		shapes/BarrelComponent.h \
 		../../../Qt5.14.2/5.14.2/clang_64/lib/QtCore.framework/Headers/QFileInfo \
 		../../../Qt5.14.2/5.14.2/clang_64/lib/QtCore.framework/Headers/qfileinfo.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o uniformvariable.o uniforms/uniformvariable.cpp
@@ -2803,10 +2827,9 @@ uniformwidget.o: uniforms/uniformwidget.cpp uniforms/uniformwidget.h \
 		shapes/Shape.h \
 		shapes/triangle.h \
 		shapes/ShapeComponent.h \
-		gl/datatype/VAO.h \
-		gl/datatype/VBO.h \
-		gl/datatype/VBOAttribMarker.h \
-		gl/shaders/ShaderAttribLocations.h \
+		lib/Utilities.h \
+		gl/datatype/vao.h \
+		gl/shaders/shaderattriblocations.h \
 		glm/gtx/transform.hpp \
 		glm/gtc/matrix_transform.hpp \
 		glm/gtc/matrix_transform.inl \
@@ -2823,6 +2846,9 @@ uniformwidget.o: uniforms/uniformwidget.cpp uniforms/uniformwidget.h \
 		glm/gtx/norm.inl \
 		glm/gtx/quaternion.inl \
 		glm/gtx/string_cast.inl \
+		shapes/Cylinder.h \
+		shapes/CircleComponent.h \
+		shapes/BarrelComponent.h \
 		../../../Qt5.14.2/5.14.2/clang_64/lib/QtWidgets.framework/Headers/QHBoxLayout \
 		../../../Qt5.14.2/5.14.2/clang_64/lib/QtWidgets.framework/Headers/qboxlayout.h \
 		../../../Qt5.14.2/5.14.2/clang_64/lib/QtWidgets.framework/Headers/QLineEdit \

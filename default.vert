@@ -7,6 +7,7 @@ out vec3 fragPos;
 
 uniform mat4 mvp;
 uniform mat4 model;
+uniform mat4 trans;
 
 void main(void) {
     fragPos = (model * vec4(position, 1)).xyz;
