@@ -75,6 +75,7 @@ protected:
 
     void drawTree();
     void bindAndUpdateShader();
+    void renderWireframe();
 
 private:
     std::unique_ptr<OpenGLShape> m_sphere;

@@ -10,7 +10,6 @@
 #include "gl/shaders/shaderattriblocations.h"
 #include "glm/gtc/type_ptr.hpp"
 #include "glm/gtc/matrix_transform.hpp"
-#include "GL/glew.h"
 #include "glm/glm.hpp"            // glm::vec*, mat*, and basic glm functions
 #include "glm/gtx/transform.hpp"  // glm::translate, scale, rotate
 #include "glm/gtc/type_ptr.hpp" // glm::value_ptr
@@ -268,7 +267,32 @@ void GLWidget::bindAndUpdateShader() {
     }
 }
 
+void GLWidget::renderWireframe() {
+    if (drawWireframe) {
+        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+        switch(wireframeMode) {
+        case WIREFRAME_NORMAL:
+            wireframe_shader->bind();
+            s_mvp->setValue(wireframe_shader);
+            wireframe_shader->setUniformValue("color", 0, 0, 0, 1);
 
+            m_shape->draw();
+            wireframe_shader->release();
+            break;
+        case WIREFRAME_VERT:
+            wireframe_shader2->bind();
+            foreach (const UniformVariable *var, *activeUniforms) {
+                var->setValue(wireframe_shader2);
+            }
+            wireframe_shader2->setUniformValue("color", 0, 0, 0, 1);
+            m_shape->draw();
+            wireframe_shader2->release();
+            break;
+        }
+
+        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+    }
+}
 void GLWidget::drawTree() {
 
     // temporarily hardcoded here to just check rendering, the goal is to move this
@@ -277,25 +301,46 @@ void GLWidget::drawTree() {
 
     //  Note: the wireframes won't work because it's not connected to that,
     // must choose a shader to get it working.
-    glm::mat4 original = model;
     std::vector<glm::mat4> trans;
     trans.reserve(3);
 
-    const glm::vec3 SCALE_FACTOR = glm::vec3(.4f, .8f, .4f);
-    const float ANGLE = degreesToRadians(45);
+    const glm::vec3 SCALE_FACTOR = glm::vec3(.5f, .8f, .5f);
+    const float ANGLE = degreesToRadians(65);
 
-    original = glm::scale(original, SCALE_FACTOR);
+    // Trunk
 
     // Get the two children branches
     // TODO:recursive in Tree class.
-    glm::mat4 child1 = original;
-    child1 = glm::scale(child1, SCALE_FACTOR);
-//    child1 = glm::rotate(child1, ANGLE, glm::vec3(0.f, 0.f, 1.f));
-    child1 = glm::translate(child1, glm::vec3(-3.f, 1.f, 0.f));
+//    glm::mat4 child1 = original;
+//    child1 = glm::scale(child1, SCALE_FACTOR);
+//    child1 = glm::translate(child1, glm::vec3(-3.f, 1.f, 0.f));
 
+//    glm::mat4 child2 = original;
+//    child2 = glm::scale(child2, SCALE_FACTOR);
+//    child2 = glm::translate(child2, glm::vec3(3.f, 1.f, 0.f));
+//    trans.insert(trans.end(), {original, child1, child2});
+
+
+    glm::mat4 original =  model;
+    glm::mat4 initScale = glm::scale(original, glm::vec3(.4f, .7f, .4f));
+    original = initScale * original;
+
+    glm::mat4 child1 = original;
     glm::mat4 child2 = original;
-    child2 = glm::scale(child2, SCALE_FACTOR);
-    child2 = glm::translate(child2, glm::vec3(3.f, 1.f, 0.f));
+
+    glm::mat4 scale = glm::scale(original, SCALE_FACTOR);
+    glm::mat4 rotate1 = glm::rotate(-ANGLE, glm::vec3(0.f, 1.f, 1.f));
+    glm::mat4 rotate2 = glm::rotate(ANGLE, glm::vec3(0.f, 1.f, 1.f));
+
+
+    child1 =  rotate1 * scale * child1;
+    child1 = glm::translate(child1, glm::vec3(0.f, .7f, 0.f));
+
+    child2 =  rotate2 * scale * child2;
+    child2 = glm::translate(child2, glm::vec3(0.f, .7f, 0.f));
+
+
+    original = initScale * original;
     trans.insert(trans.end(), {original, child1, child2});
 
     // This is the only part of the function that should exist here
@@ -307,6 +352,7 @@ void GLWidget::drawTree() {
         bindAndUpdateShader(); // needed before calling draw.
         m_shape->draw();
     }
+    model = original;
 
 
 
@@ -316,13 +362,9 @@ void GLWidget::paintGL() {
     handleAnimation();
 
 
-
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-
     if (m_shape) {
-
-
         if (m_renderMode == SHAPE_TREE) {
             drawTree();
         } else {
@@ -334,29 +376,7 @@ void GLWidget::paintGL() {
             current_shader->release();
         }
 
-        if (drawWireframe) {
-            glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-            switch(wireframeMode) {
-            case WIREFRAME_NORMAL:
-                wireframe_shader->bind();
-                s_mvp->setValue(wireframe_shader);
-                wireframe_shader->setUniformValue("color", 0, 0, 0, 1);
-                m_shape->draw();
-                wireframe_shader->release();
-                break;
-            case WIREFRAME_VERT:
-                wireframe_shader2->bind();
-                foreach (const UniformVariable *var, *activeUniforms) {
-                    var->setValue(wireframe_shader2);
-                }
-                wireframe_shader2->setUniformValue("color", 0, 0, 0, 1);
-                m_shape->draw();
-                wireframe_shader2->release();
-                break;
-            }
-
-            glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-        }
+        renderWireframe();
     }
 
     skybox_shader->bind();
