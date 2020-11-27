@@ -258,10 +258,10 @@ void GLWidget::handleAnimation() {
     modelviewProjectionChanged(camera->getProjectionMatrix() * camera->getModelviewMatrix());
 }
 
+// Refactored out of the paintGL class for flexibility
 void GLWidget::bindAndUpdateShader() {
     if (current_shader) {
         current_shader->bind();
-
         foreach (const UniformVariable *var, *activeUniforms) {
             var->setValue(current_shader);
         }
@@ -271,35 +271,44 @@ void GLWidget::bindAndUpdateShader() {
 
 void GLWidget::drawTree() {
 
+    // temporarily hardcoded here to just check rendering, the goal is to move this
+    // into tree class, where the LSystem will be parsed and create a list
+    // of mat4s that we can send to the uniform.
+
+    //  Note: the wireframes won't work because it's not connected to that,
+    // must choose a shader to get it working.
     glm::mat4 original = model;
     std::vector<glm::mat4> trans;
     trans.reserve(3);
 
-    original = glm::scale(original, glm::vec3(.3f, 1.f, .3f));
+    const glm::vec3 SCALE_FACTOR = glm::vec3(.4f, .8f, .4f);
+    const float ANGLE = degreesToRadians(45);
 
-    float angle = M_PI_4;
-    trans.push_back(original);
-//    glm::mat4 nextLevel = glm::scale(original, glm::vec3(.3f, 1.f, .3f));
-//    glm::mat4 child1 = glm::rotate(nextLevel, angle, glm::vec3(1.f, 0.f, 0.f));
-//    glm::mat4 child2 = glm::rotate(nextLevel, -angle, glm::vec3(1.f, 0.f, 0.f));
+    original = glm::scale(original, SCALE_FACTOR);
 
-    glm::mat4 child1 = glm::translate(original, glm::vec3(1.f, 0.f, 0.f));
-    glm::mat4 child2 = glm::translate(original, glm::vec3(-1.f, 0.f, 0.f));
+    // Get the two children branches
+    // TODO:recursive in Tree class.
+    glm::mat4 child1 = original;
+    child1 = glm::scale(child1, SCALE_FACTOR);
+//    child1 = glm::rotate(child1, ANGLE, glm::vec3(0.f, 0.f, 1.f));
+    child1 = glm::translate(child1, glm::vec3(-3.f, 1.f, 0.f));
 
-    trans.push_back(child1);
-    trans.push_back(child2);
+    glm::mat4 child2 = original;
+    child2 = glm::scale(child2, SCALE_FACTOR);
+    child2 = glm::translate(child2, glm::vec3(3.f, 1.f, 0.f));
+    trans.insert(trans.end(), {original, child1, child2});
 
+    // This is the only part of the function that should exist here
 
-    for (int i = 0; i < trans.size(); i++) {
-        std::cout << glm::to_string(trans[i]) << std::endl;
+    for (int i = 0; i < static_cast<int>(trans.size()); i++) {
         model = trans[i];
         modelChanged(model);
         modelviewProjectionChanged(camera->getProjectionMatrix() * camera->getModelviewMatrix());
-
-        bindAndUpdateShader();
-
+        bindAndUpdateShader(); // needed before calling draw.
         m_shape->draw();
     }
+
+
 
 }
 
@@ -315,14 +324,11 @@ void GLWidget::paintGL() {
 
 
         if (m_renderMode == SHAPE_TREE) {
-            m_shape->draw();
             drawTree();
         } else {
             bindAndUpdateShader();
             m_shape->draw();
         }
-
-
 
         if (current_shader) {
             current_shader->release();
