@@ -182,21 +182,21 @@ void GLWidget::initializeGL() {
     const int NUM_FLOATS_PER_VERTEX = 3;
 
 
-//    std::unique_ptr<Shape> test = std::make_unique<RoundedCylinder>(7, 7);
-//    std::vector<GLfloat> testData = test->getData();
-//    m_sphere = std::make_unique<OpenGLShape>();
-//    m_sphere->setVertexData(&testData[0], testData.size(), VBO::GEOMETRY_LAYOUT::LAYOUT_TRIANGLES, testData.size());
-//    m_sphere->setAttribute(ShaderAttrib::POSITION, 3, 0, VBOAttribMarker::DATA_TYPE::FLOAT, false);
-//    m_sphere->setAttribute(ShaderAttrib::NORMAL, 3, 3*sizeof(GLfloat), VBOAttribMarker::DATA_TYPE::FLOAT, false);
-//    m_sphere->buildVAO();
-
-    std::unique_ptr<Shape> sphere = std::make_unique<Sphere>(7, 7);
-    std::vector<GLfloat> sphereData = sphere->getData();
+    std::unique_ptr<Shape> test = std::make_unique<RoundedCylinder>(7, 7);
+    std::vector<GLfloat> testData = test->getData();
     m_sphere = std::make_unique<OpenGLShape>();
-    m_sphere->setVertexData(&sphereData[0], sphereData.size(), VBO::GEOMETRY_LAYOUT::LAYOUT_TRIANGLES, sphereData.size());
+    m_sphere->setVertexData(&testData[0], testData.size(), VBO::GEOMETRY_LAYOUT::LAYOUT_TRIANGLES, testData.size());
     m_sphere->setAttribute(ShaderAttrib::POSITION, 3, 0, VBOAttribMarker::DATA_TYPE::FLOAT, false);
     m_sphere->setAttribute(ShaderAttrib::NORMAL, 3, 3*sizeof(GLfloat), VBOAttribMarker::DATA_TYPE::FLOAT, false);
     m_sphere->buildVAO();
+
+//    std::unique_ptr<Shape> sphere = std::make_unique<Sphere>(7, 7);
+//    std::vector<GLfloat> sphereData = sphere->getData();
+//    m_sphere = std::make_unique<OpenGLShape>();
+//    m_sphere->setVertexData(&sphereData[0], sphereData.size(), VBO::GEOMETRY_LAYOUT::LAYOUT_TRIANGLES, sphereData.size());
+//    m_sphere->setAttribute(ShaderAttrib::POSITION, 3, 0, VBOAttribMarker::DATA_TYPE::FLOAT, false);
+//    m_sphere->setAttribute(ShaderAttrib::NORMAL, 3, 3*sizeof(GLfloat), VBOAttribMarker::DATA_TYPE::FLOAT, false);
+//    m_sphere->buildVAO();
 
     std::vector<GLfloat> cubeData = CUBE_DATA_POSITIONS;
     m_cube = std::make_unique<OpenGLShape>();

@@ -29,6 +29,8 @@ std::vector<GLfloat> RoundedCylinder::getData() {
         0.0f, 0.0f, 0.0f, 1.0f
     };
 
+    glm::mat4 sphereScale = glm::scale(glm::mat4(), glm::vec3(1.f, .2f, 1.f));
+
     glm::mat4 sphereTrans = glm::translate(glm::mat4(), glm::vec3(0.f, .5f, 0.f));
 
     m_components.clear();
@@ -45,7 +47,7 @@ std::vector<GLfloat> RoundedCylinder::getData() {
 
     std::unique_ptr<ShapeComponent> s1 =
         std::make_unique<SphereComponent>(
-            m_param1, m_param2, sphereTrans * glm::mat4(1.f)
+            m_param1, m_param2, sphereTrans * sphereScale * glm::mat4(1.f)
         );
 
     std::unique_ptr<ShapeComponent> s2 =
