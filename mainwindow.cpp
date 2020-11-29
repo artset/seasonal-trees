@@ -4,6 +4,8 @@
 
 #include <QMessageBox>
 #include <QSettings>
+#include "Databinding.h"
+#include "Settings.h"
 
 #include <iostream>
 #include <QFileInfo>
@@ -26,6 +28,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->verticalLayout_2->addWidget(m_glwidget);
     m_oldVert = QString("");
     m_oldFrag = QString("");
+
+    dataBind();
 
     // Restore the UI settings
     QSettings qtSettings("CS123", "Lab10");
@@ -258,4 +262,20 @@ void MainWindow::on_shader2Button_clicked()
 void MainWindow::on_checkBox_toggled(bool checked)
 {
     m_glwidget->setWireframeMode(checked ? WIREFRAME_VERT : WIREFRAME_NORMAL);
+}
+
+void MainWindow::dataBind(){
+#define BIND(b) { \
+    DataBinding *_b = (b); \
+    m_bindings.push_back(_b); \
+    assert(connect(_b, SIGNAL(dataChanged()), this, SLOT(settingsChanged()))); \
+}
+
+    BIND(IntBinding::bindSliderAndTextbox(
+        ui->recursionSlider, ui->recursionsTextbox, settings.recursions, 0, 10))
+
+}
+
+void MainWindow::settingsChanged(){
+
 }

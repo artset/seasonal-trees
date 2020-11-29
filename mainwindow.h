@@ -4,6 +4,8 @@
 #include <QMainWindow>
 #include <glwidget.h>
 
+class DataBinding;
+
 namespace Ui {
 class MainWindow;
 }
@@ -64,6 +66,7 @@ public slots:
     void changeUniform(const QString &name, const QString &newVal);
     void addUniform(UniformVariable::Type type, const QString &name, bool editable = false, int size = 1);
     void addUniform(UniformVariable *uniform, bool editable = false);
+    void settingsChanged();
 
 protected:
     void closeEvent(QCloseEvent *e);
@@ -78,6 +81,9 @@ private:
 
     QWidget *m_uniformContainer;
     QBoxLayout *m_uniformLayout;
+
+    void dataBind();
+    QList<DataBinding*> m_bindings;
 };
 
 #endif // MAINWINDOW_H
