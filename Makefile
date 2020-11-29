@@ -70,6 +70,8 @@ SOURCES       = LSystem/LSystem.cpp \
 		shapes/SphereComponent.cpp \
 		shapes/triangle.cpp \
 		tree/Tree.cpp \
+		ui/Databinding.cpp \
+		ui/Settings.cpp \
 		uniforms/uniformvariable.cpp \
 		uniforms/uniformwidget.cpp \
 		camera/orbitingcamera.cpp \
@@ -79,6 +81,7 @@ SOURCES       = LSystem/LSystem.cpp \
 		gl/datatype/vboattribmarker.cpp \
 		shapes/openglshape.cpp \
 		gl/datatype/vao.cpp qrc_resources.cpp \
+		moc_Databinding.cpp \
 		moc_glwidget.cpp \
 		moc_mainwindow.cpp \
 		moc_uniformwidget.cpp \
@@ -102,6 +105,8 @@ OBJECTS       = LSystem.o \
 		SphereComponent.o \
 		triangle.o \
 		Tree.o \
+		Databinding.o \
+		Settings.o \
 		uniformvariable.o \
 		uniformwidget.o \
 		orbitingcamera.o \
@@ -112,6 +117,7 @@ OBJECTS       = LSystem.o \
 		openglshape.o \
 		vao.o \
 		qrc_resources.o \
+		moc_Databinding.o \
 		moc_glwidget.o \
 		moc_mainwindow.o \
 		moc_uniformwidget.o \
@@ -315,6 +321,8 @@ DIST          = README.md \
 		shapes/SphereComponent.h \
 		shapes/triangle.h \
 		tree/Tree.h \
+		ui/Databinding.h \
+		ui/Settings.h \
 		ui_mainwindow.h \
 		glew-1.10.0/include/GL/glew.h \
 		glwidget.h \
@@ -350,6 +358,8 @@ DIST          = README.md \
 		shapes/SphereComponent.cpp \
 		shapes/triangle.cpp \
 		tree/Tree.cpp \
+		ui/Databinding.cpp \
+		ui/Settings.cpp \
 		uniforms/uniformvariable.cpp \
 		uniforms/uniformwidget.cpp \
 		camera/orbitingcamera.cpp \
@@ -781,8 +791,8 @@ distdir: FORCE
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents resources.qrc $(DISTDIR)/
 	$(COPY_FILE) --parents ../../../Qt5.14.2/5.14.2/clang_64/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents LSystem/LSystem.h lib/Utilities.h shapes/BarrelComponent.h shapes/CircleComponent.h shapes/Cone.h shapes/ConeComponent.h shapes/Cylinder.h shapes/RoundedCylinder.h shapes/Shape.h shapes/ShapeComponent.h shapes/Sphere.h shapes/SphereComponent.h shapes/triangle.h tree/Tree.h ui_mainwindow.h glew-1.10.0/include/GL/glew.h glwidget.h mainwindow.h uniforms/uniformvariable.h lib/common.h uniforms/uniformwidget.h camera/orbitingcamera.h camera/camera.h uniforms/varsfile.h shapes/cube.h lib/resourceloader.h shapes/sphere.h shapes/openglshape.h gl/datatype/vbo.h gl/datatype/vboattribmarker.h gl/shaders/shaderattriblocations.h gl/datatype/vao.h $(DISTDIR)/
-	$(COPY_FILE) --parents LSystem/LSystem.cpp lib/Utilities.cpp main.cpp glew-1.10.0/src/glew.c glwidget.cpp mainwindow.cpp shapes/BarrelComponent.cpp shapes/CircleComponent.cpp shapes/Cone.cpp shapes/ConeComponent.cpp shapes/Cylinder.cpp shapes/RoundedCylinder.cpp shapes/Shape.cpp shapes/ShapeComponent.cpp shapes/Sphere.cpp shapes/SphereComponent.cpp shapes/triangle.cpp tree/Tree.cpp uniforms/uniformvariable.cpp uniforms/uniformwidget.cpp camera/orbitingcamera.cpp uniforms/varsfile.cpp lib/resourceloader.cpp gl/datatype/vbo.cpp gl/datatype/vboattribmarker.cpp shapes/openglshape.cpp gl/datatype/vao.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents LSystem/LSystem.h lib/Utilities.h shapes/BarrelComponent.h shapes/CircleComponent.h shapes/Cone.h shapes/ConeComponent.h shapes/Cylinder.h shapes/RoundedCylinder.h shapes/Shape.h shapes/ShapeComponent.h shapes/Sphere.h shapes/SphereComponent.h shapes/triangle.h tree/Tree.h ui/Databinding.h ui/Settings.h ui_mainwindow.h glew-1.10.0/include/GL/glew.h glwidget.h mainwindow.h uniforms/uniformvariable.h lib/common.h uniforms/uniformwidget.h camera/orbitingcamera.h camera/camera.h uniforms/varsfile.h shapes/cube.h lib/resourceloader.h shapes/sphere.h shapes/openglshape.h gl/datatype/vbo.h gl/datatype/vboattribmarker.h gl/shaders/shaderattriblocations.h gl/datatype/vao.h $(DISTDIR)/
+	$(COPY_FILE) --parents LSystem/LSystem.cpp lib/Utilities.cpp main.cpp glew-1.10.0/src/glew.c glwidget.cpp mainwindow.cpp shapes/BarrelComponent.cpp shapes/CircleComponent.cpp shapes/Cone.cpp shapes/ConeComponent.cpp shapes/Cylinder.cpp shapes/RoundedCylinder.cpp shapes/Shape.cpp shapes/ShapeComponent.cpp shapes/Sphere.cpp shapes/SphereComponent.cpp shapes/triangle.cpp tree/Tree.cpp ui/Databinding.cpp ui/Settings.cpp uniforms/uniformvariable.cpp uniforms/uniformwidget.cpp camera/orbitingcamera.cpp uniforms/varsfile.cpp lib/resourceloader.cpp gl/datatype/vbo.cpp gl/datatype/vboattribmarker.cpp shapes/openglshape.cpp gl/datatype/vao.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents ui/mainwindow.ui $(DISTDIR)/
 
 
@@ -841,9 +851,34 @@ compiler_moc_predefs_clean:
 moc_predefs.h: ../../../Qt5.14.2/5.14.2/clang_64/mkspecs/features/data/dummy.cpp
 	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang++ -pipe -stdlib=libc++ -std=c++14 -g -g -std=gnu++1y $(EXPORT_ARCH_ARGS) -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk -mmacosx-version-min=10.13 -Wextra -Waddress -Wchar-subscripts -Wformat -Wmain -Wmissing-braces -Wparentheses -Wreorder -Wreturn-type -Wsequence-point -Wsign-compare -Wstrict-overflow=1 -Wswitch -Wtrigraphs -Wuninitialized -Wunused-label -Wunused-variable -Wvolatile-register-var -Wno-extra -dM -E -o moc_predefs.h ../../../Qt5.14.2/5.14.2/clang_64/mkspecs/features/data/dummy.cpp
 
-compiler_moc_header_make_all: moc_glwidget.cpp moc_mainwindow.cpp moc_uniformwidget.cpp moc_orbitingcamera.cpp moc_camera.cpp
+compiler_moc_header_make_all: moc_Databinding.cpp moc_glwidget.cpp moc_mainwindow.cpp moc_uniformwidget.cpp moc_orbitingcamera.cpp moc_camera.cpp
 compiler_moc_header_clean:
-	-$(DEL_FILE) moc_glwidget.cpp moc_mainwindow.cpp moc_uniformwidget.cpp moc_orbitingcamera.cpp moc_camera.cpp
+	-$(DEL_FILE) moc_Databinding.cpp moc_glwidget.cpp moc_mainwindow.cpp moc_uniformwidget.cpp moc_orbitingcamera.cpp moc_camera.cpp
+moc_Databinding.cpp: ui/Databinding.h \
+		../../../Qt5.14.2/5.14.2/clang_64/lib/QtCore.framework/Headers/QObject \
+		../../../Qt5.14.2/5.14.2/clang_64/lib/QtCore.framework/Headers/qobject.h \
+		../../../Qt5.14.2/5.14.2/clang_64/lib/QtCore.framework/Headers/QVariant \
+		../../../Qt5.14.2/5.14.2/clang_64/lib/QtCore.framework/Headers/qvariant.h \
+		../../../Qt5.14.2/5.14.2/clang_64/lib/QtWidgets.framework/Headers/QSlider \
+		../../../Qt5.14.2/5.14.2/clang_64/lib/QtWidgets.framework/Headers/qslider.h \
+		../../../Qt5.14.2/5.14.2/clang_64/lib/QtWidgets.framework/Headers/QLineEdit \
+		../../../Qt5.14.2/5.14.2/clang_64/lib/QtWidgets.framework/Headers/qlineedit.h \
+		../../../Qt5.14.2/5.14.2/clang_64/lib/QtWidgets.framework/Headers/QCheckBox \
+		../../../Qt5.14.2/5.14.2/clang_64/lib/QtWidgets.framework/Headers/qcheckbox.h \
+		../../../Qt5.14.2/5.14.2/clang_64/lib/QtWidgets.framework/Headers/QButtonGroup \
+		../../../Qt5.14.2/5.14.2/clang_64/lib/QtWidgets.framework/Headers/qbuttongroup.h \
+		../../../Qt5.14.2/5.14.2/clang_64/lib/QtWidgets.framework/Headers/QRadioButton \
+		../../../Qt5.14.2/5.14.2/clang_64/lib/QtWidgets.framework/Headers/qradiobutton.h \
+		../../../Qt5.14.2/5.14.2/clang_64/lib/QtWidgets.framework/Headers/QDockWidget \
+		../../../Qt5.14.2/5.14.2/clang_64/lib/QtWidgets.framework/Headers/qdockwidget.h \
+		../../../Qt5.14.2/5.14.2/clang_64/lib/QtWidgets.framework/Headers/QTabWidget \
+		../../../Qt5.14.2/5.14.2/clang_64/lib/QtWidgets.framework/Headers/qtabwidget.h \
+		../../../Qt5.14.2/5.14.2/clang_64/lib/QtWidgets.framework/Headers/QDial \
+		../../../Qt5.14.2/5.14.2/clang_64/lib/QtWidgets.framework/Headers/qdial.h \
+		moc_predefs.h \
+		../../../Qt5.14.2/5.14.2/clang_64/bin/moc
+	/Users/ksang/Qt5.14.2/5.14.2/clang_64/bin/moc $(DEFINES) --include /Users/ksang/Documents/cs1230/cs123-final/moc_predefs.h -I/Users/ksang/Qt5.14.2/5.14.2/clang_64/mkspecs/macx-clang -I/Users/ksang/Documents/cs1230/cs123-final -I/Users/ksang/Documents/cs1230/cs123-final/glm -I/Users/ksang/Documents/cs1230/cs123-final/ui -I/Users/ksang/Documents/cs1230/cs123-final/glew-1.10.0/include -I/Users/ksang/Qt5.14.2/5.14.2/clang_64/lib/QtOpenGL.framework/Headers -I/Users/ksang/Qt5.14.2/5.14.2/clang_64/lib/QtWidgets.framework/Headers -I/Users/ksang/Qt5.14.2/5.14.2/clang_64/lib/QtGui.framework/Headers -I/Users/ksang/Qt5.14.2/5.14.2/clang_64/lib/QtXml.framework/Headers -I/Users/ksang/Qt5.14.2/5.14.2/clang_64/lib/QtCore.framework/Headers -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1 -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/11.0.3/include -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk/usr/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -F/Users/ksang/Qt5.14.2/5.14.2/clang_64/lib ui/Databinding.h -o moc_Databinding.cpp
+
 moc_glwidget.cpp: glwidget.h \
 		shapes/openglshape.h \
 		gl/datatype/vbo.h \
@@ -1907,7 +1942,8 @@ glwidget.o: glwidget.cpp glwidget.h \
 		../../../Qt5.14.2/5.14.2/clang_64/lib/QtCore.framework/Headers/QString \
 		../../../Qt5.14.2/5.14.2/clang_64/lib/QtCore.framework/Headers/qstring.h \
 		glm/gtc/type_ptr.hpp \
-		glm/gtc/type_ptr.inl
+		glm/gtc/type_ptr.inl \
+		ui/Settings.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o glwidget.o glwidget.cpp
 
 mainwindow.o: mainwindow.cpp mainwindow.h \
@@ -2040,6 +2076,26 @@ mainwindow.o: mainwindow.cpp mainwindow.h \
 		../../../Qt5.14.2/5.14.2/clang_64/lib/QtWidgets.framework/Headers/qmessagebox.h \
 		../../../Qt5.14.2/5.14.2/clang_64/lib/QtCore.framework/Headers/QSettings \
 		../../../Qt5.14.2/5.14.2/clang_64/lib/QtCore.framework/Headers/qsettings.h \
+		ui/Databinding.h \
+		../../../Qt5.14.2/5.14.2/clang_64/lib/QtCore.framework/Headers/QVariant \
+		../../../Qt5.14.2/5.14.2/clang_64/lib/QtCore.framework/Headers/qvariant.h \
+		../../../Qt5.14.2/5.14.2/clang_64/lib/QtWidgets.framework/Headers/QSlider \
+		../../../Qt5.14.2/5.14.2/clang_64/lib/QtWidgets.framework/Headers/qslider.h \
+		../../../Qt5.14.2/5.14.2/clang_64/lib/QtWidgets.framework/Headers/QLineEdit \
+		../../../Qt5.14.2/5.14.2/clang_64/lib/QtWidgets.framework/Headers/qlineedit.h \
+		../../../Qt5.14.2/5.14.2/clang_64/lib/QtWidgets.framework/Headers/QCheckBox \
+		../../../Qt5.14.2/5.14.2/clang_64/lib/QtWidgets.framework/Headers/qcheckbox.h \
+		../../../Qt5.14.2/5.14.2/clang_64/lib/QtWidgets.framework/Headers/QButtonGroup \
+		../../../Qt5.14.2/5.14.2/clang_64/lib/QtWidgets.framework/Headers/qbuttongroup.h \
+		../../../Qt5.14.2/5.14.2/clang_64/lib/QtWidgets.framework/Headers/QRadioButton \
+		../../../Qt5.14.2/5.14.2/clang_64/lib/QtWidgets.framework/Headers/qradiobutton.h \
+		../../../Qt5.14.2/5.14.2/clang_64/lib/QtWidgets.framework/Headers/QDockWidget \
+		../../../Qt5.14.2/5.14.2/clang_64/lib/QtWidgets.framework/Headers/qdockwidget.h \
+		../../../Qt5.14.2/5.14.2/clang_64/lib/QtWidgets.framework/Headers/QTabWidget \
+		../../../Qt5.14.2/5.14.2/clang_64/lib/QtWidgets.framework/Headers/qtabwidget.h \
+		../../../Qt5.14.2/5.14.2/clang_64/lib/QtWidgets.framework/Headers/QDial \
+		../../../Qt5.14.2/5.14.2/clang_64/lib/QtWidgets.framework/Headers/qdial.h \
+		ui/Settings.h \
 		../../../Qt5.14.2/5.14.2/clang_64/lib/QtCore.framework/Headers/QFileInfo \
 		../../../Qt5.14.2/5.14.2/clang_64/lib/QtCore.framework/Headers/qfileinfo.h \
 		../../../Qt5.14.2/5.14.2/clang_64/lib/QtGui.framework/Headers/QDesktopServices \
@@ -3387,8 +3443,43 @@ Tree.o: tree/Tree.cpp tree/Tree.h \
 		glm/gtx/simd_mat4.hpp \
 		glm/detail/intrinsic_matrix.hpp \
 		glm/detail/intrinsic_matrix.inl \
-		glm/gtx/simd_mat4.inl
+		glm/gtx/simd_mat4.inl \
+		ui/Settings.h \
+		../../../Qt5.14.2/5.14.2/clang_64/lib/QtCore.framework/Headers/QObject \
+		../../../Qt5.14.2/5.14.2/clang_64/lib/QtCore.framework/Headers/qobject.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o Tree.o tree/Tree.cpp
+
+Databinding.o: ui/Databinding.cpp ui/Databinding.h \
+		../../../Qt5.14.2/5.14.2/clang_64/lib/QtCore.framework/Headers/QObject \
+		../../../Qt5.14.2/5.14.2/clang_64/lib/QtCore.framework/Headers/qobject.h \
+		../../../Qt5.14.2/5.14.2/clang_64/lib/QtCore.framework/Headers/QVariant \
+		../../../Qt5.14.2/5.14.2/clang_64/lib/QtCore.framework/Headers/qvariant.h \
+		../../../Qt5.14.2/5.14.2/clang_64/lib/QtWidgets.framework/Headers/QSlider \
+		../../../Qt5.14.2/5.14.2/clang_64/lib/QtWidgets.framework/Headers/qslider.h \
+		../../../Qt5.14.2/5.14.2/clang_64/lib/QtWidgets.framework/Headers/QLineEdit \
+		../../../Qt5.14.2/5.14.2/clang_64/lib/QtWidgets.framework/Headers/qlineedit.h \
+		../../../Qt5.14.2/5.14.2/clang_64/lib/QtWidgets.framework/Headers/QCheckBox \
+		../../../Qt5.14.2/5.14.2/clang_64/lib/QtWidgets.framework/Headers/qcheckbox.h \
+		../../../Qt5.14.2/5.14.2/clang_64/lib/QtWidgets.framework/Headers/QButtonGroup \
+		../../../Qt5.14.2/5.14.2/clang_64/lib/QtWidgets.framework/Headers/qbuttongroup.h \
+		../../../Qt5.14.2/5.14.2/clang_64/lib/QtWidgets.framework/Headers/QRadioButton \
+		../../../Qt5.14.2/5.14.2/clang_64/lib/QtWidgets.framework/Headers/qradiobutton.h \
+		../../../Qt5.14.2/5.14.2/clang_64/lib/QtWidgets.framework/Headers/QDockWidget \
+		../../../Qt5.14.2/5.14.2/clang_64/lib/QtWidgets.framework/Headers/qdockwidget.h \
+		../../../Qt5.14.2/5.14.2/clang_64/lib/QtWidgets.framework/Headers/QTabWidget \
+		../../../Qt5.14.2/5.14.2/clang_64/lib/QtWidgets.framework/Headers/qtabwidget.h \
+		../../../Qt5.14.2/5.14.2/clang_64/lib/QtWidgets.framework/Headers/QDial \
+		../../../Qt5.14.2/5.14.2/clang_64/lib/QtWidgets.framework/Headers/qdial.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o Databinding.o ui/Databinding.cpp
+
+Settings.o: ui/Settings.cpp ui/Settings.h \
+		../../../Qt5.14.2/5.14.2/clang_64/lib/QtCore.framework/Headers/QObject \
+		../../../Qt5.14.2/5.14.2/clang_64/lib/QtCore.framework/Headers/qobject.h \
+		../../../Qt5.14.2/5.14.2/clang_64/lib/QtCore.framework/Headers/QFile \
+		../../../Qt5.14.2/5.14.2/clang_64/lib/QtCore.framework/Headers/qfile.h \
+		../../../Qt5.14.2/5.14.2/clang_64/lib/QtCore.framework/Headers/QSettings \
+		../../../Qt5.14.2/5.14.2/clang_64/lib/QtCore.framework/Headers/qsettings.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o Settings.o ui/Settings.cpp
 
 uniformvariable.o: uniforms/uniformvariable.cpp uniforms/uniformvariable.h \
 		glew-1.10.0/include/GL/glew.h \
@@ -3785,6 +3876,9 @@ vao.o: gl/datatype/vao.cpp gl/datatype/vao.h \
 
 qrc_resources.o: qrc_resources.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o qrc_resources.o qrc_resources.cpp
+
+moc_Databinding.o: moc_Databinding.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_Databinding.o moc_Databinding.cpp
 
 moc_glwidget.o: moc_glwidget.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_glwidget.o moc_glwidget.cpp

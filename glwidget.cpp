@@ -16,7 +16,6 @@
 #include "glm/gtx/transform.hpp"  // glm::translate, scale, rotate
 #include "glm/gtc/type_ptr.hpp" // glm::value_ptr
 
-#include "Settings.h"
 
 
 UniformVariable *GLWidget::s_skybox = NULL;
@@ -318,12 +317,11 @@ void GLWidget::renderWireframe() {
         glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     }
 }
-void GLWidget::drawTree() {
-
+void GLWidget::renderTree() {
     //  Note: the wireframes won't work because it's not connected to that,
     // must choose a shader to get it working.
 
-    std::vector<glm::mat4> trans = m_tree->buildTree(model);
+    std::vector<glm::mat4> trans = m_tree->getBranchData();
     glm::mat4 original = model;
 
     for (int i = 0; i < static_cast<int>(trans.size()); i++) {
@@ -336,15 +334,32 @@ void GLWidget::drawTree() {
     model = original; // resets model back to the init
 }
 
+// TODO: any changes to the UI component should also add to this function.
+bool GLWidget::hasSettingsChanged() {
+    if (m_settings.recursions != settings.recursions ||
+            m_settings.angle != settings.angle) {
+
+        m_settings.recursions = settings.recursions;
+        m_settings.angle = settings.angle;
+        return true;
+    }
+    return false;
+
+}
+
+
 void GLWidget::paintGL() {
     handleAnimation();
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     if (m_shape) {
-        // todo: remove this later?
         if (m_renderMode == SHAPE_CYLINDER || m_renderMode == SHAPE_CONE) {
-            drawTree();
-        } else {
+            if (hasSettingsChanged()) {
+                m_tree->buildTree(model);
+            } else {
+                renderTree();
+            }
+        } else {// todo: remove this once all primitives are made :)
             bindAndUpdateShader();
             m_shape->draw();
         }

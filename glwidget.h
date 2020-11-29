@@ -8,6 +8,7 @@
 #include "shapes/Shape.h"
 #include "shapes/Cylinder.h"
 #include "tree/Tree.h"
+#include "Settings.h"
 
 class Cube;
 
@@ -73,9 +74,11 @@ protected:
     void mouseMoveEvent(QMouseEvent *event);
     void wheelEvent(QWheelEvent *event);
 
-    void drawTree();
+    void renderTree();
+    void buildTree();
     void bindAndUpdateShader();
     void renderWireframe();
+    bool hasSettingsChanged();
 
 private:
     std::unique_ptr<OpenGLShape> m_sphere;
@@ -83,7 +86,6 @@ private:
     std::unique_ptr<OpenGLShape> m_cube;
     std::unique_ptr<OpenGLShape> m_cone;
     std::unique_ptr<OpenGLShape> m_roundedCylinder;
-
 
     OpenGLShape *m_shape;
     Camera *camera;
@@ -115,7 +117,8 @@ private:
     RenderType m_renderMode;
 
     bool mouseDown;
-    std::unique_ptr<Tree> m_tree;
+    std::unique_ptr<Tree> m_tree;// Tree with L System
+    Settings m_settings;  // Local version of settings to keep track of changes.
 
 };
 

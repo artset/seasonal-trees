@@ -82,3 +82,7 @@ void LSystem::addRule(std::string key, std::string replacement){
 void LSystem::setRecursion(int recursions){
     m_recursions = recursions;
 }
+
+void LSystem::clearRules() {
+    m_rules.clear();
+}

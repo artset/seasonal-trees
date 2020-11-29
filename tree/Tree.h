@@ -12,13 +12,16 @@ class Tree
 public:
     Tree();
     ~Tree();
-    std::vector<glm::mat4> buildTree(const glm::mat4 &model);
+    void buildTree(const glm::mat4 &model);
+    std::vector<glm::mat4> getBranchData();
 private:
     static const glm::vec3 SCALE_FACTOR;
     static const glm::vec3 TRANSLATE;
     static const glm::vec3 ROTATE_AXIS;
     std::vector<glm::mat4> processBranch(const glm::mat4 &curr, const std::string &string);
-    LSystem lsystem;
+    LSystem m_lsystem;
+    std::vector<glm::mat4> m_branchData;
+
 
 };
 

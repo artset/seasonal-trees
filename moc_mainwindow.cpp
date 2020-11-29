@@ -22,8 +22,8 @@ QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_MainWindow_t {
-    QByteArrayData data[35];
-    char stringdata0[632];
+    QByteArrayData data[36];
+    char stringdata0[648];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -66,7 +66,8 @@ QT_MOC_LITERAL(30, 574, 21), // "UniformVariable::Type"
 QT_MOC_LITERAL(31, 596, 4), // "type"
 QT_MOC_LITERAL(32, 601, 8), // "editable"
 QT_MOC_LITERAL(33, 610, 4), // "size"
-QT_MOC_LITERAL(34, 615, 16) // "UniformVariable*"
+QT_MOC_LITERAL(34, 615, 16), // "UniformVariable*"
+QT_MOC_LITERAL(35, 632, 15) // "settingsChanged"
 
     },
     "MainWindow\0removeUniforms\0\0init\0"
@@ -87,7 +88,7 @@ QT_MOC_LITERAL(34, 615, 16) // "UniformVariable*"
     "deleted\0changeUniform\0const UniformVariable*\0"
     "uniform\0newVal\0name\0addUniform\0"
     "UniformVariable::Type\0type\0editable\0"
-    "size\0UniformVariable*"
+    "size\0UniformVariable*\0settingsChanged"
 };
 #undef QT_MOC_LITERAL
 
@@ -97,7 +98,7 @@ static const uint qt_meta_data_MainWindow[] = {
        8,       // revision
        0,       // classname
        0,    0, // classinfo
-      26,   14, // methods
+      27,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -105,34 +106,35 @@ static const uint qt_meta_data_MainWindow[] = {
        1,       // signalCount
 
  // signals: name, argc, parameters, tag, flags
-       1,    0,  144,    2, 0x06 /* Public */,
+       1,    0,  149,    2, 0x06 /* Public */,
 
  // slots: name, argc, parameters, tag, flags
-       3,    0,  145,    2, 0x08 /* Private */,
-       4,    0,  146,    2, 0x08 /* Private */,
-       5,    0,  147,    2, 0x08 /* Private */,
-       6,    0,  148,    2, 0x08 /* Private */,
-       7,    0,  149,    2, 0x08 /* Private */,
-       8,    0,  150,    2, 0x08 /* Private */,
-       9,    0,  151,    2, 0x08 /* Private */,
-      10,    0,  152,    2, 0x08 /* Private */,
-      11,    0,  153,    2, 0x08 /* Private */,
-      12,    0,  154,    2, 0x08 /* Private */,
-      13,    0,  155,    2, 0x08 /* Private */,
-      14,    0,  156,    2, 0x08 /* Private */,
-      15,    1,  157,    2, 0x08 /* Private */,
-      17,    0,  160,    2, 0x08 /* Private */,
-      18,    0,  161,    2, 0x08 /* Private */,
-      19,    0,  162,    2, 0x08 /* Private */,
-      20,    1,  163,    2, 0x08 /* Private */,
-      21,    1,  166,    2, 0x0a /* Public */,
-      24,    2,  169,    2, 0x0a /* Public */,
+       3,    0,  150,    2, 0x08 /* Private */,
+       4,    0,  151,    2, 0x08 /* Private */,
+       5,    0,  152,    2, 0x08 /* Private */,
+       6,    0,  153,    2, 0x08 /* Private */,
+       7,    0,  154,    2, 0x08 /* Private */,
+       8,    0,  155,    2, 0x08 /* Private */,
+       9,    0,  156,    2, 0x08 /* Private */,
+      10,    0,  157,    2, 0x08 /* Private */,
+      11,    0,  158,    2, 0x08 /* Private */,
+      12,    0,  159,    2, 0x08 /* Private */,
+      13,    0,  160,    2, 0x08 /* Private */,
+      14,    0,  161,    2, 0x08 /* Private */,
+      15,    1,  162,    2, 0x08 /* Private */,
+      17,    0,  165,    2, 0x08 /* Private */,
+      18,    0,  166,    2, 0x08 /* Private */,
+      19,    0,  167,    2, 0x08 /* Private */,
+      20,    1,  168,    2, 0x08 /* Private */,
+      21,    1,  171,    2, 0x0a /* Public */,
       24,    2,  174,    2, 0x0a /* Public */,
-      29,    4,  179,    2, 0x0a /* Public */,
-      29,    3,  188,    2, 0x2a /* Public | MethodCloned */,
-      29,    2,  195,    2, 0x2a /* Public | MethodCloned */,
-      29,    2,  200,    2, 0x0a /* Public */,
-      29,    1,  205,    2, 0x2a /* Public | MethodCloned */,
+      24,    2,  179,    2, 0x0a /* Public */,
+      29,    4,  184,    2, 0x0a /* Public */,
+      29,    3,  193,    2, 0x2a /* Public | MethodCloned */,
+      29,    2,  200,    2, 0x2a /* Public | MethodCloned */,
+      29,    2,  205,    2, 0x0a /* Public */,
+      29,    1,  210,    2, 0x2a /* Public | MethodCloned */,
+      35,    0,  213,    2, 0x0a /* Public */,
 
  // signals: parameters
     QMetaType::Void,
@@ -163,6 +165,7 @@ static const uint qt_meta_data_MainWindow[] = {
     QMetaType::Void, 0x80000000 | 30, QMetaType::QString,   31,   28,
     QMetaType::Void, 0x80000000 | 34, QMetaType::Bool,   26,   32,
     QMetaType::Void, 0x80000000 | 34,   26,
+    QMetaType::Void,
 
        0        // eod
 };
@@ -199,6 +202,7 @@ void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         case 23: _t->addUniform((*reinterpret_cast< UniformVariable::Type(*)>(_a[1])),(*reinterpret_cast< const QString(*)>(_a[2]))); break;
         case 24: _t->addUniform((*reinterpret_cast< UniformVariable*(*)>(_a[1])),(*reinterpret_cast< bool(*)>(_a[2]))); break;
         case 25: _t->addUniform((*reinterpret_cast< UniformVariable*(*)>(_a[1]))); break;
+        case 26: _t->settingsChanged(); break;
         default: ;
         }
     } else if (_c == QMetaObject::IndexOfMethod) {
@@ -242,13 +246,13 @@ int MainWindow::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 26)
+        if (_id < 27)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 26;
+        _id -= 27;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 26)
+        if (_id < 27)
             *reinterpret_cast<int*>(_a[0]) = -1;
-        _id -= 26;
+        _id -= 27;
     }
     return _id;
 }
