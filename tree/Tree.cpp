@@ -14,9 +14,9 @@ Tree::~Tree() {
 }
 
 /// arbitrarily chosen based on appearances
-const float CYLINDER_HEIGHT = 1.f;
+const float CYLINDER_RADIUS = .5f;
 const glm::vec3 Tree::SCALE_FACTOR = glm::vec3(.5f, .8f, .5f);
-const glm::vec3 Tree::TRANSLATE = glm::vec3(0, CYLINDER_HEIGHT/2, 0);
+const glm::vec3 Tree::TRANSLATE = glm::vec3(0, CYLINDER_RADIUS, 0);
 const glm::vec3 Tree::ROTATE_AXIS = glm::vec3(1.f,0,0);
 const float Tree::ANGLE = glm::radians(25.f);
 
@@ -59,19 +59,20 @@ std::vector<glm::mat4> Tree::buildTree(const glm::mat4 &model) {
 
     };
     std::string string = strings.back();
-    string = strings[0];
+    string = strings[strings.size() - 2];
 
-    glm::mat4 scale = glm::scale(glm::mat4(), SCALE_FACTOR);
+    glm::vec4 origin = glm::vec4(0, 0, 0, 1.f);
+    glm::mat4 identity = glm::mat4();
+    glm::mat4 scale = glm::scale(identity, SCALE_FACTOR);
     glm::vec4 translate = glm::vec4(TRANSLATE, 1.f);
 
     LState currState = {
-        glm::mat4(),
-        glm::mat4(),
+        glm::translate(identity, -1.f * translate.xyz()), // need to avoid overscaling
+        identity,
         scale,
     };
     std::vector<glm::mat4> mats = { };
     std::vector<LState> prevState = { };
-    glm::vec4 origin = glm::vec4(0, 0, 0, 1.f);
 
     // parse the string
     for (size_t i = 0 ; i < string.size() ; i++) {
@@ -82,7 +83,7 @@ std::vector<glm::mat4> Tree::buildTree(const glm::mat4 &model) {
                 glm::mat4 transform = currState.translate * currState.rotate * currState.scale;
                 // this is the translation out from the current branch
                 glm::vec3 wscTranslate = (transform * translate - transform * origin).xyz();
-                currState.translate = glm::translate(glm::mat4(), wscTranslate) * currState.translate;
+                currState.translate = glm::translate(identity, wscTranslate) * currState.translate;
                 // ensure that transformation is in correct order (scale, rotate, translate)
                 mats.push_back(currState.translate * currState.rotate * currState.scale * model);
                 break;
