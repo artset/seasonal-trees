@@ -2,7 +2,9 @@
 #include <QMouseEvent>
 #include <sstream>
 
-#include "shapes/sphere.h"
+#include "shapes/RoundedCylinder.h"
+#include "shapes/Sphere.h"
+#include "shapes/Cone.h"
 #include "shapes/cube.h"
 #include "camera/orbitingcamera.h"
 #include "lib/resourceloader.h"
@@ -177,12 +179,24 @@ void GLWidget::initializeGL() {
 
     gl = QOpenGLFunctions(context()->contextHandle());
 
-    std::vector<GLfloat> sphereData = SPHERE_VERTEX_POSITIONS;
+    const int NUM_FLOATS_PER_VERTEX = 3;
+
+
+    std::unique_ptr<Shape> test = std::make_unique<RoundedCylinder>(7, 7);
+    std::vector<GLfloat> testData = test->getData();
     m_sphere = std::make_unique<OpenGLShape>();
-    m_sphere->setVertexData(&sphereData[0], sphereData.size(), VBO::GEOMETRY_LAYOUT::LAYOUT_TRIANGLES, NUM_SPHERE_VERTICES);
+    m_sphere->setVertexData(&testData[0], testData.size(), VBO::GEOMETRY_LAYOUT::LAYOUT_TRIANGLES, testData.size());
     m_sphere->setAttribute(ShaderAttrib::POSITION, 3, 0, VBOAttribMarker::DATA_TYPE::FLOAT, false);
-    m_sphere->setAttribute(ShaderAttrib::NORMAL, 3, 0, VBOAttribMarker::DATA_TYPE::FLOAT, false);
+    m_sphere->setAttribute(ShaderAttrib::NORMAL, 3, 3*sizeof(GLfloat), VBOAttribMarker::DATA_TYPE::FLOAT, false);
     m_sphere->buildVAO();
+
+//    std::unique_ptr<Shape> sphere = std::make_unique<Sphere>(7, 7);
+//    std::vector<GLfloat> sphereData = sphere->getData();
+//    m_sphere = std::make_unique<OpenGLShape>();
+//    m_sphere->setVertexData(&sphereData[0], sphereData.size(), VBO::GEOMETRY_LAYOUT::LAYOUT_TRIANGLES, sphereData.size());
+//    m_sphere->setAttribute(ShaderAttrib::POSITION, 3, 0, VBOAttribMarker::DATA_TYPE::FLOAT, false);
+//    m_sphere->setAttribute(ShaderAttrib::NORMAL, 3, 3*sizeof(GLfloat), VBOAttribMarker::DATA_TYPE::FLOAT, false);
+//    m_sphere->buildVAO();
 
     std::vector<GLfloat> cubeData = CUBE_DATA_POSITIONS;
     m_cube = std::make_unique<OpenGLShape>();
@@ -198,16 +212,22 @@ void GLWidget::initializeGL() {
     skybox_cube->buildVAO();
 
     m_cylinder = std::make_unique<OpenGLShape>();
-
-    std::unique_ptr<Shape> cyl = std::make_unique<Cylinder>(1, 10);
+    std::unique_ptr<Shape> cyl = std::make_unique<RoundedCylinder>(10, 10);
     std::vector<GLfloat> cylinderData = cyl->getData();
     m_cylinder = std::make_unique<OpenGLShape>();
-    const int NUM_FLOATS_PER_VERTEX = 3;
-
     m_cylinder->setVertexData(&cylinderData[0], cylinderData.size(), VBO::GEOMETRY_LAYOUT::LAYOUT_TRIANGLES, cylinderData.size() / NUM_FLOATS_PER_VERTEX);
     m_cylinder->setAttribute(ShaderAttrib::POSITION, 3, 0, VBOAttribMarker::DATA_TYPE::FLOAT, false);
     m_cylinder->setAttribute(ShaderAttrib::NORMAL, 3, 3*sizeof(GLfloat), VBOAttribMarker::DATA_TYPE::FLOAT, false);
     m_cylinder->buildVAO();
+
+    m_cone = std::make_unique<OpenGLShape>();
+    std::unique_ptr<Shape> cone = std::make_unique<Cone>(1, 10);
+    std::vector<GLfloat> coneData = cone->getData();
+    m_cone = std::make_unique<OpenGLShape>();
+    m_cone->setVertexData(&coneData[0], coneData.size(), VBO::GEOMETRY_LAYOUT::LAYOUT_TRIANGLES, coneData.size() / NUM_FLOATS_PER_VERTEX);
+    m_cone->setAttribute(ShaderAttrib::POSITION, 3, 0, VBOAttribMarker::DATA_TYPE::FLOAT, false);
+    m_cone->setAttribute(ShaderAttrib::NORMAL, 3, 3*sizeof(GLfloat), VBOAttribMarker::DATA_TYPE::FLOAT, false);
+    m_cone->buildVAO();
 
     m_shape = m_sphere.get();
 }
@@ -317,7 +337,8 @@ void GLWidget::paintGL() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     if (m_shape) {
-        if (m_renderMode == SHAPE_TREE) {
+        // todo: remove this later?
+        if (m_renderMode == SHAPE_CYLINDER || m_renderMode == SHAPE_CONE) {
             drawTree();
         } else {
             bindAndUpdateShader();
@@ -351,9 +372,12 @@ void GLWidget::changeRenderMode(RenderType mode)
     case SHAPE_CUBE:
         m_shape = m_cube.get();
         break;
-    case SHAPE_TREE:
+    case SHAPE_CYLINDER:
         m_shape = m_cylinder.get();
-
+        break;
+    case SHAPE_CONE:
+        m_shape = m_cone.get();
+        break;
     default:
         break;
     }

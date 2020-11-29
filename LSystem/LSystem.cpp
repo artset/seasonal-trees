@@ -19,7 +19,6 @@ void LSystem::generateSequence(){
     for (int i = 0; i < m_recursions; i++){
         expand();
     }
-    std::cout << "in generateSequence " << m_sequence << std::endl;
 }
 
 /**
@@ -60,4 +59,26 @@ int LSystem::getReplacementIndex(int maxIndex){
 
 std::string LSystem::getSequence(){
     return m_sequence;
+}
+
+std::map<std::string, std::vector<std::string>> LSystem::getRules(){
+    return m_rules;
+}
+
+void LSystem::addRule(std::string key, std::string replacement){
+    if (key == "F"){
+       std::map<std::string, std::vector<std::string>>::iterator it = m_rules.find("F");
+       if (it != m_rules.end()){
+           it->second.push_back(replacement);
+       }
+    } else if (key == "X"){
+        std::map<std::string, std::vector<std::string>>::iterator it = m_rules.find("X");
+        if (it != m_rules.end()){
+            it->second.push_back(replacement);
+        }
+    }
+}
+
+void LSystem::setRecursion(int recursions){
+    m_recursions = recursions;
 }

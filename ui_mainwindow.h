@@ -35,10 +35,15 @@ public:
     QPushButton *shader2Button;
     QFrame *line;
     QVBoxLayout *verticalLayout_4;
+
+
+    // PRIMITIVE SHAPESA
     QLabel *label_2;
     QPushButton *sphereButton;
     QPushButton *cubeButton;
-    QPushButton *treeButton;
+    QPushButton *cylinderTreeButton;
+    QPushButton *coneTreeButton;
+
     QFrame *line_2;
     QLabel *label_3;
     QPushButton *animNoneButton;
@@ -117,23 +122,25 @@ public:
 
         label_2 = new QLabel(centralWidget);
         label_2->setObjectName(QString::fromUtf8("label_2"));
-
         verticalLayout->addWidget(label_2);
 
+
+        // PRIMITIVE BUTTONS
         sphereButton = new QPushButton(centralWidget);
         sphereButton->setObjectName(QString::fromUtf8("sphereButton"));
-
         verticalLayout->addWidget(sphereButton);
 
         cubeButton = new QPushButton(centralWidget);
         cubeButton->setObjectName(QString::fromUtf8("cubeButton"));
-
         verticalLayout->addWidget(cubeButton);
 
-        treeButton = new QPushButton(centralWidget);
-        treeButton->setObjectName(QString::fromUtf8("treeButton"));
+        cylinderTreeButton = new QPushButton(centralWidget);
+        cylinderTreeButton->setObjectName(QString::fromUtf8("cylinderTreeButton"));
+        verticalLayout->addWidget(cylinderTreeButton);
 
-        verticalLayout->addWidget(treeButton);
+        coneTreeButton = new QPushButton(centralWidget);
+        coneTreeButton->setObjectName(QString::fromUtf8("coneTreeButton"));
+        verticalLayout->addWidget(coneTreeButton);
 
         line_2 = new QFrame(centralWidget);
         line_2->setObjectName(QString::fromUtf8("line_2"));
@@ -274,10 +281,15 @@ public:
         defaultShaderButton->setText(QCoreApplication::translate("MainWindow", "Default", nullptr));
         shader1Button->setText(QCoreApplication::translate("MainWindow", "Metal", nullptr));
         shader2Button->setText(QCoreApplication::translate("MainWindow", "Glass", nullptr));
-        label_2->setText(QCoreApplication::translate("MainWindow", "Shapes:", nullptr));
-        sphereButton->setText(QCoreApplication::translate("MainWindow", "Sphere", nullptr));
-        cubeButton->setText(QCoreApplication::translate("MainWindow", "Cube", nullptr));
-        treeButton->setText(QCoreApplication::translate("MainWindow", "Tree", nullptr));
+
+        // Primitives
+        label_2->setText(QCoreApplication::translate("MainWindow", "Primitives for Tree:", nullptr));
+        sphereButton->setText(QCoreApplication::translate("MainWindow", "Sphere (temp)", nullptr));
+        cubeButton->setText(QCoreApplication::translate("MainWindow", "Cube (temp)", nullptr));
+        cylinderTreeButton->setText(QCoreApplication::translate("MainWindow", "Cylinder", nullptr));
+        coneTreeButton->setText(QCoreApplication::translate("MainWindow", "Cone", nullptr));
+
+
         label_3->setText(QCoreApplication::translate("MainWindow", "Animations:", nullptr));
         animNoneButton->setText(QCoreApplication::translate("MainWindow", "None", nullptr));
         animMoveButton->setText(QCoreApplication::translate("MainWindow", "Move", nullptr));

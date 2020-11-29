@@ -30,9 +30,14 @@ SOURCES += \
     mainwindow.cpp \
     shapes/BarrelComponent.cpp \
     shapes/CircleComponent.cpp \
+    shapes/Cone.cpp \
+    shapes/ConeComponent.cpp \
     shapes/Cylinder.cpp \
+    shapes/RoundedCylinder.cpp \
     shapes/Shape.cpp \
     shapes/ShapeComponent.cpp \
+    shapes/Sphere.cpp \
+    shapes/SphereComponent.cpp \
     shapes/triangle.cpp \
     tree/Tree.cpp \
     uniforms/uniformvariable.cpp \
@@ -50,9 +55,14 @@ HEADERS += \
     lib/Utilities.h \
     shapes/BarrelComponent.h \
     shapes/CircleComponent.h \
+    shapes/Cone.h \
+    shapes/ConeComponent.h \
     shapes/Cylinder.h \
+    shapes/RoundedCylinder.h \
     shapes/Shape.h \
     shapes/ShapeComponent.h \
+    shapes/Sphere.h \
+    shapes/SphereComponent.h \
     shapes/triangle.h \
     tree/Tree.h \
     ui_mainwindow.h \

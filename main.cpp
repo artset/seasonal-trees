@@ -15,6 +15,5 @@ int main(int argc, char *argv[])
         // it has been shown.
         w.setWindowState(w.windowState() | Qt::WindowFullScreen);
     }
-
     return app.exec();
 }

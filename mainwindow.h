@@ -30,7 +30,9 @@ private slots:
 
     void on_cubeButton_clicked();
 
-    void on_treeButton_clicked();
+    void on_cylinderTreeButton_clicked();
+
+    void on_coneTreeButton_clicked();
 
     void on_defaultShaderButton_clicked();
 
