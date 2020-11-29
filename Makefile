@@ -278,7 +278,6 @@ DIST          = README.md \
 		../../../Qt5.14.2/5.14.2/clang_64/mkspecs/features/qt_config.prf \
 		../../../Qt5.14.2/5.14.2/clang_64/mkspecs/macx-clang/qmake.conf \
 		../../../Qt5.14.2/5.14.2/clang_64/mkspecs/features/spec_post.prf \
-		.qmake.stash \
 		../../../Qt5.14.2/5.14.2/clang_64/mkspecs/features/exclusive_builds.prf \
 		../../../Qt5.14.2/5.14.2/clang_64/mkspecs/features/mac/sdk.prf \
 		../../../Qt5.14.2/5.14.2/clang_64/mkspecs/features/toolchain.prf \
@@ -539,7 +538,6 @@ Makefile: final.pro ../../../Qt5.14.2/5.14.2/clang_64/mkspecs/macx-clang/qmake.c
 		../../../Qt5.14.2/5.14.2/clang_64/mkspecs/features/qt_config.prf \
 		../../../Qt5.14.2/5.14.2/clang_64/mkspecs/macx-clang/qmake.conf \
 		../../../Qt5.14.2/5.14.2/clang_64/mkspecs/features/spec_post.prf \
-		.qmake.stash \
 		../../../Qt5.14.2/5.14.2/clang_64/mkspecs/features/exclusive_builds.prf \
 		../../../Qt5.14.2/5.14.2/clang_64/mkspecs/features/mac/sdk.prf \
 		../../../Qt5.14.2/5.14.2/clang_64/mkspecs/features/toolchain.prf \
@@ -724,7 +722,6 @@ Makefile: final.pro ../../../Qt5.14.2/5.14.2/clang_64/mkspecs/macx-clang/qmake.c
 ../../../Qt5.14.2/5.14.2/clang_64/mkspecs/features/qt_config.prf:
 ../../../Qt5.14.2/5.14.2/clang_64/mkspecs/macx-clang/qmake.conf:
 ../../../Qt5.14.2/5.14.2/clang_64/mkspecs/features/spec_post.prf:
-.qmake.stash:
 ../../../Qt5.14.2/5.14.2/clang_64/mkspecs/features/exclusive_builds.prf:
 ../../../Qt5.14.2/5.14.2/clang_64/mkspecs/features/mac/sdk.prf:
 ../../../Qt5.14.2/5.14.2/clang_64/mkspecs/features/toolchain.prf:
@@ -803,7 +800,6 @@ clean: compiler_clean
 
 distclean: clean 
 	-$(DEL_FILE) -r final.app
-	-$(DEL_FILE) .qmake.stash
 	-$(DEL_FILE) Makefile
 
 
@@ -1000,6 +996,7 @@ moc_glwidget.cpp: glwidget.h \
 		shapes/BarrelComponent.h \
 		tree/Tree.h \
 		LSystem/LSystem.h \
+		ui/Settings.h \
 		moc_predefs.h \
 		../../../Qt5.14.2/5.14.2/clang_64/bin/moc
 	/Users/ksang/Qt5.14.2/5.14.2/clang_64/bin/moc $(DEFINES) --include /Users/ksang/Documents/cs1230/cs123-final/moc_predefs.h -I/Users/ksang/Qt5.14.2/5.14.2/clang_64/mkspecs/macx-clang -I/Users/ksang/Documents/cs1230/cs123-final -I/Users/ksang/Documents/cs1230/cs123-final/glm -I/Users/ksang/Documents/cs1230/cs123-final/ui -I/Users/ksang/Documents/cs1230/cs123-final/glew-1.10.0/include -I/Users/ksang/Qt5.14.2/5.14.2/clang_64/lib/QtOpenGL.framework/Headers -I/Users/ksang/Qt5.14.2/5.14.2/clang_64/lib/QtWidgets.framework/Headers -I/Users/ksang/Qt5.14.2/5.14.2/clang_64/lib/QtGui.framework/Headers -I/Users/ksang/Qt5.14.2/5.14.2/clang_64/lib/QtXml.framework/Headers -I/Users/ksang/Qt5.14.2/5.14.2/clang_64/lib/QtCore.framework/Headers -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1 -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/11.0.3/include -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk/usr/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -F/Users/ksang/Qt5.14.2/5.14.2/clang_64/lib glwidget.h -o moc_glwidget.cpp
@@ -1128,6 +1125,7 @@ moc_mainwindow.cpp: mainwindow.h \
 		shapes/BarrelComponent.h \
 		tree/Tree.h \
 		LSystem/LSystem.h \
+		ui/Settings.h \
 		moc_predefs.h \
 		../../../Qt5.14.2/5.14.2/clang_64/bin/moc
 	/Users/ksang/Qt5.14.2/5.14.2/clang_64/bin/moc $(DEFINES) --include /Users/ksang/Documents/cs1230/cs123-final/moc_predefs.h -I/Users/ksang/Qt5.14.2/5.14.2/clang_64/mkspecs/macx-clang -I/Users/ksang/Documents/cs1230/cs123-final -I/Users/ksang/Documents/cs1230/cs123-final/glm -I/Users/ksang/Documents/cs1230/cs123-final/ui -I/Users/ksang/Documents/cs1230/cs123-final/glew-1.10.0/include -I/Users/ksang/Qt5.14.2/5.14.2/clang_64/lib/QtOpenGL.framework/Headers -I/Users/ksang/Qt5.14.2/5.14.2/clang_64/lib/QtWidgets.framework/Headers -I/Users/ksang/Qt5.14.2/5.14.2/clang_64/lib/QtGui.framework/Headers -I/Users/ksang/Qt5.14.2/5.14.2/clang_64/lib/QtXml.framework/Headers -I/Users/ksang/Qt5.14.2/5.14.2/clang_64/lib/QtCore.framework/Headers -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1 -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/11.0.3/include -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk/usr/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -F/Users/ksang/Qt5.14.2/5.14.2/clang_64/lib mainwindow.h -o moc_mainwindow.cpp
@@ -1254,6 +1252,7 @@ moc_uniformwidget.cpp: uniforms/uniformwidget.h \
 		shapes/BarrelComponent.h \
 		tree/Tree.h \
 		LSystem/LSystem.h \
+		ui/Settings.h \
 		moc_predefs.h \
 		../../../Qt5.14.2/5.14.2/clang_64/bin/moc
 	/Users/ksang/Qt5.14.2/5.14.2/clang_64/bin/moc $(DEFINES) --include /Users/ksang/Documents/cs1230/cs123-final/moc_predefs.h -I/Users/ksang/Qt5.14.2/5.14.2/clang_64/mkspecs/macx-clang -I/Users/ksang/Documents/cs1230/cs123-final -I/Users/ksang/Documents/cs1230/cs123-final/glm -I/Users/ksang/Documents/cs1230/cs123-final/ui -I/Users/ksang/Documents/cs1230/cs123-final/glew-1.10.0/include -I/Users/ksang/Qt5.14.2/5.14.2/clang_64/lib/QtOpenGL.framework/Headers -I/Users/ksang/Qt5.14.2/5.14.2/clang_64/lib/QtWidgets.framework/Headers -I/Users/ksang/Qt5.14.2/5.14.2/clang_64/lib/QtGui.framework/Headers -I/Users/ksang/Qt5.14.2/5.14.2/clang_64/lib/QtXml.framework/Headers -I/Users/ksang/Qt5.14.2/5.14.2/clang_64/lib/QtCore.framework/Headers -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1 -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/11.0.3/include -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk/usr/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -F/Users/ksang/Qt5.14.2/5.14.2/clang_64/lib uniforms/uniformwidget.h -o moc_uniformwidget.cpp
@@ -1795,7 +1794,8 @@ main.o: main.cpp ../../../Qt5.14.2/5.14.2/clang_64/lib/QtWidgets.framework/Heade
 		shapes/CircleComponent.h \
 		shapes/BarrelComponent.h \
 		tree/Tree.h \
-		LSystem/LSystem.h
+		LSystem/LSystem.h \
+		ui/Settings.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o main.cpp
 
 glew.o: glew-1.10.0/src/glew.c glew-1.10.0/include/GL/glew.h \
@@ -1924,6 +1924,7 @@ glwidget.o: glwidget.cpp glwidget.h \
 		shapes/BarrelComponent.h \
 		tree/Tree.h \
 		LSystem/LSystem.h \
+		ui/Settings.h \
 		../../../Qt5.14.2/5.14.2/clang_64/lib/QtGui.framework/Headers/QMouseEvent \
 		../../../Qt5.14.2/5.14.2/clang_64/lib/QtGui.framework/Headers/qevent.h \
 		shapes/RoundedCylinder.h \
@@ -1942,8 +1943,7 @@ glwidget.o: glwidget.cpp glwidget.h \
 		../../../Qt5.14.2/5.14.2/clang_64/lib/QtCore.framework/Headers/QString \
 		../../../Qt5.14.2/5.14.2/clang_64/lib/QtCore.framework/Headers/qstring.h \
 		glm/gtc/type_ptr.hpp \
-		glm/gtc/type_ptr.inl \
-		ui/Settings.h
+		glm/gtc/type_ptr.inl
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o glwidget.o glwidget.cpp
 
 mainwindow.o: mainwindow.cpp mainwindow.h \
@@ -2070,6 +2070,7 @@ mainwindow.o: mainwindow.cpp mainwindow.h \
 		shapes/BarrelComponent.h \
 		tree/Tree.h \
 		LSystem/LSystem.h \
+		ui/Settings.h \
 		ui_mainwindow.h \
 		uniforms/uniformwidget.h \
 		../../../Qt5.14.2/5.14.2/clang_64/lib/QtWidgets.framework/Headers/QMessageBox \
@@ -2095,7 +2096,6 @@ mainwindow.o: mainwindow.cpp mainwindow.h \
 		../../../Qt5.14.2/5.14.2/clang_64/lib/QtWidgets.framework/Headers/qtabwidget.h \
 		../../../Qt5.14.2/5.14.2/clang_64/lib/QtWidgets.framework/Headers/QDial \
 		../../../Qt5.14.2/5.14.2/clang_64/lib/QtWidgets.framework/Headers/qdial.h \
-		ui/Settings.h \
 		../../../Qt5.14.2/5.14.2/clang_64/lib/QtCore.framework/Headers/QFileInfo \
 		../../../Qt5.14.2/5.14.2/clang_64/lib/QtCore.framework/Headers/qfileinfo.h \
 		../../../Qt5.14.2/5.14.2/clang_64/lib/QtGui.framework/Headers/QDesktopServices \
@@ -3602,6 +3602,7 @@ uniformvariable.o: uniforms/uniformvariable.cpp uniforms/uniformvariable.h \
 		shapes/BarrelComponent.h \
 		tree/Tree.h \
 		LSystem/LSystem.h \
+		ui/Settings.h \
 		../../../Qt5.14.2/5.14.2/clang_64/lib/QtCore.framework/Headers/QFileInfo \
 		../../../Qt5.14.2/5.14.2/clang_64/lib/QtCore.framework/Headers/qfileinfo.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o uniformvariable.o uniforms/uniformvariable.cpp
@@ -3728,6 +3729,7 @@ uniformwidget.o: uniforms/uniformwidget.cpp uniforms/uniformwidget.h \
 		shapes/BarrelComponent.h \
 		tree/Tree.h \
 		LSystem/LSystem.h \
+		ui/Settings.h \
 		../../../Qt5.14.2/5.14.2/clang_64/lib/QtWidgets.framework/Headers/QHBoxLayout \
 		../../../Qt5.14.2/5.14.2/clang_64/lib/QtWidgets.framework/Headers/qboxlayout.h \
 		../../../Qt5.14.2/5.14.2/clang_64/lib/QtWidgets.framework/Headers/QLineEdit \

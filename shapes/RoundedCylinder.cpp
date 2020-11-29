@@ -40,15 +40,13 @@ std::vector<GLfloat> RoundedCylinder::getData() {
             m_param1, m_param2, m_transformation * rotate
         );
 
-//    std::unique_ptr<ShapeComponent> s1 =
-//        std::make_unique<CircleComponent>(
-//            m_param1, m_param2, m_transformation * rotate
-//        );
-
+    const int SPHERE_STACK = 10; // To have a "tight" rounded top.
     std::unique_ptr<ShapeComponent> s1 =
         std::make_unique<SphereComponent>(
-            m_param1, m_param2, sphereTrans * sphereScale * glm::mat4(1.f)
+            SPHERE_STACK, m_param2, sphereTrans * sphereScale * glm::mat4(1.f)
         );
+
+
 
     std::unique_ptr<ShapeComponent> s2 =
         std::make_unique<BarrelComponent>(
@@ -58,8 +56,11 @@ std::vector<GLfloat> RoundedCylinder::getData() {
     std::vector<GLfloat> data;
     data = s->getData();
 
+
     std::vector<GLfloat> s1Data = s1->getData();
-    data.insert(std::end(data), std::begin(s1Data), std::end(s1Data));
+    auto middle = s1Data.begin() + s1Data.size() / 2;
+    data.insert(std::end(data), std::begin(s1Data), middle);
+
 
     std::vector<GLfloat> s2Data = s2->getData();
     data.insert(std::end(data), std::begin(s2Data), std::end(s2Data));
