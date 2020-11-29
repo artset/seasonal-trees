@@ -4,7 +4,6 @@ ConeComponent::ConeComponent(int param1, int param2, glm::mat4 transformation)
     :ShapeComponent(param1, param2, transformation)
 {
     this->setData();
-    this->buildVAO();
 }
 
 ConeComponent::~ConeComponent() {

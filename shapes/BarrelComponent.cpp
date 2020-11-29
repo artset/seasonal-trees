@@ -4,7 +4,6 @@ BarrelComponent::BarrelComponent(int param1, int param2, glm::mat4 transformatio
     :ShapeComponent(param1, param2, transformation)
 {
     this->setData();
-    this->buildVAO();
 }
 
 

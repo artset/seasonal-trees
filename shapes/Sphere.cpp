@@ -3,13 +3,11 @@
 Sphere::Sphere(int param1, int param2):
     Shape(std::max(2, param1), param2, glm::mat4(1.f))
 {
-    setUpShapeComponents();
 }
 
 Sphere::Sphere(int param1, int param2, glm::mat4 transformation):
     Shape(std::max(2, param1), param2, transformation)
 {
-    setUpShapeComponents();
 }
 
 Sphere::~Sphere() {
