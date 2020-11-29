@@ -17,6 +17,9 @@ public:
     LSystem();
     void generateSequence();
     std::string getSequence();
+    void addRule(std::string key, std::string replacement);
+    void setRecursion(int recursion);
+    std::map<std::string, std::vector<std::string>> getRules();
 };
 
 #endif // LSYSTEM_H
