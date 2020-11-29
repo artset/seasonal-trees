@@ -7,6 +7,7 @@
 #include <vector>
 #include <iostream>
 #include <cmath>
+#include <math.h>
 
 #include "lib/Utilities.h"
 #include "triangle.h"

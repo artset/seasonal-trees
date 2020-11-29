@@ -177,11 +177,15 @@ void GLWidget::initializeGL() {
 
     gl = QOpenGLFunctions(context()->contextHandle());
 
-    std::vector<GLfloat> sphereData = SPHERE_VERTEX_POSITIONS;
+    const int NUM_FLOATS_PER_VERTEX = 3;
+
+
+    std::unique_ptr<Shape> sphere = std::make_unique<Sphere>(7, 7);
+    std::vector<GLfloat> sphereData = sphere->getData();
     m_sphere = std::make_unique<OpenGLShape>();
-    m_sphere->setVertexData(&sphereData[0], sphereData.size(), VBO::GEOMETRY_LAYOUT::LAYOUT_TRIANGLES, NUM_SPHERE_VERTICES);
+    m_sphere->setVertexData(&sphereData[0], sphereData.size(), VBO::GEOMETRY_LAYOUT::LAYOUT_TRIANGLES, sphereData.size());
     m_sphere->setAttribute(ShaderAttrib::POSITION, 3, 0, VBOAttribMarker::DATA_TYPE::FLOAT, false);
-    m_sphere->setAttribute(ShaderAttrib::NORMAL, 3, 0, VBOAttribMarker::DATA_TYPE::FLOAT, false);
+    m_sphere->setAttribute(ShaderAttrib::NORMAL, 3, 3*sizeof(GLfloat), VBOAttribMarker::DATA_TYPE::FLOAT, false);
     m_sphere->buildVAO();
 
     std::vector<GLfloat> cubeData = CUBE_DATA_POSITIONS;
@@ -198,11 +202,9 @@ void GLWidget::initializeGL() {
     skybox_cube->buildVAO();
 
     m_cylinder = std::make_unique<OpenGLShape>();
-
     std::unique_ptr<Shape> cyl = std::make_unique<Cylinder>(1, 10);
     std::vector<GLfloat> cylinderData = cyl->getData();
     m_cylinder = std::make_unique<OpenGLShape>();
-    const int NUM_FLOATS_PER_VERTEX = 3;
 
     m_cylinder->setVertexData(&cylinderData[0], cylinderData.size(), VBO::GEOMETRY_LAYOUT::LAYOUT_TRIANGLES, cylinderData.size() / NUM_FLOATS_PER_VERTEX);
     m_cylinder->setAttribute(ShaderAttrib::POSITION, 3, 0, VBOAttribMarker::DATA_TYPE::FLOAT, false);
