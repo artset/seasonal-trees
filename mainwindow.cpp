@@ -29,6 +29,8 @@ MainWindow::MainWindow(QWidget *parent) :
     m_oldVert = QString("");
     m_oldFrag = QString("");
 
+    dataBind();
+
     // Restore the UI settings
     QSettings qtSettings("CS123", "Lab10");
     restoreGeometry(qtSettings.value("geometry").toByteArray());
@@ -271,5 +273,9 @@ void MainWindow::dataBind(){
 
     BIND(IntBinding::bindSliderAndTextbox(
         ui->recursionSlider, ui->recursionsTextbox, settings.recursions, 0, 10))
+
+}
+
+void MainWindow::settingsChanged(){
 
 }

@@ -41,6 +41,7 @@ SOURCES += \
     shapes/triangle.cpp \
     tree/Tree.cpp \
     ui/Databinding.cpp \
+    ui/Settings.cpp \
     uniforms/uniformvariable.cpp \
     uniforms/uniformwidget.cpp \
     camera/orbitingcamera.cpp \
@@ -67,6 +68,7 @@ HEADERS += \
     shapes/triangle.h \
     tree/Tree.h \
     ui/Databinding.h \
+    ui/Settings.h \
     ui_mainwindow.h \
     glew-1.10.0/include/GL/glew.h \
     glwidget.h \
