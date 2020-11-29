@@ -2,7 +2,8 @@
 #include <QMouseEvent>
 #include <sstream>
 
-#include "shapes/sphere.h"
+#include "shapes/Sphere.h"
+#include "shapes/Cone.h"
 #include "shapes/cube.h"
 #include "camera/orbitingcamera.h"
 #include "lib/resourceloader.h"
@@ -205,11 +206,19 @@ void GLWidget::initializeGL() {
     std::unique_ptr<Shape> cyl = std::make_unique<Cylinder>(1, 10);
     std::vector<GLfloat> cylinderData = cyl->getData();
     m_cylinder = std::make_unique<OpenGLShape>();
-
     m_cylinder->setVertexData(&cylinderData[0], cylinderData.size(), VBO::GEOMETRY_LAYOUT::LAYOUT_TRIANGLES, cylinderData.size() / NUM_FLOATS_PER_VERTEX);
     m_cylinder->setAttribute(ShaderAttrib::POSITION, 3, 0, VBOAttribMarker::DATA_TYPE::FLOAT, false);
     m_cylinder->setAttribute(ShaderAttrib::NORMAL, 3, 3*sizeof(GLfloat), VBOAttribMarker::DATA_TYPE::FLOAT, false);
     m_cylinder->buildVAO();
+
+    m_cone = std::make_unique<OpenGLShape>();
+    std::unique_ptr<Shape> cone = std::make_unique<Cone>(1, 10);
+    std::vector<GLfloat> coneData = cone->getData();
+    m_cone = std::make_unique<OpenGLShape>();
+    m_cone->setVertexData(&coneData[0], coneData.size(), VBO::GEOMETRY_LAYOUT::LAYOUT_TRIANGLES, coneData.size() / NUM_FLOATS_PER_VERTEX);
+    m_cone->setAttribute(ShaderAttrib::POSITION, 3, 0, VBOAttribMarker::DATA_TYPE::FLOAT, false);
+    m_cone->setAttribute(ShaderAttrib::NORMAL, 3, 3*sizeof(GLfloat), VBOAttribMarker::DATA_TYPE::FLOAT, false);
+    m_cone->buildVAO();
 
     m_shape = m_sphere.get();
 }
@@ -319,7 +328,8 @@ void GLWidget::paintGL() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     if (m_shape) {
-        if (m_renderMode == SHAPE_TREE) {
+        // todo: remove this later?
+        if (m_renderMode == SHAPE_CYLINDER || m_renderMode == SHAPE_CONE) {
             drawTree();
         } else {
             bindAndUpdateShader();
@@ -345,6 +355,7 @@ void GLWidget::paintGL() {
 
 void GLWidget::changeRenderMode(RenderType mode)
 {
+    std::cout << mode << std::endl;
     m_renderMode = mode;
     switch(m_renderMode) {
     case SHAPE_SPHERE:
@@ -353,12 +364,16 @@ void GLWidget::changeRenderMode(RenderType mode)
     case SHAPE_CUBE:
         m_shape = m_cube.get();
         break;
-    case SHAPE_TREE:
+    case SHAPE_CYLINDER:
         m_shape = m_cylinder.get();
-
+        break;
+    case SHAPE_CONE:
+        m_shape = m_cone.get();
+        break;
     default:
         break;
     }
+    std::cout << "--" << std::endl;
 }
 
 void GLWidget::changeAnimMode(AnimType mode)

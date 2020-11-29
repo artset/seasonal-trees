@@ -15,7 +15,7 @@ class QGLShaderProgram;
 
 #define colorToArgs(floatArray) floatArray[0], floatArray[1], floatArray[2], floatArray[3]
 
-enum RenderType { SHAPE_SPHERE, SHAPE_CUBE, SHAPE_TREE };
+enum RenderType { SHAPE_SPHERE, SHAPE_CUBE, SHAPE_CYLINDER, SHAPE_CONE };
 
 enum AnimType { ANIM_NONE, ANIM_MOVE, ANIM_SCALE, ANIM_MOVE_AND_SCALE, ANIM_ROTATE, ANIM_ROTATE_2};
 
@@ -81,6 +81,8 @@ private:
     std::unique_ptr<OpenGLShape> m_sphere;
     std::unique_ptr<OpenGLShape> m_cylinder;
     std::unique_ptr<OpenGLShape> m_cube;
+    std::unique_ptr<OpenGLShape> m_cone;
+
     OpenGLShape *m_shape;
     Camera *camera;
     std::unique_ptr<OpenGLShape> skybox_cube;
