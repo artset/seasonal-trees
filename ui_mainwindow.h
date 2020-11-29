@@ -21,6 +21,8 @@
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
 #include <QtWidgets/QSlider>
+#include <QtWidgets/QLineEdit>
+
 
 QT_BEGIN_NAMESPACE
 
@@ -47,6 +49,7 @@ public:
 
     QLabel *recursionsLabel;
     QSlider *recursionSlider;
+    QLineEdit *recursionsTextbox;
 
     QFrame *line_2;
     QLabel *label_3;
@@ -154,6 +157,10 @@ public:
         recursionSlider->setOrientation(Qt::Horizontal);
         recursionSlider->setMaximumSize(QSize(150, 80));
         verticalLayout->addWidget(recursionSlider);
+        recursionsTextbox = new QLineEdit(centralWidget);
+        recursionsTextbox->setObjectName(QString::fromUtf8("recursionsTextbox"));
+        verticalLayout->addWidget(recursionsTextbox);
+        recursionsTextbox->setMaximumSize(QSize(150, 80));
 
         line_2 = new QFrame(centralWidget);
         line_2->setObjectName(QString::fromUtf8("line_2"));

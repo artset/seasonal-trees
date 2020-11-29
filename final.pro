@@ -40,6 +40,7 @@ SOURCES += \
     shapes/SphereComponent.cpp \
     shapes/triangle.cpp \
     tree/Tree.cpp \
+    ui/Databinding.cpp \
     uniforms/uniformvariable.cpp \
     uniforms/uniformwidget.cpp \
     camera/orbitingcamera.cpp \
@@ -65,6 +66,7 @@ HEADERS += \
     shapes/SphereComponent.h \
     shapes/triangle.h \
     tree/Tree.h \
+    ui/Databinding.h \
     ui_mainwindow.h \
     glew-1.10.0/include/GL/glew.h \
     glwidget.h \
