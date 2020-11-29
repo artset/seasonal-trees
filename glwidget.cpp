@@ -2,6 +2,7 @@
 #include <QMouseEvent>
 #include <sstream>
 
+#include "shapes/RoundedCylinder.h"
 #include "shapes/Sphere.h"
 #include "shapes/Cone.h"
 #include "shapes/cube.h"
@@ -181,6 +182,14 @@ void GLWidget::initializeGL() {
     const int NUM_FLOATS_PER_VERTEX = 3;
 
 
+//    std::unique_ptr<Shape> test = std::make_unique<RoundedCylinder>(7, 7);
+//    std::vector<GLfloat> testData = test->getData();
+//    m_sphere = std::make_unique<OpenGLShape>();
+//    m_sphere->setVertexData(&testData[0], testData.size(), VBO::GEOMETRY_LAYOUT::LAYOUT_TRIANGLES, testData.size());
+//    m_sphere->setAttribute(ShaderAttrib::POSITION, 3, 0, VBOAttribMarker::DATA_TYPE::FLOAT, false);
+//    m_sphere->setAttribute(ShaderAttrib::NORMAL, 3, 3*sizeof(GLfloat), VBOAttribMarker::DATA_TYPE::FLOAT, false);
+//    m_sphere->buildVAO();
+
     std::unique_ptr<Shape> sphere = std::make_unique<Sphere>(7, 7);
     std::vector<GLfloat> sphereData = sphere->getData();
     m_sphere = std::make_unique<OpenGLShape>();
@@ -203,7 +212,7 @@ void GLWidget::initializeGL() {
     skybox_cube->buildVAO();
 
     m_cylinder = std::make_unique<OpenGLShape>();
-    std::unique_ptr<Shape> cyl = std::make_unique<Cylinder>(1, 10);
+    std::unique_ptr<Shape> cyl = std::make_unique<RoundedCylinder>(10, 10);
     std::vector<GLfloat> cylinderData = cyl->getData();
     m_cylinder = std::make_unique<OpenGLShape>();
     m_cylinder->setVertexData(&cylinderData[0], cylinderData.size(), VBO::GEOMETRY_LAYOUT::LAYOUT_TRIANGLES, cylinderData.size() / NUM_FLOATS_PER_VERTEX);
@@ -355,7 +364,6 @@ void GLWidget::paintGL() {
 
 void GLWidget::changeRenderMode(RenderType mode)
 {
-    std::cout << mode << std::endl;
     m_renderMode = mode;
     switch(m_renderMode) {
     case SHAPE_SPHERE:
@@ -373,7 +381,6 @@ void GLWidget::changeRenderMode(RenderType mode)
     default:
         break;
     }
-    std::cout << "--" << std::endl;
 }
 
 void GLWidget::changeAnimMode(AnimType mode)

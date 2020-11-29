@@ -63,6 +63,7 @@ SOURCES       = LSystem/LSystem.cpp \
 		shapes/Cone.cpp \
 		shapes/ConeComponent.cpp \
 		shapes/Cylinder.cpp \
+		shapes/RoundedCylinder.cpp \
 		shapes/Shape.cpp \
 		shapes/ShapeComponent.cpp \
 		shapes/Sphere.cpp \
@@ -94,6 +95,7 @@ OBJECTS       = LSystem.o \
 		Cone.o \
 		ConeComponent.o \
 		Cylinder.o \
+		RoundedCylinder.o \
 		Shape.o \
 		ShapeComponent.o \
 		Sphere.o \
@@ -306,6 +308,7 @@ DIST          = README.md \
 		shapes/Cone.h \
 		shapes/ConeComponent.h \
 		shapes/Cylinder.h \
+		shapes/RoundedCylinder.h \
 		shapes/Shape.h \
 		shapes/ShapeComponent.h \
 		shapes/Sphere.h \
@@ -340,6 +343,7 @@ DIST          = README.md \
 		shapes/Cone.cpp \
 		shapes/ConeComponent.cpp \
 		shapes/Cylinder.cpp \
+		shapes/RoundedCylinder.cpp \
 		shapes/Shape.cpp \
 		shapes/ShapeComponent.cpp \
 		shapes/Sphere.cpp \
@@ -777,8 +781,8 @@ distdir: FORCE
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents resources.qrc $(DISTDIR)/
 	$(COPY_FILE) --parents ../../../Qt5.14.2/5.14.2/clang_64/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents LSystem/LSystem.h lib/Utilities.h shapes/BarrelComponent.h shapes/CircleComponent.h shapes/Cone.h shapes/ConeComponent.h shapes/Cylinder.h shapes/Shape.h shapes/ShapeComponent.h shapes/Sphere.h shapes/SphereComponent.h shapes/triangle.h tree/Tree.h ui_mainwindow.h glew-1.10.0/include/GL/glew.h glwidget.h mainwindow.h uniforms/uniformvariable.h lib/common.h uniforms/uniformwidget.h camera/orbitingcamera.h camera/camera.h uniforms/varsfile.h shapes/cube.h lib/resourceloader.h shapes/sphere.h shapes/openglshape.h gl/datatype/vbo.h gl/datatype/vboattribmarker.h gl/shaders/shaderattriblocations.h gl/datatype/vao.h $(DISTDIR)/
-	$(COPY_FILE) --parents LSystem/LSystem.cpp lib/Utilities.cpp main.cpp glew-1.10.0/src/glew.c glwidget.cpp mainwindow.cpp shapes/BarrelComponent.cpp shapes/CircleComponent.cpp shapes/Cone.cpp shapes/ConeComponent.cpp shapes/Cylinder.cpp shapes/Shape.cpp shapes/ShapeComponent.cpp shapes/Sphere.cpp shapes/SphereComponent.cpp shapes/triangle.cpp tree/Tree.cpp uniforms/uniformvariable.cpp uniforms/uniformwidget.cpp camera/orbitingcamera.cpp uniforms/varsfile.cpp lib/resourceloader.cpp gl/datatype/vbo.cpp gl/datatype/vboattribmarker.cpp shapes/openglshape.cpp gl/datatype/vao.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents LSystem/LSystem.h lib/Utilities.h shapes/BarrelComponent.h shapes/CircleComponent.h shapes/Cone.h shapes/ConeComponent.h shapes/Cylinder.h shapes/RoundedCylinder.h shapes/Shape.h shapes/ShapeComponent.h shapes/Sphere.h shapes/SphereComponent.h shapes/triangle.h tree/Tree.h ui_mainwindow.h glew-1.10.0/include/GL/glew.h glwidget.h mainwindow.h uniforms/uniformvariable.h lib/common.h uniforms/uniformwidget.h camera/orbitingcamera.h camera/camera.h uniforms/varsfile.h shapes/cube.h lib/resourceloader.h shapes/sphere.h shapes/openglshape.h gl/datatype/vbo.h gl/datatype/vboattribmarker.h gl/shaders/shaderattriblocations.h gl/datatype/vao.h $(DISTDIR)/
+	$(COPY_FILE) --parents LSystem/LSystem.cpp lib/Utilities.cpp main.cpp glew-1.10.0/src/glew.c glwidget.cpp mainwindow.cpp shapes/BarrelComponent.cpp shapes/CircleComponent.cpp shapes/Cone.cpp shapes/ConeComponent.cpp shapes/Cylinder.cpp shapes/RoundedCylinder.cpp shapes/Shape.cpp shapes/ShapeComponent.cpp shapes/Sphere.cpp shapes/SphereComponent.cpp shapes/triangle.cpp tree/Tree.cpp uniforms/uniformvariable.cpp uniforms/uniformwidget.cpp camera/orbitingcamera.cpp uniforms/varsfile.cpp lib/resourceloader.cpp gl/datatype/vbo.cpp gl/datatype/vboattribmarker.cpp shapes/openglshape.cpp gl/datatype/vao.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents ui/mainwindow.ui $(DISTDIR)/
 
 
@@ -1887,8 +1891,11 @@ glwidget.o: glwidget.cpp glwidget.h \
 		LSystem/LSystem.h \
 		../../../Qt5.14.2/5.14.2/clang_64/lib/QtGui.framework/Headers/QMouseEvent \
 		../../../Qt5.14.2/5.14.2/clang_64/lib/QtGui.framework/Headers/qevent.h \
-		shapes/sphere.h \
+		shapes/RoundedCylinder.h \
+		shapes/Sphere.h \
 		shapes/SphereComponent.h \
+		shapes/Cone.h \
+		shapes/ConeComponent.h \
 		shapes/cube.h \
 		camera/orbitingcamera.h \
 		lib/resourceloader.h \
@@ -2561,6 +2568,113 @@ Cylinder.o: shapes/Cylinder.cpp shapes/Cylinder.h \
 		shapes/CircleComponent.h \
 		shapes/BarrelComponent.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o Cylinder.o shapes/Cylinder.cpp
+
+RoundedCylinder.o: shapes/RoundedCylinder.cpp shapes/RoundedCylinder.h \
+		shapes/Shape.h \
+		glm/glm.hpp \
+		glm/detail/_fixes.hpp \
+		glm/fwd.hpp \
+		glm/detail/type_int.hpp \
+		glm/detail/setup.hpp \
+		glm/detail/type_float.hpp \
+		glm/detail/type_vec.hpp \
+		glm/detail/precision.hpp \
+		glm/detail/type_mat.hpp \
+		glm/vec2.hpp \
+		glm/detail/type_vec2.hpp \
+		glm/detail/_swizzle.hpp \
+		glm/detail/_swizzle_func.hpp \
+		glm/detail/type_vec2.inl \
+		glm/vec3.hpp \
+		glm/detail/type_vec3.hpp \
+		glm/detail/type_vec3.inl \
+		glm/vec4.hpp \
+		glm/detail/type_vec4.hpp \
+		glm/detail/type_vec4.inl \
+		glm/mat2x2.hpp \
+		glm/detail/type_mat2x2.hpp \
+		glm/detail/type_mat2x2.inl \
+		glm/mat2x3.hpp \
+		glm/detail/type_mat2x3.hpp \
+		glm/detail/type_mat2x3.inl \
+		glm/mat2x4.hpp \
+		glm/detail/type_mat2x4.hpp \
+		glm/detail/type_mat2x4.inl \
+		glm/mat3x2.hpp \
+		glm/detail/type_mat3x2.hpp \
+		glm/detail/type_mat3x2.inl \
+		glm/mat3x3.hpp \
+		glm/detail/type_mat3x3.hpp \
+		glm/detail/type_mat3x3.inl \
+		glm/mat3x4.hpp \
+		glm/detail/type_mat3x4.hpp \
+		glm/detail/type_mat3x4.inl \
+		glm/mat4x2.hpp \
+		glm/detail/type_mat4x2.hpp \
+		glm/detail/type_mat4x2.inl \
+		glm/mat4x3.hpp \
+		glm/detail/type_mat4x3.hpp \
+		glm/detail/type_mat4x3.inl \
+		glm/mat4x4.hpp \
+		glm/detail/type_mat4x4.hpp \
+		glm/detail/type_mat4x4.inl \
+		glm/trigonometric.hpp \
+		glm/detail/func_trigonometric.hpp \
+		glm/detail/func_trigonometric.inl \
+		glm/detail/_vectorize.hpp \
+		glm/detail/type_vec1.hpp \
+		glm/detail/type_vec1.inl \
+		glm/exponential.hpp \
+		glm/detail/func_exponential.hpp \
+		glm/detail/func_exponential.inl \
+		glm/detail/func_vector_relational.hpp \
+		glm/detail/func_vector_relational.inl \
+		glm/common.hpp \
+		glm/detail/func_common.hpp \
+		glm/detail/func_common.inl \
+		glm/packing.hpp \
+		glm/detail/func_packing.hpp \
+		glm/detail/func_packing.inl \
+		glm/detail/type_half.hpp \
+		glm/detail/type_half.inl \
+		glm/geometric.hpp \
+		glm/detail/func_geometric.hpp \
+		glm/detail/func_geometric.inl \
+		glm/matrix.hpp \
+		glm/detail/func_matrix.hpp \
+		glm/detail/func_matrix.inl \
+		glm/vector_relational.hpp \
+		glm/integer.hpp \
+		glm/detail/func_integer.hpp \
+		glm/detail/func_integer.inl \
+		glew-1.10.0/include/GL/glew.h \
+		shapes/triangle.h \
+		shapes/ShapeComponent.h \
+		lib/Utilities.h \
+		gl/datatype/vao.h \
+		gl/datatype/vbo.h \
+		gl/datatype/vboattribmarker.h \
+		gl/shaders/shaderattriblocations.h \
+		glm/gtx/transform.hpp \
+		glm/gtc/matrix_transform.hpp \
+		glm/gtc/matrix_transform.inl \
+		glm/gtx/transform.inl \
+		glm/gtx/string_cast.hpp \
+		glm/gtx/integer.hpp \
+		glm/gtx/integer.inl \
+		glm/gtx/quaternion.hpp \
+		glm/gtc/constants.hpp \
+		glm/gtc/constants.inl \
+		glm/gtc/quaternion.hpp \
+		glm/gtc/quaternion.inl \
+		glm/gtx/norm.hpp \
+		glm/gtx/norm.inl \
+		glm/gtx/quaternion.inl \
+		glm/gtx/string_cast.inl \
+		shapes/CircleComponent.h \
+		shapes/BarrelComponent.h \
+		shapes/SphereComponent.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o RoundedCylinder.o shapes/RoundedCylinder.cpp
 
 Shape.o: shapes/Shape.cpp shapes/Shape.h \
 		glm/glm.hpp \

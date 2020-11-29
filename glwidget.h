@@ -82,6 +82,8 @@ private:
     std::unique_ptr<OpenGLShape> m_cylinder;
     std::unique_ptr<OpenGLShape> m_cube;
     std::unique_ptr<OpenGLShape> m_cone;
+    std::unique_ptr<OpenGLShape> m_roundedCylinder;
+
 
     OpenGLShape *m_shape;
     Camera *camera;
