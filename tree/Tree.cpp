@@ -2,6 +2,7 @@
 #include "glm/gtx/transform.hpp"
 #include "glm/ext.hpp"
 #include "LSystem/LSystem.h"
+#include "Settings.h"
 
 Tree::Tree():
     lsystem()
@@ -18,7 +19,6 @@ const float CYLINDER_RADIUS = .5f;
 const glm::vec3 Tree::SCALE_FACTOR = glm::vec3(.5f, .8f, .5f);
 const glm::vec3 Tree::TRANSLATE = glm::vec3(0, CYLINDER_RADIUS, 0);
 const glm::vec3 Tree::ROTATE_AXIS = glm::vec3(1.f,0,0);
-const float Tree::ANGLE = glm::radians(25.f);
 
 std::vector<glm::vec3> ROTATE_AXES = {
     glm::vec3(1.f,0,0),
@@ -91,13 +91,13 @@ std::vector<glm::mat4> Tree::buildTree(const glm::mat4 &model) {
             case '-': {
                 // rotate the current rotation matrix to the left
                 glm::vec3 axis = ROTATE_AXES[2];
-                currState.rotate = glm::rotate(-Tree::ANGLE, axis) * currState.rotate;
+                currState.rotate = glm::rotate(-settings.angle, axis) * currState.rotate;
                 break;
             }
             case '+': {
                 // rotate the current rotation matrix to the right
                 glm::vec3 axis = ROTATE_AXES[2];
-                currState.rotate = glm::rotate(Tree::ANGLE, axis) * currState.rotate;
+                currState.rotate = glm::rotate(settings.angle, axis) * currState.rotate;
                 break;
             }
             case '[': {

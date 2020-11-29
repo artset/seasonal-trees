@@ -51,6 +51,10 @@ public:
     QSlider *recursionSlider;
     QLineEdit *recursionsTextbox;
 
+    QLabel *angleLabel;
+    QSlider *angleSlider;
+    QLineEdit *angleTextbox;
+
     QFrame *line_2;
     QLabel *label_3;
     QPushButton *animNoneButton;
@@ -161,6 +165,19 @@ public:
         recursionsTextbox->setObjectName(QString::fromUtf8("recursionsTextbox"));
         verticalLayout->addWidget(recursionsTextbox);
         recursionsTextbox->setMaximumSize(QSize(150, 80));
+
+        angleLabel = new QLabel(centralWidget);
+        angleLabel->setObjectName(QString::fromUtf8("angleLabel"));
+        verticalLayout->addWidget(angleLabel);
+        angleSlider = new QSlider(centralWidget);
+        angleSlider->setObjectName(QString::fromUtf8("angleSlider"));
+        angleSlider->setOrientation(Qt::Horizontal);
+        angleSlider->setMaximumSize(QSize(150, 80));
+        verticalLayout->addWidget(angleSlider);
+        angleTextbox = new QLineEdit(centralWidget);
+        angleTextbox->setObjectName(QString::fromUtf8("angleTextbox"));
+        verticalLayout->addWidget(angleTextbox);
+        angleTextbox->setMaximumSize(QSize(150, 80));
 
         line_2 = new QFrame(centralWidget);
         line_2->setObjectName(QString::fromUtf8("line_2"));
@@ -310,6 +327,7 @@ public:
         coneTreeButton->setText(QCoreApplication::translate("MainWindow", "Cone", nullptr));
 
         recursionsLabel->setText(QCoreApplication::translate("MainWindow", "Number of recursions:", nullptr));
+        angleLabel->setText(QCoreApplication::translate("MainWindow", "Angle (degrees):", nullptr));
 
         label_3->setText(QCoreApplication::translate("MainWindow", "Animations:", nullptr));
         animNoneButton->setText(QCoreApplication::translate("MainWindow", "None", nullptr));

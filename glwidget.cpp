@@ -16,6 +16,8 @@
 #include "glm/gtx/transform.hpp"  // glm::translate, scale, rotate
 #include "glm/gtc/type_ptr.hpp" // glm::value_ptr
 
+#include "Settings.h"
+
 
 UniformVariable *GLWidget::s_skybox = NULL;
 UniformVariable *GLWidget::s_projection = NULL;
@@ -52,6 +54,8 @@ GLWidget::GLWidget(QGLFormat format, QWidget *parent)
     wireframeMode = WIREFRAME_NORMAL;
     mouseDown = false;
     setMouseTracking(true);
+
+    settings.loadSettingsOrDefaults();
 }
 
 GLWidget::~GLWidget() {

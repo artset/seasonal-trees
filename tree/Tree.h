@@ -17,7 +17,6 @@ private:
     static const glm::vec3 SCALE_FACTOR;
     static const glm::vec3 TRANSLATE;
     static const glm::vec3 ROTATE_AXIS;
-    static const float ANGLE;
     std::vector<glm::mat4> processBranch(const glm::mat4 &curr, const std::string &string);
     LSystem lsystem;
 

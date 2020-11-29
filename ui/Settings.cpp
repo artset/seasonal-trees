@@ -24,6 +24,7 @@ void Settings::loadSettingsOrDefaults() {
     QSettings s("CS123", "CS123");
 
     recursions = s.value("recursions", 4).toInt();
+    angle = s.value("angle", 25.f).toFloat();
 
 }
 
@@ -31,6 +32,7 @@ void Settings::saveSettings() {
     QSettings s("CS123", "CS123");
 
     s.setValue("recursions", recursions);
+    s.setValue("angle", angle);
 
 }
 
