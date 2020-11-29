@@ -35,6 +35,9 @@ struct LState {
     glm::mat4 rotate;
     glm::mat4 scale;
     float length;
+
+    glm::mat4 initialRotate;
+    glm::mat4 initialScale;
 };
 
 /**
@@ -74,15 +77,21 @@ void Tree::buildTree(const glm::mat4 &model) {
     glm::vec4 translate = glm::vec4(TRANSLATE, 1.f);
 
     LState currState = {
-        glm::translate(identity, -1.f * translate.xyz()), // need to avoid overtranslating
+        glm::translate(identity, -1.f * translate.xyz()), // needed to avoid overtranslating
         identity,
         scale,
         0,
+
+        identity,
+        scale,
     };
+    std::vector<LState> prevStates = { };
 
-    std::vector<LState> prevState = { };
+    auto getBranchTransform = [] (glm::mat4 model, LState state) {
+        if (state.length == 0) {
+            return glm::mat4(0);
+        }
 
-    auto drawBranch = [] (glm::mat4 model, LState state) {
         glm::mat4 selfScale = glm::scale(glm::mat4(), { 1.f, CYLINDER_HEIGHT * state.length, 1.f });
         return state.translate * state.rotate * state.scale * (selfScale) * model;
     };
@@ -99,49 +108,45 @@ void Tree::buildTree(const glm::mat4 &model) {
                 currState.translate = glm::translate(identity, wscTranslate) * currState.translate;
                 currState.length += CYLINDER_HEIGHT;
 
-//                // ensure that transformation is in correct order (scale, rotate, translate)
-//                m_branchData.push_back(currState.translate * currState.rotate * currState.scale * model);
+                // here, we start a new line if the scale or rotation matrices are different from the initial branch transformation
+                // otherwise, continue the current line
+                bool isNewBranch =
+                        currState.length != 0 &&
+                        (currState.scale != currState.initialScale || currState.rotate != currState.initialRotate);
+
+//                isNewBranch = true;
+
+                if (isNewBranch) {
+                    m_branchData.push_back(getBranchTransform(model, currState));
+                    currState.initialRotate = currState.rotate;
+                    currState.initialScale = currState.scale;
+                    currState.length = 0;
+                }
                 break;
             }
             case '-': {
-                if (currState.length != 0) {
-                    m_branchData.push_back(drawBranch(model, currState));
-                }
-
                 // rotate the current rotation matrix to the left
                 glm::vec3 axis = ROTATE_AXES[2];
                 currState.rotate = glm::rotate(-ANGLE, axis) * currState.rotate;
-                currState.length = 0;
                 break;
             }
             case '+': {
-                if (currState.length != 0) {
-                    m_branchData.push_back(drawBranch(model, currState));
-                }
-
                 // rotate the current rotation matrix to the right
                 glm::vec3 axis = ROTATE_AXES[2];
                 currState.rotate = glm::rotate(ANGLE, axis) * currState.rotate;
-                currState.length = 0;
                 break;
             }
             case '[': {
                 // save the current state for later (splitting off into child branches)
-                prevState.push_back(currState);
-                // scale down child branches
-                currState.scale = scale * currState.scale;
-                currState.length = 0;
+                prevStates.push_back(currState);
+
+                currState.scale = scale * currState.scale; // scale down child branches
                 break;
             }
             case ']': {
-                if (currState.length != 0) {
-                    m_branchData.push_back(drawBranch(model, currState));
-                }
-
                 // resume parsing with the last saved state (the current branch is closed)
-                LState savedState = prevState.back();
-                currState = savedState;
-                prevState.pop_back();
+                currState = prevStates.back();
+                prevStates.pop_back();
                 break;
             }
         default:
@@ -151,10 +156,8 @@ void Tree::buildTree(const glm::mat4 &model) {
     }
 
     if (currState.length != 0) {
-        m_branchData.push_back(drawBranch(model, currState));
+        m_branchData.push_back(getBranchTransform(model, currState));
     }
-
-    std::cout << m_branchData.size() << std::endl;
 }
 
 // Using setter and getters instead to avoid having to rebuild the tree
