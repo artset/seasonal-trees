@@ -14,10 +14,18 @@ Tree::~Tree() {
 }
 
 /// arbitrarily chosen based on appearances
+const float CYLINDER_HEIGHT = 0.5f;
 const glm::vec3 Tree::SCALE_FACTOR = glm::vec3(.5f, .8f, .5f);
-const glm::vec3 Tree::TRANSLATE = glm::vec3(0.f, .35f, .35f);
+const glm::vec3 Tree::TRANSLATE = glm::vec3(0, CYLINDER_HEIGHT, 0);
 const glm::vec3 Tree::ROTATE_AXIS = glm::vec3(1.f,0,0);
 const float Tree::ANGLE = glm::radians(65.f);
+
+std::vector<glm::vec3> ROTATE_AXES = {
+    glm::vec3(1.f,0,0),
+    glm::vec3(0,1.f,0),
+    glm::vec3(0,0,1.f),
+    glm::vec3(.5f,0,.5f),
+};
 
 /**
  * @brief Right now, we iterate through the string linearly, keeping track of open brackets and pushing matrices to the response vec when
@@ -44,6 +52,7 @@ std::vector<glm::mat4> Tree::buildTree(const glm::mat4 &model) {
     glm::mat4 currMat = scale * model;
     std::vector<glm::mat4> mats = { currMat };
     std::vector<glm::mat4> prevMats = { };
+    std::vector<glm::vec3> prevRotAxis = { };
 
     // parse the string
     float translateCoeff = 1.f;
@@ -52,17 +61,24 @@ std::vector<glm::mat4> Tree::buildTree(const glm::mat4 &model) {
             case 'F':
             case 'X': {
                 if (prevMats.size() != 0) {
-                    currMat = glm::translate(glm::mat4(), glm::vec3(TRANSLATE.xy(), translateCoeff * TRANSLATE.z)) * currMat;
+                    glm::mat4 rot = glm::rotate(translateCoeff * Tree::ANGLE, prevRotAxis.back());
+                    glm::vec3 rottedTranslate = (rot * glm::vec4(TRANSLATE, 1.f)).xyz();
+                    rottedTranslate.y = CYLINDER_HEIGHT;
+                    currMat = glm::translate(glm::mat4(), rottedTranslate) * currMat;
                 }
                 break;
             }
             case '-': {
-                currMat = glm::rotate(Tree::ANGLE, ROTATE_AXIS) * currMat;
+                glm::vec3 axis = ROTATE_AXES[3];
+                prevRotAxis.push_back(axis);
+                currMat = glm::rotate(Tree::ANGLE, axis) * currMat;
                 translateCoeff = 1.f;
                 break;
             }
             case '+': {
-                currMat = glm::rotate(-Tree::ANGLE, ROTATE_AXIS) * currMat;
+                glm::vec3 axis = ROTATE_AXES[3];
+                prevRotAxis.push_back(axis);
+                currMat = glm::rotate(-Tree::ANGLE, axis) * currMat;
                 translateCoeff = -1.f;
                 break;
             }
@@ -77,6 +93,7 @@ std::vector<glm::mat4> Tree::buildTree(const glm::mat4 &model) {
                 currMat = prevMats.back();
 
                 prevMats.pop_back();
+                prevRotAxis.pop_back();
                 break;
             }
         default:
