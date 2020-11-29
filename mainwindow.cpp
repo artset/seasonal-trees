@@ -4,6 +4,8 @@
 
 #include <QMessageBox>
 #include <QSettings>
+#include "Databinding.h"
+#include "Settings.h"
 
 #include <iostream>
 #include <QFileInfo>
@@ -258,4 +260,16 @@ void MainWindow::on_shader2Button_clicked()
 void MainWindow::on_checkBox_toggled(bool checked)
 {
     m_glwidget->setWireframeMode(checked ? WIREFRAME_VERT : WIREFRAME_NORMAL);
+}
+
+void MainWindow::dataBind(){
+#define BIND(b) { \
+    DataBinding *_b = (b); \
+    m_bindings.push_back(_b); \
+    assert(connect(_b, SIGNAL(dataChanged()), this, SLOT(settingsChanged()))); \
+}
+
+    BIND(IntBinding::bindSliderAndTextbox(
+        ui->recursionSlider, ui->recursionsTextbox, settings.recursions, 0, 10))
+
 }

@@ -4,6 +4,8 @@
 #include <QMainWindow>
 #include <glwidget.h>
 
+class DataBinding;
+
 namespace Ui {
 class MainWindow;
 }
@@ -78,6 +80,9 @@ private:
 
     QWidget *m_uniformContainer;
     QBoxLayout *m_uniformLayout;
+
+    void dataBind();
+    QList<DataBinding*> m_bindings;
 };
 
 #endif // MAINWINDOW_H
