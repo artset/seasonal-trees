@@ -60,41 +60,41 @@ void Tree::buildTree(const glm::mat4 &model) {
 
     std::vector<LState> prevState = { };
 
-    // parse the string
+    //Parse the string
     for (size_t i = 0 ; i < string.size() ; i++) {
         switch (string[i]) {
             case 'F':
             case 'X': {
-                // for "Forward" symbols, translate a small distance in the current direction
+                //For "Forward" symbols, translate a small distance in the current direction
                 glm::mat4 transform = currState.translate * currState.rotate * currState.scale;
-                // this is the translation out from the current branch
+                //This is the translation out from the current branch
                 glm::vec3 wscTranslate = (transform * translate - transform * origin).xyz();
                 currState.translate = glm::translate(identity, wscTranslate) * currState.translate;
-                // ensure that transformation is in correct order (scale, rotate, translate)
+                //Ensure that transformation is in correct order (scale, rotate, translate)
                 m_branchData.push_back(currState.translate * currState.rotate * currState.scale * model);
                 break;
             }
             case '-': {
-                // rotate the current rotation matrix to the left
+                //Rotate the current rotation matrix to the left
                 glm::vec3 axis = ROTATE_AXES[2];
                 currState.rotate = glm::rotate(-ANGLE, axis) * currState.rotate;
                 break;
             }
             case '+': {
-                // rotate the current rotation matrix to the right
+                //Rotate the current rotation matrix to the right
                 glm::vec3 axis = ROTATE_AXES[2];
                 currState.rotate = glm::rotate(ANGLE, axis) * currState.rotate;
                 break;
             }
             case '[': {
-                // save the current state for later (splitting off into child branches)
+                //Save the current state for later (splitting off into child branches)
                 prevState.push_back(currState);
-                // scale down child branches
+                //Scale down child branches
                 currState.scale = scale * currState.scale;
                 break;
             }
             case ']': {
-                // resume parsing with the last saved state (the current branch is closed)
+                //Resume parsing with the last saved state (the current branch is closed)
                 currState = prevState.back();
                 prevState.pop_back();
                 break;
