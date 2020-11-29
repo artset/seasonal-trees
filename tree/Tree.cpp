@@ -1,5 +1,6 @@
 #include "Tree.h"
 #include "glm/gtx/transform.hpp"
+#include "glm/ext.hpp"
 
 Tree::Tree()
 {
@@ -27,62 +28,57 @@ std::vector<glm::mat4> Tree::buildTree(const glm::mat4 &model) {
     // Example binary tree output from l system, iteration = 2
     // F[-F[-X][+X]][+F[-X][+X]]
     std::string string;
-//    string = "F[-X][+X]";
+    string = "F[-X][+X]";
 //    string = "F[-F[-X][+X]][+F[-X][+X]]";
 //    string = "F[-F[-F[-X][+X]][+F[-X][+X]]][+F[-F[-X][+X]][+F[-X][+X]]]";
     string = "F[-F[-F[-F[-F[-F[-F[-F[-F[-X][+X]][+F[-X][+X]]][+F[-F[-X][+X]][+F[-X][+X]]]][+F[-F[-F[-X][+X]][+F[-X][+X]]][+F[-F[-X][+X]][+F[-X][+X]]]]][+F[-F[-F[-F[-X][+X]][+F[-X][+X]]][+F[-F[-X][+X]][+F[-X][+X]]]][+F[-F[-F[-X][+X]][+F[-X][+X]]][+F[-F[-X][+X]][+F[-X][+X]]]]]][+F[-F[-F[-F[-F[-X][+X]][+F[-X][+X]]][+F[-F[-X][+X]][+F[-X][+X]]]][+F[-F[-F[-X][+X]][+F[-X][+X]]][+F[-F[-X][+X]][+F[-X][+X]]]]][+F[-F[-F[-F[-X][+X]][+F[-X][+X]]][+F[-F[-X][+X]][+F[-X][+X]]]][+F[-F[-F[-X][+X]][+F[-X][+X]]][+F[-F[-X][+X]][+F[-X][+X]]]]]]][+F[-F[-F[-F[-F[-F[-X][+X]][+F[-X][+X]]][+F[-F[-X][+X]][+F[-X][+X]]]][+F[-F[-F[-X][+X]][+F[-X][+X]]][+F[-F[-X][+X]][+F[-X][+X]]]]][+F[-F[-F[-F[-X][+X]][+F[-X][+X]]][+F[-F[-X][+X]][+F[-X][+X]]]][+F[-F[-F[-X][+X]][+F[-X][+X]]][+F[-F[-X][+X]][+F[-X][+X]]]]]][+F[-F[-F[-F[-F[-X][+X]][+F[-X][+X]]][+F[-F[-X][+X]][+F[-X][+X]]]][+F[-F[-F[-X][+X]][+F[-X][+X]]][+F[-F[-X][+X]][+F[-X][+X]]]]][+F[-F[-F[-F[-X][+X]][+F[-X][+X]]][+F[-F[-X][+X]][+F[-X][+X]]]][+F[-F[-F[-X][+X]][+F[-X][+X]]][+F[-F[-X][+X]][+F[-X][+X]]]]]]]][+F[-F[-F[-F[-F[-F[-F[-X][+X]][+F[-X][+X]]][+F[-F[-X][+X]][+F[-X][+X]]]][+F[-F[-F[-X][+X]][+F[-X][+X]]][+F[-F[-X][+X]][+F[-X][+X]]]]][+F[-F[-F[-F[-X][+X]][+F[-X][+X]]][+F[-F[-X][+X]][+F[-X][+X]]]][+F[-F[-F[-X][+X]][+F[-X][+X]]][+F[-F[-X][+X]][+F[-X][+X]]]]]][+F[-F[-F[-F[-F[-X][+X]][+F[-X][+X]]][+F[-F[-X][+X]][+F[-X][+X]]]][+F[-F[-F[-X][+X]][+F[-X][+X]]][+F[-F[-X][+X]][+F[-X][+X]]]]][+F[-F[-F[-F[-X][+X]][+F[-X][+X]]][+F[-F[-X][+X]][+F[-X][+X]]]][+F[-F[-F[-X][+X]][+F[-X][+X]]][+F[-F[-X][+X]][+F[-X][+X]]]]]]][+F[-F[-F[-F[-F[-F[-X][+X]][+F[-X][+X]]][+F[-F[-X][+X]][+F[-X][+X]]]][+F[-F[-F[-X][+X]][+F[-X][+X]]][+F[-F[-X][+X]][+F[-X][+X]]]]][+F[-F[-F[-F[-X][+X]][+F[-X][+X]]][+F[-F[-X][+X]][+F[-X][+X]]]][+F[-F[-F[-X][+X]][+F[-X][+X]]][+F[-F[-X][+X]][+F[-X][+X]]]]]][+F[-F[-F[-F[-F[-X][+X]][+F[-X][+X]]][+F[-F[-X][+X]][+F[-X][+X]]]][+F[-F[-F[-X][+X]][+F[-X][+X]]][+F[-F[-X][+X]][+F[-X][+X]]]]][+F[-F[-F[-F[-X][+X]][+F[-X][+X]]][+F[-F[-X][+X]][+F[-X][+X]]]][+F[-F[-F[-X][+X]][+F[-X][+X]]][+F[-F[-X][+X]][+F[-X][+X]]]]]]]]][+F[-F[-F[-F[-F[-F[-F[-F[-X][+X]][+F[-X][+X]]][+F[-F[-X][+X]][+F[-X][+X]]]][+F[-F[-F[-X][+X]][+F[-X][+X]]][+F[-F[-X][+X]][+F[-X][+X]]]]][+F[-F[-F[-F[-X][+X]][+F[-X][+X]]][+F[-F[-X][+X]][+F[-X][+X]]]][+F[-F[-F[-X][+X]][+F[-X][+X]]][+F[-F[-X][+X]][+F[-X][+X]]]]]][+F[-F[-F[-F[-F[-X][+X]][+F[-X][+X]]][+F[-F[-X][+X]][+F[-X][+X]]]][+F[-F[-F[-X][+X]][+F[-X][+X]]][+F[-F[-X][+X]][+F[-X][+X]]]]][+F[-F[-F[-F[-X][+X]][+F[-X][+X]]][+F[-F[-X][+X]][+F[-X][+X]]]][+F[-F[-F[-X][+X]][+F[-X][+X]]][+F[-F[-X][+X]][+F[-X][+X]]]]]]][+F[-F[-F[-F[-F[-F[-X][+X]][+F[-X][+X]]][+F[-F[-X][+X]][+F[-X][+X]]]][+F[-F[-F[-X][+X]][+F[-X][+X]]][+F[-F[-X][+X]][+F[-X][+X]]]]][+F[-F[-F[-F[-X][+X]][+F[-X][+X]]][+F[-F[-X][+X]][+F[-X][+X]]]][+F[-F[-F[-X][+X]][+F[-X][+X]]][+F[-F[-X][+X]][+F[-X][+X]]]]]][+F[-F[-F[-F[-F[-X][+X]][+F[-X][+X]]][+F[-F[-X][+X]][+F[-X][+X]]]][+F[-F[-F[-X][+X]][+F[-X][+X]]][+F[-F[-X][+X]][+F[-X][+X]]]]][+F[-F[-F[-F[-X][+X]][+F[-X][+X]]][+F[-F[-X][+X]][+F[-X][+X]]]][+F[-F[-F[-X][+X]][+F[-X][+X]]][+F[-F[-X][+X]][+F[-X][+X]]]]]]]][+F[-F[-F[-F[-F[-F[-F[-X][+X]][+F[-X][+X]]][+F[-F[-X][+X]][+F[-X][+X]]]][+F[-F[-F[-X][+X]][+F[-X][+X]]][+F[-F[-X][+X]][+F[-X][+X]]]]][+F[-F[-F[-F[-X][+X]][+F[-X][+X]]][+F[-F[-X][+X]][+F[-X][+X]]]][+F[-F[-F[-X][+X]][+F[-X][+X]]][+F[-F[-X][+X]][+F[-X][+X]]]]]][+F[-F[-F[-F[-F[-X][+X]][+F[-X][+X]]][+F[-F[-X][+X]][+F[-X][+X]]]][+F[-F[-F[-X][+X]][+F[-X][+X]]][+F[-F[-X][+X]][+F[-X][+X]]]]][+F[-F[-F[-F[-X][+X]][+F[-X][+X]]][+F[-F[-X][+X]][+F[-X][+X]]]][+F[-F[-F[-X][+X]][+F[-X][+X]]][+F[-F[-X][+X]][+F[-X][+X]]]]]]][+F[-F[-F[-F[-F[-F[-X][+X]][+F[-X][+X]]][+F[-F[-X][+X]][+F[-X][+X]]]][+F[-F[-F[-X][+X]][+F[-X][+X]]][+F[-F[-X][+X]][+F[-X][+X]]]]][+F[-F[-F[-F[-X][+X]][+F[-X][+X]]][+F[-F[-X][+X]][+F[-X][+X]]]][+F[-F[-F[-X][+X]][+F[-X][+X]]][+F[-F[-X][+X]][+F[-X][+X]]]]]][+F[-F[-F[-F[-F[-X][+X]][+F[-X][+X]]][+F[-F[-X][+X]][+F[-X][+X]]]][+F[-F[-F[-X][+X]][+F[-X][+X]]][+F[-F[-X][+X]][+F[-X][+X]]]]][+F[-F[-F[-F[-X][+X]][+F[-X][+X]]][+F[-F[-X][+X]][+F[-X][+X]]]][+F[-F[-F[-X][+X]][+F[-X][+X]]][+F[-F[-X][+X]][+F[-X][+X]]]]]]]]]";
 
-    glm::mat4 translate, rotate, scale;
-    scale = glm::scale(glm::mat4(), SCALE_FACTOR);
+    glm::mat4 scale = glm::scale(glm::mat4(), SCALE_FACTOR);
 
     std::string term;
-    std::vector<glm::mat4> mats = { };
-    std::vector<glm::mat4> prevMats = { scale * model };
-
-    // need to skip past first F in this strat, there might be a better way tho
-    int start = string.find("[") + 1;
-    int termStart = start;
+    glm::mat4 currMat = scale * model;
+    std::vector<glm::mat4> mats = { currMat };
+    std::vector<glm::mat4> prevMats = { };
 
     // parse the string
-    for (size_t i = start ; i < string.size() ; i++) {
-        if (string[i] == '[') {
-            term = string.substr(termStart, i - termStart);
-
-            if (term.compare("+F") == 0 || term.compare("F") == 0) {
-                rotate = glm::rotate(Tree::ANGLE, ROTATE_AXIS);
-                translate = glm::translate(glm::mat4(), TRANSLATE);
-                prevMats.push_back(translate * rotate * scale * prevMats.back());
-            } else if (term.compare("-F") == 0) {
-                rotate = glm::rotate(-Tree::ANGLE, ROTATE_AXIS);
-                translate = glm::translate(glm::mat4(), glm::vec3(TRANSLATE.xy(), TRANSLATE.z * -1.f));
-                prevMats.push_back(translate * rotate * scale * prevMats.back());
+    float translateCoeff = 1.f;
+    for (size_t i = 0 ; i < string.size() ; i++) {
+        switch (string[i]) {
+            case 'F':
+            case 'X': {
+                if (prevMats.size() != 0) {
+                    currMat = glm::translate(glm::mat4(), glm::vec3(TRANSLATE.xy(), translateCoeff * TRANSLATE.z)) * currMat;
+                }
+                break;
             }
+            case '-': {
+                currMat = glm::rotate(Tree::ANGLE, ROTATE_AXIS) * currMat;
+                translateCoeff = 1.f;
+                break;
+            }
+            case '+': {
+                currMat = glm::rotate(-Tree::ANGLE, ROTATE_AXIS) * currMat;
+                translateCoeff = -1.f;
+                break;
+            }
+            case '[': {
+                prevMats.push_back(currMat);
+                currMat = scale * currMat;
+                break;
+            }
+            case ']': {
+                mats.push_back(currMat);
 
-            termStart = i + 1;
-        } else if (string[i] == ']') {
-            term = string.substr(termStart, i - termStart);
+                currMat = prevMats.back();
 
-            glm::mat4 mat;
-            if (term.compare("+X") == 0 || term.compare("X") == 0) {
-                rotate = glm::rotate(Tree::ANGLE, ROTATE_AXIS);
-                translate = glm::translate(glm::mat4(), TRANSLATE);
-                mat = translate * rotate * scale * prevMats.back();
-            } else if (term.compare("-X") == 0) {
-                rotate = glm::rotate(-Tree::ANGLE, ROTATE_AXIS);
-                translate = glm::translate(glm::mat4(), glm::vec3(TRANSLATE.xy(), TRANSLATE.z * -1.f));
-                mat = translate * rotate * scale * prevMats.back();
-            } else {
-                mat = prevMats.back();
                 prevMats.pop_back();
+                break;
             }
-
-            mats.push_back(mat);
-            termStart = i + 1;
+        default:
+            std::cout << "BAD LSYSTEM SYMBOL:  " << string[i] << std::endl;
+            break;
         }
     }
-
-    mats.push_back(prevMats.back());
-    prevMats.pop_back();
 
     return mats;
 }
