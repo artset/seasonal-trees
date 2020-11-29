@@ -3,7 +3,7 @@
 #include <random>
 
 LSystem::LSystem():
-    m_recursions(4),
+    m_recursions(2),
     m_sequence("X")
 {
     m_rules.insert(std::pair<std::string, std::vector<std::string>>("F", {"F", "F[+F]F[-F]F", "FF", "FF+[+F-F-F]-[-F+F+F]", "F[-F][+F]", "FX[FX[+XF]]", "FXF[-F[-FX]+FX]"}));
@@ -19,6 +19,7 @@ void LSystem::generateSequence(){
     for (int i = 0; i < m_recursions; i++){
         expand();
     }
+    std::cout << "in generateSequence " << m_sequence << std::endl;
 }
 
 /**
@@ -55,4 +56,8 @@ int LSystem::getReplacementIndex(int maxIndex){
     std::mt19937 gen(rd());
     std::uniform_int_distribution<int> distrib(0, maxIndex);
     return distrib(gen);
+}
+
+std::string LSystem::getSequence(){
+    return m_sequence;
 }
