@@ -20,6 +20,7 @@
 #include <QtWidgets/QSpacerItem>
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
+#include <QtWidgets/QSlider>
 
 QT_BEGIN_NAMESPACE
 
@@ -43,6 +44,9 @@ public:
     QPushButton *cubeButton;
     QPushButton *cylinderTreeButton;
     QPushButton *coneTreeButton;
+
+    QLabel *recursionsLabel;
+    QSlider *recursionSlider;
 
     QFrame *line_2;
     QLabel *label_3;
@@ -141,6 +145,15 @@ public:
         coneTreeButton = new QPushButton(centralWidget);
         coneTreeButton->setObjectName(QString::fromUtf8("coneTreeButton"));
         verticalLayout->addWidget(coneTreeButton);
+
+        recursionsLabel = new QLabel(centralWidget);
+        recursionsLabel->setObjectName(QString::fromUtf8("recursionsLabel"));
+        verticalLayout->addWidget(recursionsLabel);
+        recursionSlider = new QSlider(centralWidget);
+        recursionSlider->setObjectName(QString::fromUtf8("recursionSlider"));
+        recursionSlider->setOrientation(Qt::Horizontal);
+        recursionSlider->setMaximumSize(QSize(150, 80));
+        verticalLayout->addWidget(recursionSlider);
 
         line_2 = new QFrame(centralWidget);
         line_2->setObjectName(QString::fromUtf8("line_2"));
@@ -289,6 +302,7 @@ public:
         cylinderTreeButton->setText(QCoreApplication::translate("MainWindow", "Cylinder", nullptr));
         coneTreeButton->setText(QCoreApplication::translate("MainWindow", "Cone", nullptr));
 
+        recursionsLabel->setText(QCoreApplication::translate("MainWindow", "Number of recursions:", nullptr));
 
         label_3->setText(QCoreApplication::translate("MainWindow", "Animations:", nullptr));
         animNoneButton->setText(QCoreApplication::translate("MainWindow", "None", nullptr));
