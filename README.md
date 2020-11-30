@@ -9,10 +9,10 @@ github: artset, lxcyqx, gkupsaw
 
 TODOS:
 
-- Recursive function that takes in string, outputs list of mat4 transformations - Griffin
-- Rounded cylinder ends - Katherine
-- Leaves mesh - Katherine
-- Add Lucy's code to our branch - Griffin
+[x] Recursive function that takes in string, outputs list of mat4 transformations - Griffin
+[x] Rounded cylinder ends - Katherine
+[x] Leaves mesh - Katherine
+[x] Add Lucy's code to our branch - Griffin
 - Position leaves ???
 
 
@@ -20,5 +20,5 @@ TODOS:
 
 - Separate shader for leaves and branches
 - UI toggles
-- Cones
-- Positioning leaves on cone?
+- Radial decay of branches - Mesh
+- parser can handle radial decay of branches

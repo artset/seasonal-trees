@@ -136,6 +136,7 @@ void GLWidget::initializeGL() {
 
     skybox_shader = ResourceLoader::newShaderProgram(context(), ":/shaders/skybox.vert", ":/shaders/skybox.frag");
     wireframe_shader = ResourceLoader::newShaderProgram(context(), ":/shaders/standard.vert", ":/shaders/color.frag");
+    leaf_shader = ResourceLoader::newShaderProgram(context(), ":/shaders/leaf.vert", ":/shaders/leaf.frag");
 
     s_skybox = new UniformVariable(this->context()->contextHandle());
     s_skybox->setName("skybox");
@@ -322,6 +323,10 @@ void GLWidget::renderTree() {
     //  Note: the wireframes won't work because it's not connected to that,
     // must choose a shader to get it working.
 
+    glm::mat4 initTranslate = glm::translate(glm::mat4(), glm::vec3(0.f, -2.f, 0.f));
+    glm::mat4 initScale = glm::scale(glm::mat4(), glm::vec3(0.5f, .5f, .5f));
+    model = initTranslate * initScale * model;
+
     std::vector<glm::mat4> trans = m_tree->getBranchData();
     glm::mat4 original = model;
 
@@ -348,7 +353,16 @@ bool GLWidget::hasSettingsChanged() {
 
 }
 
-
+void GLWidget::renderSkybox() {
+    skybox_shader->bind();
+    s_skybox->setValue(skybox_shader);
+    s_projection->setValue(skybox_shader);
+    s_view->setValue(skybox_shader);
+    glCullFace(GL_FRONT);
+    skybox_cube->draw();
+    glCullFace(GL_BACK);
+    skybox_shader->release();
+}
 void GLWidget::paintGL() {
     handleAnimation();
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -372,14 +386,8 @@ void GLWidget::paintGL() {
         renderWireframe();
     }
 
-    skybox_shader->bind();
-    s_skybox->setValue(skybox_shader);
-    s_projection->setValue(skybox_shader);
-    s_view->setValue(skybox_shader);
-    glCullFace(GL_FRONT);
-    skybox_cube->draw();
-    glCullFace(GL_BACK);
-    skybox_shader->release();
+    renderSkybox();
+
 }
 
 void GLWidget::changeRenderMode(RenderType mode)

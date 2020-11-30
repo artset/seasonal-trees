@@ -6,11 +6,18 @@ LSystem::LSystem():
     m_recursions(2),
     m_sequence("X")
 {
-    m_rules.insert(std::pair<std::string, std::vector<std::string>>("F",
-    {"F", "F[+F]F[-F]F", "FF", "FF+[+F-F-F]-[-F+F+F]", "F[-F][+F]", "FX[FX[+XF]]", "FXF[-F[-FX]+FX]"}));
+    // Straight tree.
+    m_rules.insert(std::pair<std::string, std::vector<std::string>>("F",{"FF"}));
+    m_rules.insert(std::pair<std::string, std::vector<std::string>>("X",{"F[+X][-X]FX"}));
 
-    m_rules.insert(std::pair<std::string, std::vector<std::string>>("X",
-    {"F-[[X]+X]+F[+FX]-X", "F[+X]F[-X]+X", "X[-FFF][+FFF]FX", "-F[+F][--X]+F-F[+++X]-X", "F++F"}));
+    // Wavy tree
+//    m_rules.insert(std::pair<std::string, std::vector<std::string>>("F",{"FF"}));
+//    m_rules.insert(std::pair<std::string, std::vector<std::string>>("X",{"F-[[X]+X]+F[+FX]-X"}));
+
+    // Other tree?
+//    m_rules.insert(std::pair<std::string, std::vector<std::string>>("F",{"FF"}));
+//    m_rules.insert(std::pair<std::string, std::vector<std::string>>("X",{"F[-X]F[-X]+X"}));
+
 
 }
 

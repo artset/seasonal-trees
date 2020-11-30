@@ -74,10 +74,11 @@ protected:
     void mouseMoveEvent(QMouseEvent *event);
     void wheelEvent(QWheelEvent *event);
 
-    void renderTree();
     void buildTree();
     void bindAndUpdateShader();
     void renderWireframe();
+    void renderTree();
+    void renderSkybox();
     bool hasSettingsChanged();
 
 private:
@@ -95,6 +96,8 @@ private:
     QGLShaderProgram *wireframe_shader;
     QGLShaderProgram *wireframe_shader2;
     QGLShaderProgram *current_shader;
+
+    QGLShaderProgram *leaf_shader;
 
     QList<const UniformVariable*> *activeUniforms;
     QList<const UniformVariable*> permUniforms;

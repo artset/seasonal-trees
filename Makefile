@@ -829,11 +829,13 @@ compiler_rcc_clean:
 	-$(DEL_FILE) qrc_resources.cpp
 qrc_resources.cpp: resources.qrc \
 		../../../Qt5.14.2/5.14.2/clang_64/bin/rcc \
+		leaf.vert \
 		glass.vars \
 		default.frag \
 		skybox.vert \
 		glass.vert \
 		metal.frag \
+		leaf.frag \
 		metal.vars \
 		standard.vert \
 		default.vert \
