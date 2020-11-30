@@ -9,16 +9,20 @@ github: artset, lxcyqx, gkupsaw
 
 TODOS:
 
-[x] Recursive function that takes in string, outputs list of mat4 transformations - Griffin
-[x] Rounded cylinder ends - Katherine
-[x] Leaves mesh - Katherine
-[x] Add Lucy's code to our branch - Griffin
-- Position leaves ???
+- [x] Recursive function that takes in string, outputs list of mat4 transformations - Griffin
+- [x] Rounded cylinder ends - Katherine
+- [x] Leaves mesh - Katherine
+- [x] Add Lucy's code to our branch - Griffin
+- [ ] Position leaves ???
+- [ ] Stochastically rotating branches
+- [ ] Avoid collisions/intersections of branches
 
 
 ---
 
-- Separate shader for leaves and branches
-- UI toggles
-- Radial decay of branches - Mesh
-- parser can handle radial decay of branches
+- [ ] Separate shader for leaves and branches
+- [ ] UI toggles
+- [ ] Radial decay of branches - Mesh
+- [ ] parser can handle radial decay of branches
+
+- [ ] Figure out how to use meshes instead of primitives (big maybe)
