@@ -11,8 +11,8 @@ LSystem::LSystem():
 //    m_rules.insert(std::pair<std::string, std::vector<std::string>>("X",{"F[+X][-X]FX"}));
 
 //    // Wavy tree
-//    m_rules.insert(std::pair<std::string, std::vector<std::string>>("F",{"FF"}));
-//    m_rules.insert(std::pair<std::string, std::vector<std::string>>("X",{"F-[[X]+X]+F[+FX]-X"}));
+    m_rules.insert(std::pair<std::string, std::vector<std::string>>("F",{"FF"}));
+    m_rules.insert(std::pair<std::string, std::vector<std::string>>("X",{"F-[[X]+X]+F[+FX]-X"}));
 
     // Other tree?
 //    m_rules.insert(std::pair<std::string, std::vector<std::string>>("F",{"FF"}));
@@ -20,8 +20,8 @@ LSystem::LSystem():
 
 
     // Sierpinski's Triangle
-    m_rules.insert(std::pair<std::string, std::vector<std::string>>("F",{"+X-F-X+"}));
-    m_rules.insert(std::pair<std::string, std::vector<std::string>>("X",{"-F+X+F-"}));
+//    m_rules.insert(std::pair<std::string, std::vector<std::string>>("F",{"+X-F-X+"}));
+//    m_rules.insert(std::pair<std::string, std::vector<std::string>>("X",{"-F+X+F-"}));
 
 }
 
