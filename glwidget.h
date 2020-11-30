@@ -75,9 +75,12 @@ protected:
     void wheelEvent(QWheelEvent *event);
 
     void buildTree();
-    void bindAndUpdateShader();
+    void bindAndUpdateShader(QGLShaderProgram *shader);
+    void releaseShader(QGLShaderProgram *shader);
+
     void renderWireframe();
-    void renderTree();
+    void renderBranches();
+    void renderLeaves();
     void renderSkybox();
     bool hasSettingsChanged();
 

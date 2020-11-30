@@ -31,6 +31,7 @@ struct Settings {
     //Final
     int recursions;
     float angle;
+    float leafSize;
 
 };
 
