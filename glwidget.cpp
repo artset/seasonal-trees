@@ -3,6 +3,7 @@
 #include <sstream>
 
 #include "shapes/RoundedCylinder.h"
+#include "shapes/Leaf.h"
 #include "shapes/Sphere.h"
 #include "shapes/Cone.h"
 #include "shapes/cube.h"
@@ -135,6 +136,7 @@ void GLWidget::initializeGL() {
 
     skybox_shader = ResourceLoader::newShaderProgram(context(), ":/shaders/skybox.vert", ":/shaders/skybox.frag");
     wireframe_shader = ResourceLoader::newShaderProgram(context(), ":/shaders/standard.vert", ":/shaders/color.frag");
+    leaf_shader = ResourceLoader::newShaderProgram(context(), ":/shaders/leaf.vert", ":/shaders/leaf.frag");
 
     s_skybox = new UniformVariable(this->context()->contextHandle());
     s_skybox->setName("skybox");
@@ -184,29 +186,28 @@ void GLWidget::initializeGL() {
 
     const int NUM_FLOATS_PER_VERTEX = 3;
 
-
-    std::unique_ptr<Shape> test = std::make_unique<RoundedCylinder>(7, 7);
-    std::vector<GLfloat> testData = test->getData();
+    std::unique_ptr<Shape> sphere = std::make_unique<RoundedCylinder>(7, 7);
+    std::vector<GLfloat> sphereData = sphere->getData();
     m_sphere = std::make_unique<OpenGLShape>();
-    m_sphere->setVertexData(&testData[0], testData.size(), VBO::GEOMETRY_LAYOUT::LAYOUT_TRIANGLES, testData.size());
+    m_sphere->setVertexData(&sphereData[0], sphereData.size(), VBO::GEOMETRY_LAYOUT::LAYOUT_TRIANGLES, sphereData.size());
     m_sphere->setAttribute(ShaderAttrib::POSITION, 3, 0, VBOAttribMarker::DATA_TYPE::FLOAT, false);
     m_sphere->setAttribute(ShaderAttrib::NORMAL, 3, 3*sizeof(GLfloat), VBOAttribMarker::DATA_TYPE::FLOAT, false);
     m_sphere->buildVAO();
 
-//    std::unique_ptr<Shape> sphere = std::make_unique<Sphere>(7, 7);
-//    std::vector<GLfloat> sphereData = sphere->getData();
-//    m_sphere = std::make_unique<OpenGLShape>();
-//    m_sphere->setVertexData(&sphereData[0], sphereData.size(), VBO::GEOMETRY_LAYOUT::LAYOUT_TRIANGLES, sphereData.size());
-//    m_sphere->setAttribute(ShaderAttrib::POSITION, 3, 0, VBOAttribMarker::DATA_TYPE::FLOAT, false);
-//    m_sphere->setAttribute(ShaderAttrib::NORMAL, 3, 3*sizeof(GLfloat), VBOAttribMarker::DATA_TYPE::FLOAT, false);
-//    m_sphere->buildVAO();
-
-    std::vector<GLfloat> cubeData = CUBE_DATA_POSITIONS;
+    std::unique_ptr<Shape> test = std::make_unique<Leaf>(6, 1);
+    std::vector<GLfloat> testData = test->getData();
     m_cube = std::make_unique<OpenGLShape>();
-    m_cube->setVertexData(&cubeData[0], cubeData.size(), VBO::GEOMETRY_LAYOUT::LAYOUT_TRIANGLES, NUM_CUBE_VERTICES);
+    m_cube->setVertexData(&testData[0], testData.size(), VBO::GEOMETRY_LAYOUT::LAYOUT_TRIANGLES, testData.size());
     m_cube->setAttribute(ShaderAttrib::POSITION, 3, 0, VBOAttribMarker::DATA_TYPE::FLOAT, false);
     m_cube->setAttribute(ShaderAttrib::NORMAL, 3, 3*sizeof(GLfloat), VBOAttribMarker::DATA_TYPE::FLOAT, false);
     m_cube->buildVAO();
+
+    std::vector<GLfloat> cubeData = CUBE_DATA_POSITIONS;
+//    m_cube = std::make_unique<OpenGLShape>();
+//    m_cube->setVertexData(&cubeData[0], cubeData.size(), VBO::GEOMETRY_LAYOUT::LAYOUT_TRIANGLES, NUM_CUBE_VERTICES);
+//    m_cube->setAttribute(ShaderAttrib::POSITION, 3, 0, VBOAttribMarker::DATA_TYPE::FLOAT, false);
+//    m_cube->setAttribute(ShaderAttrib::NORMAL, 3, 3*sizeof(GLfloat), VBOAttribMarker::DATA_TYPE::FLOAT, false);
+//    m_cube->buildVAO();
 
     skybox_cube = std::make_unique<OpenGLShape>();
     skybox_cube->setVertexData(&cubeData[0], cubeData.size(), VBO::GEOMETRY_LAYOUT::LAYOUT_TRIANGLES, NUM_CUBE_VERTICES);
@@ -282,14 +283,21 @@ void GLWidget::handleAnimation() {
 }
 
 // Refactored out of the paintGL class for flexibility
-void GLWidget::bindAndUpdateShader() {
-    if (current_shader) {
-        current_shader->bind();
+void GLWidget::bindAndUpdateShader(QGLShaderProgram *shader) {
+    if (shader) {
+        shader->bind();
         foreach (const UniformVariable *var, *activeUniforms) {
-            var->setValue(current_shader);
+            var->setValue(shader);
         }
     }
 }
+
+void GLWidget::releaseShader(QGLShaderProgram *shader) {
+    if (shader) {
+        shader->release();
+    }
+}
+
 
 void GLWidget::renderWireframe() {
     if (drawWireframe) {
@@ -317,7 +325,7 @@ void GLWidget::renderWireframe() {
         glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     }
 }
-void GLWidget::renderTree() {
+void GLWidget::renderBranches() {
     //  Note: the wireframes won't work because it's not connected to that,
     // must choose a shader to get it working.
 
@@ -328,10 +336,23 @@ void GLWidget::renderTree() {
         model = trans[i];
         modelChanged(model);
         modelviewProjectionChanged(camera->getProjectionMatrix() * camera->getModelviewMatrix());
-        bindAndUpdateShader(); // needed before calling draw.
+        bindAndUpdateShader(current_shader); // needed before calling draw.
         m_shape->draw();
     }
     model = original; // resets model back to the init
+
+    releaseShader(current_shader);
+}
+
+void GLWidget::renderLeaves() {
+    glm::mat4 oldModel = model;
+    model = glm::scale(glm::mat4(), glm::vec3(settings.leafSize, .5, 1.f));
+    modelChanged(model);
+    modelviewProjectionChanged(camera->getProjectionMatrix() * camera->getModelviewMatrix());
+    bindAndUpdateShader(leaf_shader);
+    m_shape->draw();
+    releaseShader(leaf_shader);
+
 }
 
 // TODO: any changes to the UI component should also add to this function.
@@ -347,6 +368,16 @@ bool GLWidget::hasSettingsChanged() {
 
 }
 
+void GLWidget::renderSkybox() {
+    skybox_shader->bind();
+    s_skybox->setValue(skybox_shader);
+    s_projection->setValue(skybox_shader);
+    s_view->setValue(skybox_shader);
+    glCullFace(GL_FRONT);
+    skybox_cube->draw();
+    glCullFace(GL_BACK);
+    skybox_shader->release();
+}
 
 void GLWidget::paintGL() {
     handleAnimation();
@@ -357,28 +388,28 @@ void GLWidget::paintGL() {
             if (hasSettingsChanged()) {
                 m_tree->buildTree(model);
             } else {
-                renderTree();
+                renderBranches();
             }
+
         } else {// todo: remove this once all primitives are made :)
-            bindAndUpdateShader();
-            m_shape->draw();
+            if (m_renderMode == SHAPE_CUBE) {
+                renderLeaves();
+            } else {
+                bindAndUpdateShader(current_shader);
+                m_shape->draw();
+                releaseShader(current_shader);
+
+            }
         }
 
-        if (current_shader) {
-            current_shader->release();
-        }
+
+//        if (current_shader) {
+//            current_shader->release();
+//        }
 
         renderWireframe();
     }
-
-    skybox_shader->bind();
-    s_skybox->setValue(skybox_shader);
-    s_projection->setValue(skybox_shader);
-    s_view->setValue(skybox_shader);
-    glCullFace(GL_FRONT);
-    skybox_cube->draw();
-    glCullFace(GL_BACK);
-    skybox_shader->release();
+    renderSkybox();
 }
 
 void GLWidget::changeRenderMode(RenderType mode)

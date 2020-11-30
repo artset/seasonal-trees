@@ -7,6 +7,16 @@
 #include "glm/glm.hpp"
 #include "LSystem/LSystem.h"
 
+struct LState {
+    glm::mat4 translate;
+    glm::mat4 rotate;
+    glm::mat4 scale;
+    float length;
+
+    glm::mat4 initialRotate;
+    glm::mat4 initialScale;
+};
+
 class Tree
 {
 public:
@@ -15,9 +25,11 @@ public:
     void buildTree(const glm::mat4 &model);
     std::vector<glm::mat4> getBranchData();
 private:
+    static const float BRANCH_LENGTH;
     static const glm::vec3 SCALE_FACTOR;
     static const glm::vec3 TRANSLATE;
-    static const glm::vec3 ROTATE_AXIS;
+    static const std::vector<glm::vec3> ROTATE_AXES;
+
     std::vector<glm::mat4> processBranch(const glm::mat4 &curr, const std::string &string);
     LSystem m_lsystem;
     std::vector<glm::mat4> m_branchData;

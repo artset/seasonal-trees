@@ -274,7 +274,10 @@ void MainWindow::dataBind(){
     BIND(IntBinding::bindSliderAndTextbox(
         ui->recursionSlider, ui->recursionsTextbox, settings.recursions, 0, 10));
     BIND(FloatBinding::bindSliderAndTextbox(
-        ui->angleSlider, ui->angleTextbox, settings.angle, 0, 360));
+        ui->angleSlider, ui->angleTextbox, settings.angle, 10, 90));
+
+    BIND(FloatBinding::bindSliderAndTextbox(
+        ui->leafSizeSlider, ui->leafSizeTextbox, settings.leafSize, .3, 10));
 
 }
 

@@ -74,13 +74,18 @@ protected:
     void mouseMoveEvent(QMouseEvent *event);
     void wheelEvent(QWheelEvent *event);
 
-    void renderTree();
     void buildTree();
-    void bindAndUpdateShader();
+    void bindAndUpdateShader(QGLShaderProgram *shader);
+    void releaseShader(QGLShaderProgram *shader);
+
     void renderWireframe();
+    void renderBranches();
+    void renderLeaves();
+    void renderSkybox();
     bool hasSettingsChanged();
 
 private:
+    std::unique_ptr<OpenGLShape> m_leaf;
     std::unique_ptr<OpenGLShape> m_sphere;
     std::unique_ptr<OpenGLShape> m_cylinder;
     std::unique_ptr<OpenGLShape> m_cube;
@@ -94,6 +99,8 @@ private:
     QGLShaderProgram *wireframe_shader;
     QGLShaderProgram *wireframe_shader2;
     QGLShaderProgram *current_shader;
+
+    QGLShaderProgram *leaf_shader;
 
     QList<const UniformVariable*> *activeUniforms;
     QList<const UniformVariable*> permUniforms;

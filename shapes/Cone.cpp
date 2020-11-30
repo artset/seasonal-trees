@@ -3,13 +3,11 @@
 Cone::Cone(int param1, int param2):
     Shape(param1, param2, glm::mat4(1.f))
 {
-    setUpShapeComponents();
 }
 
 Cone::Cone(int param1, int param2, glm::mat4 transformation):
     Shape(param1, param2, transformation)
 {
-    setUpShapeComponents();
 }
 
 Cone::~Cone() {

@@ -63,6 +63,7 @@ SOURCES       = LSystem/LSystem.cpp \
 		shapes/Cone.cpp \
 		shapes/ConeComponent.cpp \
 		shapes/Cylinder.cpp \
+		shapes/Leaf.cpp \
 		shapes/RoundedCylinder.cpp \
 		shapes/Shape.cpp \
 		shapes/ShapeComponent.cpp \
@@ -98,6 +99,7 @@ OBJECTS       = LSystem.o \
 		Cone.o \
 		ConeComponent.o \
 		Cylinder.o \
+		Leaf.o \
 		RoundedCylinder.o \
 		Shape.o \
 		ShapeComponent.o \
@@ -314,6 +316,7 @@ DIST          = README.md \
 		shapes/Cone.h \
 		shapes/ConeComponent.h \
 		shapes/Cylinder.h \
+		shapes/Leaf.h \
 		shapes/RoundedCylinder.h \
 		shapes/Shape.h \
 		shapes/ShapeComponent.h \
@@ -351,6 +354,7 @@ DIST          = README.md \
 		shapes/Cone.cpp \
 		shapes/ConeComponent.cpp \
 		shapes/Cylinder.cpp \
+		shapes/Leaf.cpp \
 		shapes/RoundedCylinder.cpp \
 		shapes/Shape.cpp \
 		shapes/ShapeComponent.cpp \
@@ -791,8 +795,8 @@ distdir: FORCE
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents resources.qrc $(DISTDIR)/
 	$(COPY_FILE) --parents ../../../Qt5.14.2/5.14.2/clang_64/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents LSystem/LSystem.h lib/Utilities.h shapes/BarrelComponent.h shapes/CircleComponent.h shapes/Cone.h shapes/ConeComponent.h shapes/Cylinder.h shapes/RoundedCylinder.h shapes/Shape.h shapes/ShapeComponent.h shapes/Sphere.h shapes/SphereComponent.h shapes/triangle.h tree/Tree.h ui/Databinding.h ui/Settings.h ui_mainwindow.h glew-1.10.0/include/GL/glew.h glwidget.h mainwindow.h uniforms/uniformvariable.h lib/common.h uniforms/uniformwidget.h camera/orbitingcamera.h camera/camera.h uniforms/varsfile.h shapes/cube.h lib/resourceloader.h shapes/sphere.h shapes/openglshape.h gl/datatype/vbo.h gl/datatype/vboattribmarker.h gl/shaders/shaderattriblocations.h gl/datatype/vao.h $(DISTDIR)/
-	$(COPY_FILE) --parents LSystem/LSystem.cpp lib/Utilities.cpp main.cpp glew-1.10.0/src/glew.c glwidget.cpp mainwindow.cpp shapes/BarrelComponent.cpp shapes/CircleComponent.cpp shapes/Cone.cpp shapes/ConeComponent.cpp shapes/Cylinder.cpp shapes/RoundedCylinder.cpp shapes/Shape.cpp shapes/ShapeComponent.cpp shapes/Sphere.cpp shapes/SphereComponent.cpp shapes/triangle.cpp tree/Tree.cpp ui/Databinding.cpp ui/Settings.cpp uniforms/uniformvariable.cpp uniforms/uniformwidget.cpp camera/orbitingcamera.cpp uniforms/varsfile.cpp lib/resourceloader.cpp gl/datatype/vbo.cpp gl/datatype/vboattribmarker.cpp shapes/openglshape.cpp gl/datatype/vao.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents LSystem/LSystem.h lib/Utilities.h shapes/BarrelComponent.h shapes/CircleComponent.h shapes/Cone.h shapes/ConeComponent.h shapes/Cylinder.h shapes/Leaf.h shapes/RoundedCylinder.h shapes/Shape.h shapes/ShapeComponent.h shapes/Sphere.h shapes/SphereComponent.h shapes/triangle.h tree/Tree.h ui/Databinding.h ui/Settings.h ui_mainwindow.h glew-1.10.0/include/GL/glew.h glwidget.h mainwindow.h uniforms/uniformvariable.h lib/common.h uniforms/uniformwidget.h camera/orbitingcamera.h camera/camera.h uniforms/varsfile.h shapes/cube.h lib/resourceloader.h shapes/sphere.h shapes/openglshape.h gl/datatype/vbo.h gl/datatype/vboattribmarker.h gl/shaders/shaderattriblocations.h gl/datatype/vao.h $(DISTDIR)/
+	$(COPY_FILE) --parents LSystem/LSystem.cpp lib/Utilities.cpp main.cpp glew-1.10.0/src/glew.c glwidget.cpp mainwindow.cpp shapes/BarrelComponent.cpp shapes/CircleComponent.cpp shapes/Cone.cpp shapes/ConeComponent.cpp shapes/Cylinder.cpp shapes/Leaf.cpp shapes/RoundedCylinder.cpp shapes/Shape.cpp shapes/ShapeComponent.cpp shapes/Sphere.cpp shapes/SphereComponent.cpp shapes/triangle.cpp tree/Tree.cpp ui/Databinding.cpp ui/Settings.cpp uniforms/uniformvariable.cpp uniforms/uniformwidget.cpp camera/orbitingcamera.cpp uniforms/varsfile.cpp lib/resourceloader.cpp gl/datatype/vbo.cpp gl/datatype/vboattribmarker.cpp shapes/openglshape.cpp gl/datatype/vao.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents ui/mainwindow.ui $(DISTDIR)/
 
 
@@ -825,11 +829,13 @@ compiler_rcc_clean:
 	-$(DEL_FILE) qrc_resources.cpp
 qrc_resources.cpp: resources.qrc \
 		../../../Qt5.14.2/5.14.2/clang_64/bin/rcc \
+		leaf.vert \
 		glass.vars \
 		default.frag \
 		skybox.vert \
 		glass.vert \
 		metal.frag \
+		leaf.frag \
 		metal.vars \
 		standard.vert \
 		default.vert \
@@ -1000,6 +1006,7 @@ moc_glwidget.cpp: glwidget.h \
 		shapes/BarrelComponent.h \
 		tree/Tree.h \
 		LSystem/LSystem.h \
+		ui/Settings.h \
 		moc_predefs.h \
 		../../../Qt5.14.2/5.14.2/clang_64/bin/moc
 	/Users/ksang/Qt5.14.2/5.14.2/clang_64/bin/moc $(DEFINES) --include /Users/ksang/Documents/cs1230/cs123-final/moc_predefs.h -I/Users/ksang/Qt5.14.2/5.14.2/clang_64/mkspecs/macx-clang -I/Users/ksang/Documents/cs1230/cs123-final -I/Users/ksang/Documents/cs1230/cs123-final/glm -I/Users/ksang/Documents/cs1230/cs123-final/ui -I/Users/ksang/Documents/cs1230/cs123-final/glew-1.10.0/include -I/Users/ksang/Qt5.14.2/5.14.2/clang_64/lib/QtOpenGL.framework/Headers -I/Users/ksang/Qt5.14.2/5.14.2/clang_64/lib/QtWidgets.framework/Headers -I/Users/ksang/Qt5.14.2/5.14.2/clang_64/lib/QtGui.framework/Headers -I/Users/ksang/Qt5.14.2/5.14.2/clang_64/lib/QtXml.framework/Headers -I/Users/ksang/Qt5.14.2/5.14.2/clang_64/lib/QtCore.framework/Headers -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1 -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/11.0.3/include -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk/usr/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -F/Users/ksang/Qt5.14.2/5.14.2/clang_64/lib glwidget.h -o moc_glwidget.cpp
@@ -1128,6 +1135,7 @@ moc_mainwindow.cpp: mainwindow.h \
 		shapes/BarrelComponent.h \
 		tree/Tree.h \
 		LSystem/LSystem.h \
+		ui/Settings.h \
 		moc_predefs.h \
 		../../../Qt5.14.2/5.14.2/clang_64/bin/moc
 	/Users/ksang/Qt5.14.2/5.14.2/clang_64/bin/moc $(DEFINES) --include /Users/ksang/Documents/cs1230/cs123-final/moc_predefs.h -I/Users/ksang/Qt5.14.2/5.14.2/clang_64/mkspecs/macx-clang -I/Users/ksang/Documents/cs1230/cs123-final -I/Users/ksang/Documents/cs1230/cs123-final/glm -I/Users/ksang/Documents/cs1230/cs123-final/ui -I/Users/ksang/Documents/cs1230/cs123-final/glew-1.10.0/include -I/Users/ksang/Qt5.14.2/5.14.2/clang_64/lib/QtOpenGL.framework/Headers -I/Users/ksang/Qt5.14.2/5.14.2/clang_64/lib/QtWidgets.framework/Headers -I/Users/ksang/Qt5.14.2/5.14.2/clang_64/lib/QtGui.framework/Headers -I/Users/ksang/Qt5.14.2/5.14.2/clang_64/lib/QtXml.framework/Headers -I/Users/ksang/Qt5.14.2/5.14.2/clang_64/lib/QtCore.framework/Headers -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1 -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/11.0.3/include -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk/usr/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -F/Users/ksang/Qt5.14.2/5.14.2/clang_64/lib mainwindow.h -o moc_mainwindow.cpp
@@ -1254,6 +1262,7 @@ moc_uniformwidget.cpp: uniforms/uniformwidget.h \
 		shapes/BarrelComponent.h \
 		tree/Tree.h \
 		LSystem/LSystem.h \
+		ui/Settings.h \
 		moc_predefs.h \
 		../../../Qt5.14.2/5.14.2/clang_64/bin/moc
 	/Users/ksang/Qt5.14.2/5.14.2/clang_64/bin/moc $(DEFINES) --include /Users/ksang/Documents/cs1230/cs123-final/moc_predefs.h -I/Users/ksang/Qt5.14.2/5.14.2/clang_64/mkspecs/macx-clang -I/Users/ksang/Documents/cs1230/cs123-final -I/Users/ksang/Documents/cs1230/cs123-final/glm -I/Users/ksang/Documents/cs1230/cs123-final/ui -I/Users/ksang/Documents/cs1230/cs123-final/glew-1.10.0/include -I/Users/ksang/Qt5.14.2/5.14.2/clang_64/lib/QtOpenGL.framework/Headers -I/Users/ksang/Qt5.14.2/5.14.2/clang_64/lib/QtWidgets.framework/Headers -I/Users/ksang/Qt5.14.2/5.14.2/clang_64/lib/QtGui.framework/Headers -I/Users/ksang/Qt5.14.2/5.14.2/clang_64/lib/QtXml.framework/Headers -I/Users/ksang/Qt5.14.2/5.14.2/clang_64/lib/QtCore.framework/Headers -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1 -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/11.0.3/include -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk/usr/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -F/Users/ksang/Qt5.14.2/5.14.2/clang_64/lib uniforms/uniformwidget.h -o moc_uniformwidget.cpp
@@ -1795,7 +1804,8 @@ main.o: main.cpp ../../../Qt5.14.2/5.14.2/clang_64/lib/QtWidgets.framework/Heade
 		shapes/CircleComponent.h \
 		shapes/BarrelComponent.h \
 		tree/Tree.h \
-		LSystem/LSystem.h
+		LSystem/LSystem.h \
+		ui/Settings.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o main.cpp
 
 glew.o: glew-1.10.0/src/glew.c glew-1.10.0/include/GL/glew.h \
@@ -1924,9 +1934,11 @@ glwidget.o: glwidget.cpp glwidget.h \
 		shapes/BarrelComponent.h \
 		tree/Tree.h \
 		LSystem/LSystem.h \
+		ui/Settings.h \
 		../../../Qt5.14.2/5.14.2/clang_64/lib/QtGui.framework/Headers/QMouseEvent \
 		../../../Qt5.14.2/5.14.2/clang_64/lib/QtGui.framework/Headers/qevent.h \
 		shapes/RoundedCylinder.h \
+		shapes/Leaf.h \
 		shapes/Sphere.h \
 		shapes/SphereComponent.h \
 		shapes/Cone.h \
@@ -1942,8 +1954,7 @@ glwidget.o: glwidget.cpp glwidget.h \
 		../../../Qt5.14.2/5.14.2/clang_64/lib/QtCore.framework/Headers/QString \
 		../../../Qt5.14.2/5.14.2/clang_64/lib/QtCore.framework/Headers/qstring.h \
 		glm/gtc/type_ptr.hpp \
-		glm/gtc/type_ptr.inl \
-		ui/Settings.h
+		glm/gtc/type_ptr.inl
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o glwidget.o glwidget.cpp
 
 mainwindow.o: mainwindow.cpp mainwindow.h \
@@ -2070,6 +2081,7 @@ mainwindow.o: mainwindow.cpp mainwindow.h \
 		shapes/BarrelComponent.h \
 		tree/Tree.h \
 		LSystem/LSystem.h \
+		ui/Settings.h \
 		ui_mainwindow.h \
 		uniforms/uniformwidget.h \
 		../../../Qt5.14.2/5.14.2/clang_64/lib/QtWidgets.framework/Headers/QMessageBox \
@@ -2095,7 +2107,6 @@ mainwindow.o: mainwindow.cpp mainwindow.h \
 		../../../Qt5.14.2/5.14.2/clang_64/lib/QtWidgets.framework/Headers/qtabwidget.h \
 		../../../Qt5.14.2/5.14.2/clang_64/lib/QtWidgets.framework/Headers/QDial \
 		../../../Qt5.14.2/5.14.2/clang_64/lib/QtWidgets.framework/Headers/qdial.h \
-		ui/Settings.h \
 		../../../Qt5.14.2/5.14.2/clang_64/lib/QtCore.framework/Headers/QFileInfo \
 		../../../Qt5.14.2/5.14.2/clang_64/lib/QtCore.framework/Headers/qfileinfo.h \
 		../../../Qt5.14.2/5.14.2/clang_64/lib/QtGui.framework/Headers/QDesktopServices \
@@ -2624,6 +2635,110 @@ Cylinder.o: shapes/Cylinder.cpp shapes/Cylinder.h \
 		shapes/CircleComponent.h \
 		shapes/BarrelComponent.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o Cylinder.o shapes/Cylinder.cpp
+
+Leaf.o: shapes/Leaf.cpp shapes/Leaf.h \
+		shapes/Shape.h \
+		glm/glm.hpp \
+		glm/detail/_fixes.hpp \
+		glm/fwd.hpp \
+		glm/detail/type_int.hpp \
+		glm/detail/setup.hpp \
+		glm/detail/type_float.hpp \
+		glm/detail/type_vec.hpp \
+		glm/detail/precision.hpp \
+		glm/detail/type_mat.hpp \
+		glm/vec2.hpp \
+		glm/detail/type_vec2.hpp \
+		glm/detail/_swizzle.hpp \
+		glm/detail/_swizzle_func.hpp \
+		glm/detail/type_vec2.inl \
+		glm/vec3.hpp \
+		glm/detail/type_vec3.hpp \
+		glm/detail/type_vec3.inl \
+		glm/vec4.hpp \
+		glm/detail/type_vec4.hpp \
+		glm/detail/type_vec4.inl \
+		glm/mat2x2.hpp \
+		glm/detail/type_mat2x2.hpp \
+		glm/detail/type_mat2x2.inl \
+		glm/mat2x3.hpp \
+		glm/detail/type_mat2x3.hpp \
+		glm/detail/type_mat2x3.inl \
+		glm/mat2x4.hpp \
+		glm/detail/type_mat2x4.hpp \
+		glm/detail/type_mat2x4.inl \
+		glm/mat3x2.hpp \
+		glm/detail/type_mat3x2.hpp \
+		glm/detail/type_mat3x2.inl \
+		glm/mat3x3.hpp \
+		glm/detail/type_mat3x3.hpp \
+		glm/detail/type_mat3x3.inl \
+		glm/mat3x4.hpp \
+		glm/detail/type_mat3x4.hpp \
+		glm/detail/type_mat3x4.inl \
+		glm/mat4x2.hpp \
+		glm/detail/type_mat4x2.hpp \
+		glm/detail/type_mat4x2.inl \
+		glm/mat4x3.hpp \
+		glm/detail/type_mat4x3.hpp \
+		glm/detail/type_mat4x3.inl \
+		glm/mat4x4.hpp \
+		glm/detail/type_mat4x4.hpp \
+		glm/detail/type_mat4x4.inl \
+		glm/trigonometric.hpp \
+		glm/detail/func_trigonometric.hpp \
+		glm/detail/func_trigonometric.inl \
+		glm/detail/_vectorize.hpp \
+		glm/detail/type_vec1.hpp \
+		glm/detail/type_vec1.inl \
+		glm/exponential.hpp \
+		glm/detail/func_exponential.hpp \
+		glm/detail/func_exponential.inl \
+		glm/detail/func_vector_relational.hpp \
+		glm/detail/func_vector_relational.inl \
+		glm/common.hpp \
+		glm/detail/func_common.hpp \
+		glm/detail/func_common.inl \
+		glm/packing.hpp \
+		glm/detail/func_packing.hpp \
+		glm/detail/func_packing.inl \
+		glm/detail/type_half.hpp \
+		glm/detail/type_half.inl \
+		glm/geometric.hpp \
+		glm/detail/func_geometric.hpp \
+		glm/detail/func_geometric.inl \
+		glm/matrix.hpp \
+		glm/detail/func_matrix.hpp \
+		glm/detail/func_matrix.inl \
+		glm/vector_relational.hpp \
+		glm/integer.hpp \
+		glm/detail/func_integer.hpp \
+		glm/detail/func_integer.inl \
+		glew-1.10.0/include/GL/glew.h \
+		shapes/triangle.h \
+		shapes/ShapeComponent.h \
+		lib/Utilities.h \
+		gl/datatype/vao.h \
+		gl/datatype/vbo.h \
+		gl/datatype/vboattribmarker.h \
+		gl/shaders/shaderattriblocations.h \
+		glm/gtx/transform.hpp \
+		glm/gtc/matrix_transform.hpp \
+		glm/gtc/matrix_transform.inl \
+		glm/gtx/transform.inl \
+		glm/gtx/string_cast.hpp \
+		glm/gtx/integer.hpp \
+		glm/gtx/integer.inl \
+		glm/gtx/quaternion.hpp \
+		glm/gtc/constants.hpp \
+		glm/gtc/constants.inl \
+		glm/gtc/quaternion.hpp \
+		glm/gtc/quaternion.inl \
+		glm/gtx/norm.hpp \
+		glm/gtx/norm.inl \
+		glm/gtx/quaternion.inl \
+		glm/gtx/string_cast.inl
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o Leaf.o shapes/Leaf.cpp
 
 RoundedCylinder.o: shapes/RoundedCylinder.cpp shapes/RoundedCylinder.h \
 		shapes/Shape.h \
@@ -3602,6 +3717,7 @@ uniformvariable.o: uniforms/uniformvariable.cpp uniforms/uniformvariable.h \
 		shapes/BarrelComponent.h \
 		tree/Tree.h \
 		LSystem/LSystem.h \
+		ui/Settings.h \
 		../../../Qt5.14.2/5.14.2/clang_64/lib/QtCore.framework/Headers/QFileInfo \
 		../../../Qt5.14.2/5.14.2/clang_64/lib/QtCore.framework/Headers/qfileinfo.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o uniformvariable.o uniforms/uniformvariable.cpp
@@ -3728,6 +3844,7 @@ uniformwidget.o: uniforms/uniformwidget.cpp uniforms/uniformwidget.h \
 		shapes/BarrelComponent.h \
 		tree/Tree.h \
 		LSystem/LSystem.h \
+		ui/Settings.h \
 		../../../Qt5.14.2/5.14.2/clang_64/lib/QtWidgets.framework/Headers/QHBoxLayout \
 		../../../Qt5.14.2/5.14.2/clang_64/lib/QtWidgets.framework/Headers/qboxlayout.h \
 		../../../Qt5.14.2/5.14.2/clang_64/lib/QtWidgets.framework/Headers/QLineEdit \

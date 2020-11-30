@@ -6,8 +6,18 @@ LSystem::LSystem():
     m_recursions(2),
     m_sequence("X")
 {
-    m_rules.insert(std::pair<std::string, std::vector<std::string>>("F", {"F", "F[+F]F[-F]F", "FF", "FF+[+F-F-F]-[-F+F+F]", "F[-F][+F]", "FX[FX[+XF]]", "FXF[-F[-FX]+FX]"}));
-    m_rules.insert(std::pair<std::string, std::vector<std::string>>("X", {"F-[[X]+X]+F[+FX]-X", "F[+X]F[-X]+X", "X[-FFF][+FFF]FX", "-F[+F][--X]+F-F[+++X]-X", "F++F"}));
+    // Straight tree.
+    m_rules.insert(std::pair<std::string, std::vector<std::string>>("F",{"FF"}));
+    m_rules.insert(std::pair<std::string, std::vector<std::string>>("X",{"F[+X][-X]FX"}));
+
+    // Wavy tree
+//    m_rules.insert(std::pair<std::string, std::vector<std::string>>("F",{"FF"}));
+//    m_rules.insert(std::pair<std::string, std::vector<std::string>>("X",{"F-[[X]+X]+F[+FX]-X"}));
+
+    // Other tree?
+//    m_rules.insert(std::pair<std::string, std::vector<std::string>>("F",{"FF"}));
+//    m_rules.insert(std::pair<std::string, std::vector<std::string>>("X",{"F[-X]F[-X]+X"}));
+
 
 }
 
@@ -16,6 +26,7 @@ LSystem::LSystem():
  * @brief LSystem::generateSequence
  */
 void LSystem::generateSequence(){
+    m_sequence = "X";
     for (int i = 0; i < m_recursions; i++){
         expand();
     }
@@ -65,6 +76,12 @@ std::map<std::string, std::vector<std::string>> LSystem::getRules(){
     return m_rules;
 }
 
+/**
+ * Adds rule to map of rules.
+ * @brief LSystem::addRule
+ * @param key key in the map
+ * @param replacement value to add to vector in map
+ */
 void LSystem::addRule(std::string key, std::string replacement){
     if (key == "F"){
        std::map<std::string, std::vector<std::string>>::iterator it = m_rules.find("F");
@@ -79,10 +96,19 @@ void LSystem::addRule(std::string key, std::string replacement){
     }
 }
 
+/**
+ * Sets the number of recursions.
+ * @brief LSystem::setRecursion
+ * @param recursions number of recursions
+ */
 void LSystem::setRecursion(int recursions){
     m_recursions = recursions;
 }
 
+/**
+ * Clears the map of rules.
+ * @brief LSystem::clearRules
+ */
 void LSystem::clearRules() {
     m_rules.clear();
 }

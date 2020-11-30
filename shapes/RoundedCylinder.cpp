@@ -4,14 +4,12 @@
 RoundedCylinder::RoundedCylinder(int param1, int param2) :
     Shape(param1, param2, glm::mat4(1.f))
 {
-    setUpShapeComponents();
 }
 
 
 RoundedCylinder::RoundedCylinder(int param1, int param2, glm::mat4 transformation) :
     Shape(param1, param2, transformation)
 {
-    setUpShapeComponents();
 }
 
 RoundedCylinder::~RoundedCylinder()
@@ -30,24 +28,17 @@ std::vector<GLfloat> RoundedCylinder::getData() {
     };
 
     glm::mat4 sphereScale = glm::scale(glm::mat4(), glm::vec3(1.f, .2f, 1.f));
-
     glm::mat4 sphereTrans = glm::translate(glm::mat4(), glm::vec3(0.f, .5f, 0.f));
 
-    m_components.clear();
-    m_components.reserve(COMPONENT_COUNT);
     std::unique_ptr<ShapeComponent> s =
         std::make_unique<CircleComponent>(
             m_param1, m_param2, m_transformation * rotate
         );
 
-//    std::unique_ptr<ShapeComponent> s1 =
-//        std::make_unique<CircleComponent>(
-//            m_param1, m_param2, m_transformation * rotate
-//        );
-
+    const int SPHERE_STACK = 10; // To have a "tight" rounded top.
     std::unique_ptr<ShapeComponent> s1 =
         std::make_unique<SphereComponent>(
-            m_param1, m_param2, sphereTrans * sphereScale * glm::mat4(1.f)
+            SPHERE_STACK, m_param2, sphereTrans * sphereScale * glm::mat4(1.f)
         );
 
     std::unique_ptr<ShapeComponent> s2 =
@@ -59,13 +50,13 @@ std::vector<GLfloat> RoundedCylinder::getData() {
     data = s->getData();
 
     std::vector<GLfloat> s1Data = s1->getData();
-    data.insert(std::end(data), std::begin(s1Data), std::end(s1Data));
+    auto middle = s1Data.begin() + s1Data.size() / 2;
+    data.insert(std::end(data), std::begin(s1Data), middle);
 
     std::vector<GLfloat> s2Data = s2->getData();
     data.insert(std::end(data), std::begin(s2Data), std::end(s2Data));
 
     return data;
-
 }
 
 // NOT WORKING, BUT SHOULDN'T NEED

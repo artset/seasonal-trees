@@ -6,7 +6,6 @@ CircleComponent::CircleComponent(int param1,
     : ShapeComponent(param1, param2, transformation)
 {
     this->setData();
-//    this->buildVAO();
 }
 
 CircleComponent::~CircleComponent(){

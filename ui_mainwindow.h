@@ -55,6 +55,11 @@ public:
     QSlider *angleSlider;
     QLineEdit *angleTextbox;
 
+    QLabel *leafSizeLabel;
+    QSlider *leafSizeSlider;
+    QLineEdit *leafSizeTextbox;
+
+
     QFrame *line_2;
     QLabel *label_3;
     QPushButton *animNoneButton;
@@ -153,6 +158,7 @@ public:
         coneTreeButton->setObjectName(QString::fromUtf8("coneTreeButton"));
         verticalLayout->addWidget(coneTreeButton);
 
+        // SLIDERS
         recursionsLabel = new QLabel(centralWidget);
         recursionsLabel->setObjectName(QString::fromUtf8("recursionsLabel"));
         verticalLayout->addWidget(recursionsLabel);
@@ -178,6 +184,19 @@ public:
         angleTextbox->setObjectName(QString::fromUtf8("angleTextbox"));
         verticalLayout->addWidget(angleTextbox);
         angleTextbox->setMaximumSize(QSize(150, 80));
+
+        leafSizeLabel = new QLabel(centralWidget);
+        leafSizeLabel->setObjectName(QString::fromUtf8("leafSizeLabel"));
+        verticalLayout->addWidget(leafSizeLabel);
+        leafSizeSlider = new QSlider(centralWidget);
+        leafSizeSlider->setObjectName(QString::fromUtf8("leafSizeSlider"));
+        leafSizeSlider->setOrientation(Qt::Horizontal);
+        leafSizeSlider->setMaximumSize(QSize(150, 80));
+        verticalLayout->addWidget(leafSizeSlider);
+        leafSizeTextbox = new QLineEdit(centralWidget);
+        leafSizeTextbox->setObjectName(QString::fromUtf8("leafSizeTextbox"));
+        verticalLayout->addWidget(leafSizeTextbox);
+        leafSizeTextbox->setMaximumSize(QSize(150, 80));
 
         line_2 = new QFrame(centralWidget);
         line_2->setObjectName(QString::fromUtf8("line_2"));
@@ -328,6 +347,7 @@ public:
 
         recursionsLabel->setText(QCoreApplication::translate("MainWindow", "Number of recursions:", nullptr));
         angleLabel->setText(QCoreApplication::translate("MainWindow", "Angle (degrees):", nullptr));
+        leafSizeLabel->setText(QCoreApplication::translate("MainWindow", "Leaf Size:", nullptr));
 
         label_3->setText(QCoreApplication::translate("MainWindow", "Animations:", nullptr));
         animNoneButton->setText(QCoreApplication::translate("MainWindow", "None", nullptr));
