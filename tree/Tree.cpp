@@ -62,8 +62,8 @@ void Tree::buildTree(const glm::mat4 &model) {
     srand(time(NULL));
 
     std::string string =
-            strings.back();
-//            m_lsystem.getSequence();
+//            strings.back();
+            m_lsystem.getSequence();
 
     glm::vec4 origin = glm::vec4(0, 0, 0, 1.f);
     glm::mat4 identity = glm::mat4();
