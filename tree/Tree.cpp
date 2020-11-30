@@ -64,9 +64,7 @@ void Tree::buildTree(const glm::mat4 &model) {
     m_branchData.clear();
     srand(time(NULL));
 
-    std::string string =
-            strings.back();
-//            m_lsystem.getSequence();
+    std::string string = m_lsystem.getSequence();
     std::vector<char> forwardSymbols;
     forwardSymbols.reserve(m_lsystem.getRules().size());
     for (auto const& key_val : m_lsystem.getRules()) {
