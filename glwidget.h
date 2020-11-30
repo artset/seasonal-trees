@@ -81,6 +81,7 @@ protected:
     bool hasSettingsChanged();
 
 private:
+    std::unique_ptr<OpenGLShape> m_leaf;
     std::unique_ptr<OpenGLShape> m_sphere;
     std::unique_ptr<OpenGLShape> m_cylinder;
     std::unique_ptr<OpenGLShape> m_cube;

@@ -3,6 +3,7 @@
 #include <sstream>
 
 #include "shapes/RoundedCylinder.h"
+#include "shapes/Leaf.h"
 #include "shapes/Sphere.h"
 #include "shapes/Cone.h"
 #include "shapes/cube.h"
@@ -185,7 +186,7 @@ void GLWidget::initializeGL() {
     const int NUM_FLOATS_PER_VERTEX = 3;
 
 
-    std::unique_ptr<Shape> test = std::make_unique<RoundedCylinder>(7, 7);
+    std::unique_ptr<Shape> test = std::make_unique<Leaf>(6, 1);
     std::vector<GLfloat> testData = test->getData();
     m_sphere = std::make_unique<OpenGLShape>();
     m_sphere->setVertexData(&testData[0], testData.size(), VBO::GEOMETRY_LAYOUT::LAYOUT_TRIANGLES, testData.size());
