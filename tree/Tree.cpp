@@ -3,13 +3,13 @@
 #include "glm/ext.hpp"
 #include "LSystem/LSystem.h"
 #include "Settings.h"
+#include "time.h"
 
 const float Tree::BRANCH_LENGTH = 1.f;
 const glm::vec3 Tree::SCALE_FACTOR = glm::vec3(.5f, .8f, .5f);
 const glm::vec3 Tree::TRANSLATE = glm::vec3(0, Tree::BRANCH_LENGTH / 2, 0);
 const std::vector<glm::vec3> Tree::ROTATE_AXES = {
     glm::vec3(1.f,0,0),
-    glm::vec3(0,1.f,0),
     glm::vec3(0,0,1.f),
     glm::vec3(.5f,0,.5f),
 };
@@ -59,10 +59,11 @@ void Tree::buildTree(const glm::mat4 &model) {
     m_lsystem.setRecursion(settings.recursions);
     m_lsystem.generateSequence();
     m_branchData.clear();
+    srand(time(NULL));
 
     std::string string =
-//            strings.back();
-            m_lsystem.getSequence();
+            strings.back();
+//            m_lsystem.getSequence();
 
     glm::vec4 origin = glm::vec4(0, 0, 0, 1.f);
     glm::mat4 identity = glm::mat4();
@@ -118,6 +119,11 @@ void Tree::buildTree(const glm::mat4 &model) {
         return true;
     };
 
+    auto getRandAxis = [] () {
+//        return ROTATE_AXES[rand() % (ROTATE_AXES.size() - 1)];
+        return ROTATE_AXES[2];
+    };
+
     //Parse the string
     for (size_t i = 0 ; i < string.size() ; i++) {
         switch (string[i]) {
@@ -145,13 +151,13 @@ void Tree::buildTree(const glm::mat4 &model) {
             }
             case '-': {
                 //Rotate the current rotation matrix to the left
-                glm::vec3 axis = ROTATE_AXES[2];
+                glm::vec3 axis = getRandAxis();
                 currState.rotate = glm::rotate(-ANGLE, axis) * currState.rotate;
                 break;
             }
             case '+': {
                 //Rotate the current rotation matrix to the right
-                glm::vec3 axis = ROTATE_AXES[2];
+                glm::vec3 axis = getRandAxis();
                 currState.rotate = glm::rotate(ANGLE, axis) * currState.rotate;
                 break;
             }
