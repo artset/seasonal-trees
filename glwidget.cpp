@@ -349,8 +349,10 @@ void GLWidget::renderLeaves() {
     model = glm::scale(glm::mat4(), glm::vec3(settings.leafSize, .5, 1.f));
     modelChanged(model);
     modelviewProjectionChanged(camera->getProjectionMatrix() * camera->getModelviewMatrix());
-    bindAndUpdateShader(current_shader);
+    bindAndUpdateShader(leaf_shader);
     m_shape->draw();
+    releaseShader(leaf_shader);
+
 }
 
 // TODO: any changes to the UI component should also add to this function.
@@ -395,10 +397,10 @@ void GLWidget::paintGL() {
             } else {
                 bindAndUpdateShader(current_shader);
                 m_shape->draw();
+                releaseShader(current_shader);
+
             }
         }
-
-        releaseShader(current_shader);
 
 
 //        if (current_shader) {

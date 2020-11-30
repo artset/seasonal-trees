@@ -6,6 +6,7 @@ out vec4 fragColor;
 
 uniform float time;
 
+
 void main() {
-    fragColor = vec4(255.f, 0.f, 0.f, 0.f);
+    fragColor = vec4(0.f, 168.f, 0.f, 0.f);
 }
