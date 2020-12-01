@@ -100,6 +100,8 @@ private:
     QList<QButtonGroup*> m_buttonGroups;
 
     void updateCheckboxes(enum Season season, bool checked);
+
+    void updateSeasonParameters(int season);
 };
 
 #endif // MAINWINDOW_H

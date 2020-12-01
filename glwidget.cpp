@@ -359,7 +359,6 @@ void GLWidget::renderLeaves() {
 bool GLWidget::hasSettingsChanged() {
     if (m_settings.season != settings.season){
         m_settings.season = settings.season;
-        updateSeasonParameters(settings.season);
         return true;
     }
     if (m_settings.recursions != settings.recursions ||
@@ -369,26 +368,6 @@ bool GLWidget::hasSettingsChanged() {
         return true;
     }
     return false;
-}
-
-void GLWidget::updateSeasonParameters(int season){
-    switch (season){
-        //Summer
-        case 0:
-            break;
-        //Fall
-        case 1:
-            //Different colored leaves
-            break;
-        //Winter
-        case 2:
-            //Get rid of leaves
-            break;
-        //Spring
-        case 3:
-            //Smaller leaves
-            break;
-    }
 }
 
 void GLWidget::renderSkybox() {

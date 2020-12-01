@@ -270,18 +270,51 @@ void MainWindow::on_checkBox_toggled(bool checked)
 
 void MainWindow::on_summerRadioButton_clicked(){
     settings.season = 0;
+    updateSeasonParameters(settings.season);
 }
 
 void MainWindow::on_fallRadioButton_clicked(){
     settings.season = 1;
+    updateSeasonParameters(settings.season);
 }
 
 void MainWindow::on_winterRadioButton_clicked(){
     settings.season = 2;
+    updateSeasonParameters(settings.season);
 }
 
 void MainWindow::on_springRadioButton_clicked(){
     settings.season = 3;
+    updateSeasonParameters(settings.season);
+}
+
+void MainWindow::updateSeasonParameters(int season){
+    switch (season){
+        //Summer
+        case 0:
+            settings.leafSize = 1.f;
+            //Update slider
+            ui->leafSizeTextbox->setText("1");
+            break;
+        //Fall
+        case 1:
+            settings.leafSize = 1.f;
+            ui->leafSizeTextbox->setText("5");
+            //Different colored leaves
+            break;
+        //Winter
+        case 2:
+            //Get rid of leaves
+            settings.leafSize = 0.f;
+            ui->leafSizeTextbox->setText("0");
+            break;
+        //Spring
+        case 3:
+            //Smaller leaves
+            settings.leafSize = 1.f;
+            ui->leafSizeTextbox->setText("1");
+            break;
+    }
 }
 
 void MainWindow::dataBind(){
