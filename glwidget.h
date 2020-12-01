@@ -127,6 +127,8 @@ private:
     std::unique_ptr<Tree> m_tree;// Tree with L System
     Settings m_settings;  // Local version of settings to keep track of changes.
 
+    void updateSeasonParameters(int season);
+
 };
 
 #endif // GLWIDGET_H
