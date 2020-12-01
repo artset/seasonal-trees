@@ -32,6 +32,7 @@ struct Settings {
     int recursions;
     float angle;
     float leafSize;
+    int season;
 
 };
 

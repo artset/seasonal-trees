@@ -22,6 +22,7 @@
 #include <QtWidgets/QWidget>
 #include <QtWidgets/QSlider>
 #include <QtWidgets/QLineEdit>
+#include <QtWidgets/QRadioButton>
 
 
 QT_BEGIN_NAMESPACE
@@ -60,10 +61,10 @@ public:
     QLineEdit *leafSizeTextbox;
 
     QLabel *seasonsLabel;
-    QCheckBox *summerCheckbox;
-    QCheckBox *fallCheckbox;
-    QCheckBox *winterCheckbox;
-    QCheckBox *springCheckbox;
+    QRadioButton *summerRadioButton;
+    QRadioButton *fallRadioButton;
+    QRadioButton *winterRadioButton;
+    QRadioButton *springRadioButton;
 
     QFrame *line_2;
     QLabel *label_3;
@@ -208,33 +209,29 @@ public:
         seasonsLabel->setObjectName(QString::fromUtf8("seasonsLabel"));
         verticalLayout->addWidget(seasonsLabel);
         //Summer
-        summerCheckbox = new QCheckBox(centralWidget);
-        summerCheckbox->setObjectName(QString::fromUtf8("summerCheckbox"));
-        summerCheckbox->setFocusPolicy(Qt::StrongFocus);
-        summerCheckbox->setChecked(true);
-        summerCheckbox->setTristate(false);
-        verticalLayout->addWidget(summerCheckbox);
+        summerRadioButton = new QRadioButton(centralWidget);
+        summerRadioButton->setObjectName(QString::fromUtf8("summerRadioButton"));
+        summerRadioButton->setFocusPolicy(Qt::StrongFocus);
+        summerRadioButton->setChecked(true);
+        verticalLayout->addWidget(summerRadioButton);
         //Fall
-        fallCheckbox = new QCheckBox(centralWidget);
-        fallCheckbox->setObjectName(QString::fromUtf8("fallCheckbox"));
-        fallCheckbox->setChecked(false);
-        fallCheckbox->setFocusPolicy(Qt::StrongFocus);
-        fallCheckbox->setTristate(false);
-        verticalLayout->addWidget(fallCheckbox);
+        fallRadioButton = new QRadioButton(centralWidget);
+        fallRadioButton->setObjectName(QString::fromUtf8("fallRadioButton"));
+        fallRadioButton->setChecked(false);
+        fallRadioButton->setFocusPolicy(Qt::StrongFocus);
+        verticalLayout->addWidget(fallRadioButton);
         //Winter
-        winterCheckbox = new QCheckBox(centralWidget);
-        winterCheckbox->setObjectName(QString::fromUtf8("winterCheckbox"));
-        winterCheckbox->setChecked(false);
-        winterCheckbox->setFocusPolicy(Qt::StrongFocus);
-        winterCheckbox->setTristate(false);
-        verticalLayout->addWidget(winterCheckbox);
+        winterRadioButton = new QRadioButton(centralWidget);
+        winterRadioButton->setObjectName(QString::fromUtf8("winterRadioButton"));
+        winterRadioButton->setChecked(false);
+        winterRadioButton->setFocusPolicy(Qt::StrongFocus);
+        verticalLayout->addWidget(winterRadioButton);
         //Spring
-        springCheckbox = new QCheckBox(centralWidget);
-        springCheckbox->setObjectName(QString::fromUtf8("springCheckbox"));
-        springCheckbox->setChecked(false);
-        springCheckbox->setFocusPolicy(Qt::StrongFocus);
-        springCheckbox->setTristate(false);
-        verticalLayout->addWidget(springCheckbox);
+        springRadioButton = new QRadioButton(centralWidget);
+        springRadioButton->setObjectName(QString::fromUtf8("springRadioButton"));
+        springRadioButton->setChecked(false);
+        springRadioButton->setFocusPolicy(Qt::StrongFocus);
+        verticalLayout->addWidget(springRadioButton);
 
         line_2 = new QFrame(centralWidget);
         line_2->setObjectName(QString::fromUtf8("line_2"));
@@ -388,10 +385,10 @@ public:
         angleLabel->setText(QCoreApplication::translate("MainWindow", "Angle (degrees):", nullptr));
         leafSizeLabel->setText(QCoreApplication::translate("MainWindow", "Leaf Size:", nullptr));
         seasonsLabel->setText(QCoreApplication::translate("MainWindow", "Seasons:", nullptr));
-        summerCheckbox->setText(QCoreApplication::translate("MainWindow", "Summer", nullptr));
-        fallCheckbox->setText(QCoreApplication::translate("MainWindow", "Fall", nullptr));
-        winterCheckbox->setText(QCoreApplication::translate("MainWindow", "Winter", nullptr));
-        springCheckbox->setText(QCoreApplication::translate("MainWindow", "Spring", nullptr));
+        summerRadioButton->setText(QCoreApplication::translate("MainWindow", "Summer", nullptr));
+        fallRadioButton->setText(QCoreApplication::translate("MainWindow", "Fall", nullptr));
+        winterRadioButton->setText(QCoreApplication::translate("MainWindow", "Winter", nullptr));
+        springRadioButton->setText(QCoreApplication::translate("MainWindow", "Spring", nullptr));
 
         label_3->setText(QCoreApplication::translate("MainWindow", "Animations:", nullptr));
         animNoneButton->setText(QCoreApplication::translate("MainWindow", "None", nullptr));

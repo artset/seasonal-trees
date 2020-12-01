@@ -264,78 +264,13 @@ void MainWindow::on_checkBox_toggled(bool checked)
     m_glwidget->setWireframeMode(checked ? WIREFRAME_VERT : WIREFRAME_NORMAL);
 }
 
-void MainWindow::on_summerCheckbox_toggled(bool checked){
-    std::cout << "summer checkbox" << std::endl;
-//    m_glwidget->setSeasonSummer(checked);
-    updateCheckboxes(SUMMER, checked);
-}
-
-void MainWindow::on_fallCheckbox_toggled(bool checked){
-    std::cout << "fall checkbox" << std::endl;
-    updateCheckboxes(FALL, checked);
-}
-
-void MainWindow::on_winterCheckbox_toggled(bool checked){
-    std::cout << "winter checkbox" << std::endl;
-    updateCheckboxes(WINTER, checked);
-}
-
-void MainWindow::on_springCheckbox_toggled(bool checked){
-    std::cout << "spring checkbox" << std::endl;
-    updateCheckboxes(SPRING, checked);
-}
-
-void MainWindow::updateCheckboxes(enum Season season, bool checked){
-    std::cout << "in update checkboxes" << std::endl;
-    std::cout << checked << std::endl;
-    switch (season) {
-        case SUMMER:
-            std::cout << "SUMMER" << std::endl;
-            ui->summerCheckbox->setChecked(checked);
-
-            ui->fallCheckbox->setChecked(false);
-            ui->winterCheckbox->setChecked(false);
-            ui->springCheckbox->setChecked(false);
-            break;
-        case FALL:
-            std::cout << "FALL" << std::endl;
-//            ui->fallCheckbox->setChecked(checked);
-            if (ui->fallCheckbox->checkState()){
-                std::cout << "fall is on, make it go off" << std::endl;
-                ui->fallCheckbox->setChecked(false);
-            } else {
-                ui->fallCheckbox->setChecked(true);
-            }
-
-            ui->summerCheckbox->setChecked(false);
-            ui->winterCheckbox->setChecked(false);
-            ui->springCheckbox->setChecked(false);
-            break;
-        case WINTER:
-            std::cout << "WINTER" << std::endl;
-            ui->winterCheckbox->setChecked(checked);
-
-            ui->summerCheckbox->setChecked(false);
-            ui->fallCheckbox->setChecked(false);
-            ui->springCheckbox->setChecked(false);
-            break;
-        case SPRING:
-            std::cout << "SPRING" << std::endl;
-            ui->springCheckbox->setChecked(checked);
-
-            ui->winterCheckbox->setChecked(false);
-            ui->fallCheckbox->setChecked(false);
-            ui->summerCheckbox->setChecked(false);
-            break;
-    }
-}
-
 void MainWindow::dataBind(){
 #define BIND(b) { \
     DataBinding *_b = (b); \
     m_bindings.push_back(_b); \
     assert(connect(_b, SIGNAL(dataChanged()), this, SLOT(settingsChanged()))); \
 }
+    QButtonGroup *seasonButtonGroup = new QButtonGroup;
 
     BIND(IntBinding::bindSliderAndTextbox(
         ui->recursionSlider, ui->recursionsTextbox, settings.recursions, 0, 10));
@@ -345,6 +280,8 @@ void MainWindow::dataBind(){
 
     BIND(FloatBinding::bindSliderAndTextbox(
         ui->leafSizeSlider, ui->leafSizeTextbox, settings.leafSize, .3, 10));
+
+    BIND(ChoiceBinding::bindRadioButtons(seasonButtonGroup, 4, settings.season, ui->summerRadioButton, ui->fallRadioButton, ui->winterRadioButton, ui->springRadioButton));
 
 }
 

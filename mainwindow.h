@@ -64,14 +64,6 @@ private slots:
 
     void on_checkBox_toggled(bool checked);
 
-    void on_summerCheckbox_toggled(bool checked);
-
-    void on_fallCheckbox_toggled(bool checked);
-
-    void on_winterCheckbox_toggled(bool checked);
-
-    void on_springCheckbox_toggled(bool checked);
-
 public slots:
     void handleUniformDeleted(UniformWidget *deleted);
     void changeUniform(const UniformVariable *uniform, const QString &newVal);
