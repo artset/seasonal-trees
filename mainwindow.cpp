@@ -264,6 +264,82 @@ void MainWindow::on_checkBox_toggled(bool checked)
     m_glwidget->setWireframeMode(checked ? WIREFRAME_VERT : WIREFRAME_NORMAL);
 }
 
+void MainWindow::on_summerCheckbox_toggled(bool checked){
+    std::cout << "summer checkbox" << std::endl;
+//    m_glwidget->setSeasonSummer(checked);
+    updateCheckboxes(SUMMER);
+}
+
+void MainWindow::on_fallCheckbox_toggled(bool checked){
+    std::cout << "fall checkbox" << std::endl;
+    updateCheckboxes(FALL);
+}
+
+void MainWindow::on_winterCheckbox_toggled(bool checked){
+    std::cout << "winter checkbox" << std::endl;
+    updateCheckboxes(WINTER);
+}
+
+void MainWindow::on_springCheckbox_toggled(bool checked){
+    std::cout << "spring checkbox" << std::endl;
+    updateCheckboxes(SPRING);
+}
+
+void MainWindow::updateCheckboxes(enum Season season){
+    std::cout << "in update checkboxes" << std::endl;
+    switch (season) {
+        case SUMMER:
+            std::cout << "SUMMER" << std::endl;
+//            if (ui->summerCheckbox->checkState()){
+//                ui->summerCheckbox->setChecked(false);
+//            } else {
+//                ui->summerCheckbox->setChecked(true);
+//            }
+
+            ui->fallCheckbox->setChecked(false);
+            ui->winterCheckbox->setChecked(false);
+            ui->springCheckbox->setChecked(false);
+            break;
+        case FALL:
+            std::cout << "FALL" << std::endl;
+//            if (ui->fallCheckbox->checkState()){
+//                ui->fallCheckbox->setChecked(false);
+//            } else {
+//                ui->fallCheckbox->setChecked(true);
+//            }
+            ui->fallCheckbox->setChecked(true);
+
+            ui->summerCheckbox->setChecked(false);
+            ui->winterCheckbox->setChecked(false);
+            ui->springCheckbox->setChecked(false);
+            break;
+        case WINTER:
+            std::cout << "WINTER" << std::endl;
+//            if (ui->winterCheckbox->checkState()){
+//                ui->winterCheckbox->setChecked(false);
+//            } else {
+//                ui->winterCheckbox->setChecked(true);
+//            }
+
+            ui->summerCheckbox->setChecked(false);
+            ui->fallCheckbox->setChecked(false);
+            ui->springCheckbox->setChecked(false);
+            break;
+        case SPRING:
+            std::cout << "SPRING" << std::endl;
+//            if (ui->springCheckbox->checkState()){
+//                ui->springCheckbox->setChecked(false);
+//            } else {
+//                ui->springCheckbox->setChecked(true);
+//            }
+
+            ui->summerCheckbox->setChecked(false);
+            ui->fallCheckbox->setChecked(false);
+            ui->summerCheckbox->setChecked(false);
+            break;
+    }
+}
+
 void MainWindow::dataBind(){
 #define BIND(b) { \
     DataBinding *_b = (b); \

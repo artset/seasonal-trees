@@ -10,6 +10,10 @@ namespace Ui {
 class MainWindow;
 }
 
+enum Season {
+    SUMMER, FALL, WINTER, SPRING
+};
+
 class UniformWidget; class QBoxLayout;
 
 class MainWindow : public QMainWindow
@@ -60,6 +64,14 @@ private slots:
 
     void on_checkBox_toggled(bool checked);
 
+    void on_summerCheckbox_toggled(bool checked);
+
+    void on_fallCheckbox_toggled(bool checked);
+
+    void on_winterCheckbox_toggled(bool checked);
+
+    void on_springCheckbox_toggled(bool checked);
+
 public slots:
     void handleUniformDeleted(UniformWidget *deleted);
     void changeUniform(const UniformVariable *uniform, const QString &newVal);
@@ -84,6 +96,8 @@ private:
 
     void dataBind();
     QList<DataBinding*> m_bindings;
+
+    void updateCheckboxes(enum Season season);
 };
 
 #endif // MAINWINDOW_H
