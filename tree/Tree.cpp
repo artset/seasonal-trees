@@ -7,7 +7,8 @@
 
 const float Tree::BRANCH_LENGTH = 1.f;
 const glm::vec3 Tree::SCALE_FACTOR = glm::vec3(.5f, .8f, .5f);
-const glm::vec3 Tree::TRANSLATE = glm::vec3(0, Tree::BRANCH_LENGTH / 2, 0);
+// the .6f below is totally arbitrary, I'm not sure why it works
+const glm::vec3 Tree::TRANSLATE = glm::vec3(0, Tree::BRANCH_LENGTH * .6f, 0);
 const std::vector<glm::vec3> Tree::ROTATE_AXES = {
     glm::vec3(1.f,0,0),
     glm::vec3(0,0,1.f),
@@ -137,12 +138,20 @@ void Tree::buildTree(const glm::mat4 &model) {
                 //Rotate the current rotation matrix to the left
                 glm::vec3 axis = getRandAxis();
                 currState.rotate = glm::rotate(-ANGLE, axis) * currState.rotate;
+                if (currState.length == 0) {
+                    //Need to update initial state for branch that hasn't been drawn yet
+                    currState.initialRotate = currState.rotate;
+                }
                 break;
             }
             case '+': {
                 //Rotate the current rotation matrix to the right
                 glm::vec3 axis = getRandAxis();
                 currState.rotate = glm::rotate(ANGLE, axis) * currState.rotate;
+                if (currState.length == 0) {
+                    //Need to update initial state for branch that hasn't been drawn yet
+                    currState.initialRotate = currState.rotate;
+                }
                 break;
             }
             case '[': {
