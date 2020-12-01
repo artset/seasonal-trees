@@ -272,7 +272,7 @@ void MainWindow::dataBind(){
 }
 
     BIND(IntBinding::bindSliderAndTextbox(
-        ui->recursionSlider, ui->recursionsTextbox, settings.recursions, 0, 10));
+        ui->recursionSlider, ui->recursionsTextbox, settings.recursions, 1, 6));
     BIND(FloatBinding::bindSliderAndTextbox(
         ui->angleSlider, ui->angleTextbox, settings.angle, 10, 90));
 

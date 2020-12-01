@@ -7,9 +7,9 @@
 
 const float Tree::BRANCH_LENGTH = 1.f;
 const glm::vec3 Tree::SCALE_FACTOR = glm::vec3(.5f, .8f, .5f);
-const glm::vec3 Tree::INIT_SCALE_FACTOR = glm::vec3(.2f, .6f, .2f);
+//const glm::vec3 Tree::INIT_SCALE_FACTOR = glm::vec3(.05f, .2f, .05f);
 // the .6f below is totally arbitrary, I'm not sure why it works
-const glm::vec3 Tree::TRANSLATE = glm::vec3(0, Tree::BRANCH_LENGTH * .6f, 0);
+const glm::vec3 Tree::TRANSLATE = glm::vec3(0, Tree::BRANCH_LENGTH * .5f, 0);
 const std::vector<glm::vec3> Tree::ROTATE_AXES = {
     glm::vec3(1.f,0,0),
     glm::vec3(0,0,1.f),
@@ -68,17 +68,13 @@ void Tree::buildTree(const glm::mat4 &model) {
 
     std::string string = m_lsystem.getSequence();
 
-    // THE STRING IT FAILS ON && various versions lol
-    string = "F[+FF]FX";
-    //    string = "F[+FX]";
-    //    string = "FF[+F[+X]]FX";
-
     std::vector<char> forwardSymbols;
     forwardSymbols.reserve(m_lsystem.getRules().size());
     for (auto const& key_val : m_lsystem.getRules()) {
         forwardSymbols.push_back(key_val.first[0]);
     }
 
+    const glm::vec3 INIT_SCALE_FACTOR = glm::vec3(0.05f, 0.2f, 0.05f);
     glm::vec4 origin = glm::vec4(0, 0, 0, 1.f);
     glm::mat4 identity = glm::mat4();
     glm::mat4 initScale = glm::scale(identity, INIT_SCALE_FACTOR);
