@@ -7,6 +7,7 @@
 
 const float Tree::BRANCH_LENGTH = 1.f;
 const glm::vec3 Tree::SCALE_FACTOR = glm::vec3(.5f, .8f, .5f);
+const glm::vec3 Tree::INIT_SCALE_FACTOR = glm::vec3(.2f, .6f, .2f);
 // the .6f below is totally arbitrary, I'm not sure why it works
 const glm::vec3 Tree::TRANSLATE = glm::vec3(0, Tree::BRANCH_LENGTH * .6f, 0);
 const std::vector<glm::vec3> Tree::ROTATE_AXES = {
@@ -66,6 +67,12 @@ void Tree::buildTree(const glm::mat4 &model) {
     srand(time(NULL));
 
     std::string string = m_lsystem.getSequence();
+
+    // THE STRING IT FAILS ON && various versions lol
+    string = "F[+FF]FX";
+    //    string = "F[+FX]";
+    //    string = "FF[+F[+X]]FX";
+
     std::vector<char> forwardSymbols;
     forwardSymbols.reserve(m_lsystem.getRules().size());
     for (auto const& key_val : m_lsystem.getRules()) {
@@ -74,17 +81,17 @@ void Tree::buildTree(const glm::mat4 &model) {
 
     glm::vec4 origin = glm::vec4(0, 0, 0, 1.f);
     glm::mat4 identity = glm::mat4();
+    glm::mat4 initScale = glm::scale(identity, INIT_SCALE_FACTOR);
     glm::mat4 scale = glm::scale(identity, SCALE_FACTOR);
     glm::vec4 translate = glm::vec4(TRANSLATE, 1.f);
 
     LState currState = {
         glm::translate(identity, -1.f * translate.xyz()), //Needed to avoid overtranslating
         identity,
-        scale,
+        initScale,
         0,
-
         identity,
-        scale,
+        initScale,
     };
     std::vector<LState> prevStates;
 
@@ -131,6 +138,7 @@ void Tree::buildTree(const glm::mat4 &model) {
         return ROTATE_AXES[2];
     };
 
+
     //Parse the string
     for (size_t i = 0 ; i < string.size() ; i++) {
         switch (string[i]) {
@@ -157,7 +165,6 @@ void Tree::buildTree(const glm::mat4 &model) {
             case '[': {
                 //Save the current state for later (splitting off into child branches)
                 prevStates.push_back(currState);
-
                 currState.scale = scale * currState.scale; //Scale down child branches
                 currState = createNewBranchState(currState); //Initialize child branch state
                 break;
@@ -196,6 +203,7 @@ void Tree::buildTree(const glm::mat4 &model) {
             }
             break;
         }
+
     }
 
     if (currState.length != 0) {
