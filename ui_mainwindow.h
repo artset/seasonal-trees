@@ -207,24 +207,31 @@ public:
         seasonsLabel = new QLabel(centralWidget);
         seasonsLabel->setObjectName(QString::fromUtf8("seasonsLabel"));
         verticalLayout->addWidget(seasonsLabel);
+        //Summer
         summerCheckbox = new QCheckBox(centralWidget);
         summerCheckbox->setObjectName(QString::fromUtf8("summerCheckbox"));
         summerCheckbox->setFocusPolicy(Qt::StrongFocus);
         summerCheckbox->setChecked(true);
         summerCheckbox->setTristate(false);
         verticalLayout->addWidget(summerCheckbox);
+        //Fall
         fallCheckbox = new QCheckBox(centralWidget);
         fallCheckbox->setObjectName(QString::fromUtf8("fallCheckbox"));
+        fallCheckbox->setChecked(false);
         fallCheckbox->setFocusPolicy(Qt::StrongFocus);
         fallCheckbox->setTristate(false);
         verticalLayout->addWidget(fallCheckbox);
+        //Winter
         winterCheckbox = new QCheckBox(centralWidget);
         winterCheckbox->setObjectName(QString::fromUtf8("winterCheckbox"));
+        winterCheckbox->setChecked(false);
         winterCheckbox->setFocusPolicy(Qt::StrongFocus);
         winterCheckbox->setTristate(false);
         verticalLayout->addWidget(winterCheckbox);
+        //Spring
         springCheckbox = new QCheckBox(centralWidget);
         springCheckbox->setObjectName(QString::fromUtf8("springCheckbox"));
+        springCheckbox->setChecked(false);
         springCheckbox->setFocusPolicy(Qt::StrongFocus);
         springCheckbox->setTristate(false);
         verticalLayout->addWidget(springCheckbox);

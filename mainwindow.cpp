@@ -267,34 +267,31 @@ void MainWindow::on_checkBox_toggled(bool checked)
 void MainWindow::on_summerCheckbox_toggled(bool checked){
     std::cout << "summer checkbox" << std::endl;
 //    m_glwidget->setSeasonSummer(checked);
-    updateCheckboxes(SUMMER);
+    updateCheckboxes(SUMMER, checked);
 }
 
 void MainWindow::on_fallCheckbox_toggled(bool checked){
     std::cout << "fall checkbox" << std::endl;
-    updateCheckboxes(FALL);
+    updateCheckboxes(FALL, checked);
 }
 
 void MainWindow::on_winterCheckbox_toggled(bool checked){
     std::cout << "winter checkbox" << std::endl;
-    updateCheckboxes(WINTER);
+    updateCheckboxes(WINTER, checked);
 }
 
 void MainWindow::on_springCheckbox_toggled(bool checked){
     std::cout << "spring checkbox" << std::endl;
-    updateCheckboxes(SPRING);
+    updateCheckboxes(SPRING, checked);
 }
 
-void MainWindow::updateCheckboxes(enum Season season){
+void MainWindow::updateCheckboxes(enum Season season, bool checked){
     std::cout << "in update checkboxes" << std::endl;
+    std::cout << checked << std::endl;
     switch (season) {
         case SUMMER:
             std::cout << "SUMMER" << std::endl;
-//            if (ui->summerCheckbox->checkState()){
-//                ui->summerCheckbox->setChecked(false);
-//            } else {
-//                ui->summerCheckbox->setChecked(true);
-//            }
+            ui->summerCheckbox->setChecked(checked);
 
             ui->fallCheckbox->setChecked(false);
             ui->winterCheckbox->setChecked(false);
@@ -302,12 +299,13 @@ void MainWindow::updateCheckboxes(enum Season season){
             break;
         case FALL:
             std::cout << "FALL" << std::endl;
-//            if (ui->fallCheckbox->checkState()){
-//                ui->fallCheckbox->setChecked(false);
-//            } else {
-//                ui->fallCheckbox->setChecked(true);
-//            }
-            ui->fallCheckbox->setChecked(true);
+//            ui->fallCheckbox->setChecked(checked);
+            if (ui->fallCheckbox->checkState()){
+                std::cout << "fall is on, make it go off" << std::endl;
+                ui->fallCheckbox->setChecked(false);
+            } else {
+                ui->fallCheckbox->setChecked(true);
+            }
 
             ui->summerCheckbox->setChecked(false);
             ui->winterCheckbox->setChecked(false);
@@ -315,11 +313,7 @@ void MainWindow::updateCheckboxes(enum Season season){
             break;
         case WINTER:
             std::cout << "WINTER" << std::endl;
-//            if (ui->winterCheckbox->checkState()){
-//                ui->winterCheckbox->setChecked(false);
-//            } else {
-//                ui->winterCheckbox->setChecked(true);
-//            }
+            ui->winterCheckbox->setChecked(checked);
 
             ui->summerCheckbox->setChecked(false);
             ui->fallCheckbox->setChecked(false);
@@ -327,13 +321,9 @@ void MainWindow::updateCheckboxes(enum Season season){
             break;
         case SPRING:
             std::cout << "SPRING" << std::endl;
-//            if (ui->springCheckbox->checkState()){
-//                ui->springCheckbox->setChecked(false);
-//            } else {
-//                ui->springCheckbox->setChecked(true);
-//            }
+            ui->springCheckbox->setChecked(checked);
 
-            ui->summerCheckbox->setChecked(false);
+            ui->winterCheckbox->setChecked(false);
             ui->fallCheckbox->setChecked(false);
             ui->summerCheckbox->setChecked(false);
             break;

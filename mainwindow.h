@@ -97,7 +97,7 @@ private:
     void dataBind();
     QList<DataBinding*> m_bindings;
 
-    void updateCheckboxes(enum Season season);
+    void updateCheckboxes(enum Season season, bool checked);
 };
 
 #endif // MAINWINDOW_H
