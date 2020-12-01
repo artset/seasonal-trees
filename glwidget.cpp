@@ -358,10 +358,11 @@ void GLWidget::renderLeaves() {
 // TODO: any changes to the UI component should also add to this function.
 bool GLWidget::hasSettingsChanged() {
     if (m_settings.recursions != settings.recursions ||
-            m_settings.angle != settings.angle) {
+            m_settings.angle != settings.angle || m_settings.season != settings.season) {
 
         m_settings.recursions = settings.recursions;
         m_settings.angle = settings.angle;
+        m_settings.season = settings.season;
         return true;
     }
     return false;

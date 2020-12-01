@@ -65,6 +65,10 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow()
 {
+    foreach (DataBinding *b, m_bindings)
+        delete b;
+    foreach (QButtonGroup *bg, m_buttonGroups)
+        delete bg;
     foreach (UniformWidget * u, m_uniforms) {
         delete u;
     }
@@ -264,6 +268,22 @@ void MainWindow::on_checkBox_toggled(bool checked)
     m_glwidget->setWireframeMode(checked ? WIREFRAME_VERT : WIREFRAME_NORMAL);
 }
 
+void MainWindow::on_summerRadioButton_clicked(){
+    settings.season = 0;
+}
+
+void MainWindow::on_fallRadioButton_clicked(){
+    settings.season = 1;
+}
+
+void MainWindow::on_winterRadioButton_clicked(){
+    settings.season = 2;
+}
+
+void MainWindow::on_springRadioButton_clicked(){
+    settings.season = 3;
+}
+
 void MainWindow::dataBind(){
 #define BIND(b) { \
     DataBinding *_b = (b); \
@@ -271,6 +291,7 @@ void MainWindow::dataBind(){
     assert(connect(_b, SIGNAL(dataChanged()), this, SLOT(settingsChanged()))); \
 }
     QButtonGroup *seasonButtonGroup = new QButtonGroup;
+    m_buttonGroups.push_back(seasonButtonGroup);
 
     BIND(IntBinding::bindSliderAndTextbox(
         ui->recursionSlider, ui->recursionsTextbox, settings.recursions, 0, 10));
@@ -282,7 +303,6 @@ void MainWindow::dataBind(){
         ui->leafSizeSlider, ui->leafSizeTextbox, settings.leafSize, .3, 10));
 
     BIND(ChoiceBinding::bindRadioButtons(seasonButtonGroup, 4, settings.season, ui->summerRadioButton, ui->fallRadioButton, ui->winterRadioButton, ui->springRadioButton));
-
 }
 
 void MainWindow::settingsChanged(){

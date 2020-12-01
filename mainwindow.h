@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <glwidget.h>
+#include <QButtonGroup>
 
 class DataBinding;
 
@@ -64,6 +65,14 @@ private slots:
 
     void on_checkBox_toggled(bool checked);
 
+    void on_summerRadioButton_clicked();
+
+    void on_fallRadioButton_clicked();
+
+    void on_winterRadioButton_clicked();
+
+    void on_springRadioButton_clicked();
+
 public slots:
     void handleUniformDeleted(UniformWidget *deleted);
     void changeUniform(const UniformVariable *uniform, const QString &newVal);
@@ -88,6 +97,7 @@ private:
 
     void dataBind();
     QList<DataBinding*> m_bindings;
+    QList<QButtonGroup*> m_buttonGroups;
 
     void updateCheckboxes(enum Season season, bool checked);
 };
