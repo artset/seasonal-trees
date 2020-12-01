@@ -165,9 +165,9 @@ void Tree::buildTree(const glm::mat4 &model) {
             }
             case ']': {
                 //Resume parsing with the last saved state (the current branch is closed)
-                std::cout << "Finished a branch " << std::endl;
-                std::cout << "rotate: " << glm::to_string(currState.rotate) << std::endl;
-                std::cout << "branchTransform: " << glm::to_string(getBranchTransform(model, currState)) << std::endl;
+//                std::cout << "Finished a branch with length " << currState.length << std::endl;
+//                std::cout << "rotate: " << glm::to_string(currState.rotate) << std::endl;
+//                std::cout << "branchTransform: " << glm::to_string(getBranchTransform(model, currState)) << std::endl;
 
                 m_branchData.push_back(getBranchTransform(model, currState));
                 currState = prevStates.back();
@@ -186,7 +186,7 @@ void Tree::buildTree(const glm::mat4 &model) {
 
                 if (isNewBranch) {
                     // DEBUG PRINT
-//                    std::cout << "New Branch " << glm::to_string(currState.rotate) << std::endl;
+//                    std::cout << "New Branch with length " << currState.length << std::endl;
 //                    std::cout << "rotate: " << glm::to_string(currState.rotate) << std::endl;
 //                    std::cout << "branchTransform: " << glm::to_string(getBranchTransform(model, currState)) << std::endl;
 
