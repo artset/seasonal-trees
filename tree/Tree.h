@@ -27,6 +27,7 @@ public:
 private:
     static const float BRANCH_LENGTH;
     static const glm::vec3 SCALE_FACTOR;
+    static const glm::vec3 INIT_SCALE_FACTOR;
     static const glm::vec3 TRANSLATE;
     static const std::vector<glm::vec3> ROTATE_AXES;
 

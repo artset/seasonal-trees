@@ -34,7 +34,7 @@ vec4 scaleCylinder(vec4 pos) {
 void main()
 {
     vec4 newPos = vec4(position, 1.0);
-    newPos = scaleCylinder(newPos);
+//    newPos = scaleCylinder(newPos);
 
 
     vertex = ((view*model)*newPos).xyz;
