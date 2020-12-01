@@ -59,6 +59,11 @@ public:
     QSlider *leafSizeSlider;
     QLineEdit *leafSizeTextbox;
 
+    QLabel *seasonsLabel;
+    QCheckBox *summerCheckbox;
+    QCheckBox *fallCheckbox;
+    QCheckBox *winterCheckbox;
+    QCheckBox *springCheckbox;
 
     QFrame *line_2;
     QLabel *label_3;
@@ -197,6 +202,32 @@ public:
         leafSizeTextbox->setObjectName(QString::fromUtf8("leafSizeTextbox"));
         verticalLayout->addWidget(leafSizeTextbox);
         leafSizeTextbox->setMaximumSize(QSize(150, 80));
+
+        //SEASONS
+        seasonsLabel = new QLabel(centralWidget);
+        seasonsLabel->setObjectName(QString::fromUtf8("seasonsLabel"));
+        verticalLayout->addWidget(seasonsLabel);
+        summerCheckbox = new QCheckBox(centralWidget);
+        summerCheckbox->setObjectName(QString::fromUtf8("summerCheckbox"));
+        summerCheckbox->setFocusPolicy(Qt::StrongFocus);
+        summerCheckbox->setChecked(true);
+        summerCheckbox->setTristate(false);
+        verticalLayout->addWidget(summerCheckbox);
+        fallCheckbox = new QCheckBox(centralWidget);
+        fallCheckbox->setObjectName(QString::fromUtf8("fallCheckbox"));
+        fallCheckbox->setFocusPolicy(Qt::StrongFocus);
+        fallCheckbox->setTristate(false);
+        verticalLayout->addWidget(fallCheckbox);
+        winterCheckbox = new QCheckBox(centralWidget);
+        winterCheckbox->setObjectName(QString::fromUtf8("winterCheckbox"));
+        winterCheckbox->setFocusPolicy(Qt::StrongFocus);
+        winterCheckbox->setTristate(false);
+        verticalLayout->addWidget(winterCheckbox);
+        springCheckbox = new QCheckBox(centralWidget);
+        springCheckbox->setObjectName(QString::fromUtf8("springCheckbox"));
+        springCheckbox->setFocusPolicy(Qt::StrongFocus);
+        springCheckbox->setTristate(false);
+        verticalLayout->addWidget(springCheckbox);
 
         line_2 = new QFrame(centralWidget);
         line_2->setObjectName(QString::fromUtf8("line_2"));
@@ -345,9 +376,15 @@ public:
         cylinderTreeButton->setText(QCoreApplication::translate("MainWindow", "Cylinder", nullptr));
         coneTreeButton->setText(QCoreApplication::translate("MainWindow", "Cone", nullptr));
 
+        //Final
         recursionsLabel->setText(QCoreApplication::translate("MainWindow", "Number of recursions:", nullptr));
         angleLabel->setText(QCoreApplication::translate("MainWindow", "Angle (degrees):", nullptr));
         leafSizeLabel->setText(QCoreApplication::translate("MainWindow", "Leaf Size:", nullptr));
+        seasonsLabel->setText(QCoreApplication::translate("MainWindow", "Seasons:", nullptr));
+        summerCheckbox->setText(QCoreApplication::translate("MainWindow", "Summer", nullptr));
+        fallCheckbox->setText(QCoreApplication::translate("MainWindow", "Fall", nullptr));
+        winterCheckbox->setText(QCoreApplication::translate("MainWindow", "Winter", nullptr));
+        springCheckbox->setText(QCoreApplication::translate("MainWindow", "Spring", nullptr));
 
         label_3->setText(QCoreApplication::translate("MainWindow", "Animations:", nullptr));
         animNoneButton->setText(QCoreApplication::translate("MainWindow", "None", nullptr));
