@@ -6,25 +6,6 @@ LSystem::LSystem():
     m_recursions(2),
     m_sequence("X")
 {
-    //Binary tree
-//    m_rules.insert(std::pair<std::string, std::vector<std::string>>("X",{"F[-X][+X]"}));
-
-    // Straight tree.
-//    m_rules.insert(std::pair<std::string, std::vector<std::string>>("F",{"FF"}));
-//    m_rules.insert(std::pair<std::string, std::vector<std::string>>("X",{"F[+X][-X]FX"}));
-
-//    // Wavy tree
-//    m_rules.insert(std::pair<std::string, std::vector<std::string>>("F",{"FF"}));
-//    m_rules.insert(std::pair<std::string, std::vector<std::string>>("X",{"F-[[X]+X]+F[+FX]-X"}));
-
-    // Other tree?
-//    m_rules.insert(std::pair<std::string, std::vector<std::string>>("F",{"FF"}));
-//    m_rules.insert(std::pair<std::string, std::vector<std::string>>("X",{"F[-X]F[-X]+X"}));
-
-
-    // Sierpinski's Triangle
-//    m_rules.insert(std::pair<std::string, std::vector<std::string>>("F",{"+X-F-X+"}));
-//    m_rules.insert(std::pair<std::string, std::vector<std::string>>("X",{"-F+X+F-"}));
 
 }
 
@@ -93,7 +74,6 @@ std::map<std::string, std::vector<std::string>> LSystem::getRules(){
  * @param replacement value to add to vector in map
  */
 void LSystem::addRule(std::string key, std::string replacement){
-    std::cout << "adding rule" << std::endl;
     if (key == "F"){
        std::map<std::string, std::vector<std::string>>::iterator it = m_rules.find("F");
        if (it != m_rules.end()){

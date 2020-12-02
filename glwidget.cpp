@@ -359,6 +359,7 @@ void GLWidget::renderLeaves() {
 bool GLWidget::hasSettingsChanged() {
     if (m_settings.treeOption != settings.treeOption){
         m_settings.treeOption = settings.treeOption;
+        m_tree->addTreeOptionRule(settings.treeOption);
         return true;
     }
     if (m_settings.season != settings.season){

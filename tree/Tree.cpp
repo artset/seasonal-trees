@@ -58,7 +58,6 @@ Tree::~Tree() {
  * @return
  */
 void Tree::buildTree(const glm::mat4 &model) {
-    addTreeOptionRule(settings.treeOption);
     float ANGLE = glm::radians(settings.angle);
     m_lsystem.setRecursion(settings.recursions);
     m_lsystem.generateSequence();
@@ -66,7 +65,6 @@ void Tree::buildTree(const glm::mat4 &model) {
     srand(time(NULL));
 
     std::string string = m_lsystem.getSequence();
-    std::cout << string << std::endl;
     std::vector<char> forwardSymbols;
     forwardSymbols.reserve(m_lsystem.getRules().size());
     for (auto const& key_val : m_lsystem.getRules()) {
@@ -199,8 +197,12 @@ void Tree::buildTree(const glm::mat4 &model) {
     }
 }
 
+/**
+ * Adds the L-system rules and sets the axiom depending on the tree chosen in the dropdown of the ui.
+ * @brief Tree::addTreeOptionRule
+ * @param treeOption index of selected tree option in the ui combo box
+ */
 void Tree::addTreeOptionRule(int treeOption){
-    std::cout << "add tree option rule " << treeOption << std::endl;
     m_lsystem.clearRules();
     switch (treeOption){
         //Binary tree

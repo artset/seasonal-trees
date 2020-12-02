@@ -24,6 +24,7 @@ public:
     ~Tree();
     void buildTree(const glm::mat4 &model);
     std::vector<glm::mat4> getBranchData();
+    void addTreeOptionRule(int treeOption);
 private:
     static const float BRANCH_LENGTH;
     static const glm::vec3 SCALE_FACTOR;
@@ -33,7 +34,6 @@ private:
     std::vector<glm::mat4> processBranch(const glm::mat4 &curr, const std::string &string);
     LSystem m_lsystem;
     std::vector<glm::mat4> m_branchData;
-    void addTreeOptionRule(int treeOption);
 
 
 };
