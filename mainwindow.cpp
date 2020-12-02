@@ -270,13 +270,11 @@ void MainWindow::on_checkBox_toggled(bool checked)
 
 void MainWindow::on_summerRadioButton_clicked(){
     settings.season = 0;
-    std::cout << "summer radio button" << std::endl;
     updateSeasonParameters(settings.season);
 }
 
 void MainWindow::on_fallRadioButton_clicked(){
     settings.season = 1;
-    std::cout << "fall radio button" << std::endl;
     updateSeasonParameters(settings.season);
 }
 
@@ -291,7 +289,6 @@ void MainWindow::on_springRadioButton_clicked(){
 }
 
 void MainWindow::updateSeasonParameters(int season){
-    std::cout << "update season parameters" << std::endl;
     switch (season){
         //Summer
         case 0:
