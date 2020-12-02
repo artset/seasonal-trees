@@ -357,15 +357,21 @@ void GLWidget::renderLeaves() {
 
 // TODO: any changes to the UI component should also add to this function.
 bool GLWidget::hasSettingsChanged() {
+    if (m_settings.treeOption != settings.treeOption){
+        m_settings.treeOption = settings.treeOption;
+        return true;
+    }
+    if (m_settings.season != settings.season){
+        m_settings.season = settings.season;
+        return true;
+    }
     if (m_settings.recursions != settings.recursions ||
             m_settings.angle != settings.angle) {
-
         m_settings.recursions = settings.recursions;
         m_settings.angle = settings.angle;
         return true;
     }
     return false;
-
 }
 
 void GLWidget::renderSkybox() {

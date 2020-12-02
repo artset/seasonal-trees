@@ -63,6 +63,7 @@ Tree::~Tree() {
  * @return
  */
 void Tree::buildTree(const glm::mat4 &model) {
+    addTreeOptionRule(settings.treeOption);
     float ANGLE = glm::radians(settings.angle);
     m_lsystem.setRecursion(settings.recursions);
     m_lsystem.generateSequence();
@@ -223,6 +224,53 @@ void Tree::buildTree(const glm::mat4 &model) {
     }
     if (prevStates.size() != 0) {
         std::cout << "Missed " << prevStates.size() << " cached states" << std::endl;
+    }
+}
+
+/**
+ * Adds the L-system rules and sets the axiom depending on the tree chosen in the dropdown of the ui.
+ * @brief Tree::addTreeOptionRule
+ * @param treeOption index of selected tree option in the ui combo box
+ */
+void Tree::addTreeOptionRule(int treeOption){
+    m_lsystem.clearRules();
+    switch (treeOption){
+        //Binary tree
+        case 0:
+            m_lsystem.setAxiom("X");
+            m_lsystem.addRule("F", "F");
+            m_lsystem.addRule("X", "F[-X][+X]");
+            break;
+        //Arrow Weed
+        case 1:
+            m_lsystem.setAxiom("X");
+            m_lsystem.addRule("F", "FF");
+            m_lsystem.addRule("X", "F[+X][-X]FX");
+            break;
+        //Fuzzy Weed
+        case 2:
+            m_lsystem.setAxiom("X");
+            m_lsystem.addRule("F", "FF");
+            m_lsystem.addRule("X", "F-[[X]+X]+F[+FX]-X");
+            break;
+        //Wavy Seaweed
+        case 3:
+            m_lsystem.setAxiom("F");
+            m_lsystem.addRule("F", "FF-[-F+F+F]+[+F-F-F]");
+            break;
+        //Twiggy weed
+        case 4:
+            m_lsystem.setAxiom("X");
+            m_lsystem.addRule("F", "FF");
+            m_lsystem.addRule("X", "F[-X]F[-X]+X");
+            break;
+        //Stochastic Fuzzy Weed
+        case 5:
+            m_lsystem.setAxiom("X");
+            m_lsystem.addRule("F", "FF");
+            m_lsystem.addRule("X", "F-[[X]+X]+F[+FX]-X");
+            m_lsystem.addRule("X", "F+[[X]-X]-F[-FX]+X");
+
     }
 }
 

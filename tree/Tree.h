@@ -24,6 +24,7 @@ public:
     ~Tree();
     void buildTree(const glm::mat4 &model);
     std::vector<glm::mat4> getBranchData();
+    void addTreeOptionRule(int treeOption);
 private:
     static const float BRANCH_LENGTH;
     static const glm::vec3 SCALE_FACTOR;

@@ -6,21 +6,6 @@ LSystem::LSystem():
     m_recursions(2),
     m_sequence("X")
 {
-    // Straight tree.
-//    m_rules.insert(std::pair<std::string, std::vector<std::string>>("F",{"F[+X]", "F[-X]"}));
-//    m_rules.insert(std::pair<std::string, std::vector<std::string>>("X",{"F[+X][-X]F"}));
-
-    // More strange wavy tree
-//    m_rules.insert(std::pair<std::string, std::vector<std::string>>("F",{"F[+X]", "F", "F[-X]"}));
-//    m_rules.insert(std::pair<std::string, std::vector<std::string>>("X",{"F[-X]F[-X]", "F+[[X]-X]-F[-FX]"}));
-
-    // weird stuff katherine was making
-    m_rules.insert(std::pair<std::string, std::vector<std::string>>("F",{"F[+X]", "F[-X]F[+X]"}));
-    m_rules.insert(std::pair<std::string, std::vector<std::string>>("X",{"F-[[X]+X]+F[+FX]-X", "F+[[X]-X]-F[-FX]+X"}));
-
-    // Sierpinski's Triangle
-//    m_rules.insert(std::pair<std::string, std::vector<std::string>>("F",{"+X-F-X+"}));
-//    m_rules.insert(std::pair<std::string, std::vector<std::string>>("X",{"-F+X+F-"}));
 
 }
 
@@ -29,7 +14,6 @@ LSystem::LSystem():
  * @brief LSystem::generateSequence
  */
 void LSystem::generateSequence(){
-    m_sequence = "X";
     for (int i = 0; i < m_recursions; i++){
         expand();
     }
@@ -75,6 +59,10 @@ std::string LSystem::getSequence(){
     return m_sequence;
 }
 
+void LSystem::setAxiom(std::string axiom){
+    m_sequence = axiom;
+}
+
 std::map<std::string, std::vector<std::string>> LSystem::getRules(){
     return m_rules;
 }
@@ -90,11 +78,15 @@ void LSystem::addRule(std::string key, std::string replacement){
        std::map<std::string, std::vector<std::string>>::iterator it = m_rules.find("F");
        if (it != m_rules.end()){
            it->second.push_back(replacement);
+       } else {
+           m_rules.insert(std::pair<std::string, std::vector<std::string>>(key,{replacement}));
        }
     } else if (key == "X"){
         std::map<std::string, std::vector<std::string>>::iterator it = m_rules.find("X");
         if (it != m_rules.end()){
             it->second.push_back(replacement);
+        } else {
+            m_rules.insert(std::pair<std::string, std::vector<std::string>>(key,{replacement}));
         }
     }
 }

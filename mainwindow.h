@@ -3,12 +3,17 @@
 
 #include <QMainWindow>
 #include <glwidget.h>
+#include <QButtonGroup>
 
 class DataBinding;
 
 namespace Ui {
 class MainWindow;
 }
+
+enum Season {
+    SUMMER, FALL, WINTER, SPRING
+};
 
 class UniformWidget; class QBoxLayout;
 
@@ -60,6 +65,18 @@ private slots:
 
     void on_checkBox_toggled(bool checked);
 
+    void on_summerRadioButton_clicked();
+
+    void on_fallRadioButton_clicked();
+
+    void on_winterRadioButton_clicked();
+
+    void on_springRadioButton_clicked();
+
+    void on_treeOptionsComboBox_activated(const QString &arg1);
+
+    void on_treeOptionsComboBox_currentIndexChanged(int index);
+
 public slots:
     void handleUniformDeleted(UniformWidget *deleted);
     void changeUniform(const UniformVariable *uniform, const QString &newVal);
@@ -84,6 +101,11 @@ private:
 
     void dataBind();
     QList<DataBinding*> m_bindings;
+    QList<QButtonGroup*> m_buttonGroups;
+
+    void updateCheckboxes(enum Season season, bool checked);
+
+    void updateSeasonParameters(int season);
 };
 
 #endif // MAINWINDOW_H

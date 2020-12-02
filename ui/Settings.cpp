@@ -25,6 +25,8 @@ void Settings::loadSettingsOrDefaults() {
 
     recursions = s.value("recursions", 4).toInt();
     angle = s.value("angle", 25.f).toFloat();
+    season = s.value("season", 0).toInt();
+    treeOption = s.value("treeOption", 0).toInt();
 
 }
 
@@ -33,6 +35,7 @@ void Settings::saveSettings() {
 
     s.setValue("recursions", recursions);
     s.setValue("angle", angle);
+    s.setValue("season", season);
 
 }
 

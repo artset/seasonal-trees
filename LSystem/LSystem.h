@@ -16,6 +16,7 @@ public:
     void addRule(std::string key, std::string replacement);
     std::map<std::string, std::vector<std::string>> getRules();
     void clearRules();
+    void setAxiom(std::string axiom);
 private:
     void expand();
     int getReplacementIndex(int totalRules);

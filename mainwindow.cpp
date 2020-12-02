@@ -65,6 +65,10 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow()
 {
+    foreach (DataBinding *b, m_bindings)
+        delete b;
+    foreach (QButtonGroup *bg, m_buttonGroups)
+        delete bg;
     foreach (UniformWidget * u, m_uniforms) {
         delete u;
     }
@@ -127,6 +131,13 @@ void MainWindow::init()
     } else {
         loadShader(":/shaders/default.vert", ":/shaders/default.frag");
     }
+
+    ui->treeOptionsComboBox->addItem("Binary Tree");
+    ui->treeOptionsComboBox->addItem("Arrow Weed");
+    ui->treeOptionsComboBox->addItem("Fuzzy Weed");
+    ui->treeOptionsComboBox->addItem("Wavy Seaweed");
+    ui->treeOptionsComboBox->addItem("Twiggy Weed");
+    ui->treeOptionsComboBox->addItem("Stochastic Fuzzy Weed");
 }
 
 void MainWindow::handleUniformDeleted(UniformWidget *deleted)
@@ -264,23 +275,85 @@ void MainWindow::on_checkBox_toggled(bool checked)
     m_glwidget->setWireframeMode(checked ? WIREFRAME_VERT : WIREFRAME_NORMAL);
 }
 
+void MainWindow::on_summerRadioButton_clicked(){
+    settings.season = 0;
+    updateSeasonParameters(settings.season);
+}
+
+void MainWindow::on_fallRadioButton_clicked(){
+    settings.season = 1;
+    updateSeasonParameters(settings.season);
+}
+
+void MainWindow::on_winterRadioButton_clicked(){
+    settings.season = 2;
+    updateSeasonParameters(settings.season);
+}
+
+void MainWindow::on_springRadioButton_clicked(){
+    settings.season = 3;
+    updateSeasonParameters(settings.season);
+}
+
+void MainWindow::updateSeasonParameters(int season){
+    switch (season){
+        //Summer
+        case 0:
+            settings.leafSize = 0.8f;
+            //Update slider
+            ui->leafSizeTextbox->setText("0.8");
+            break;
+        //Fall
+        case 1:
+            settings.leafSize = 0.8f;
+            ui->leafSizeTextbox->setText("0.8");
+            //Different colored leaves
+            break;
+        //Winter
+        case 2:
+            //Get rid of leaves
+            settings.leafSize = 0.f;
+            ui->leafSizeTextbox->setText("0");
+            break;
+        //Spring
+        case 3:
+            //Smaller leaves
+            settings.leafSize = 0.5f;
+            ui->leafSizeTextbox->setText("0.5");
+            break;
+    }
+}
+
 void MainWindow::dataBind(){
 #define BIND(b) { \
     DataBinding *_b = (b); \
     m_bindings.push_back(_b); \
     assert(connect(_b, SIGNAL(dataChanged()), this, SLOT(settingsChanged()))); \
 }
+    QButtonGroup *seasonButtonGroup = new QButtonGroup;
+    m_buttonGroups.push_back(seasonButtonGroup);
 
     BIND(IntBinding::bindSliderAndTextbox(
-        ui->recursionSlider, ui->recursionsTextbox, settings.recursions, 1, 6));
+        ui->recursionsSlider, ui->recursionsTextbox, settings.recursions, 0, 10));
     BIND(FloatBinding::bindSliderAndTextbox(
         ui->angleSlider, ui->angleTextbox, settings.angle, 10, 90));
 
     BIND(FloatBinding::bindSliderAndTextbox(
-        ui->leafSizeSlider, ui->leafSizeTextbox, settings.leafSize, .3, 10));
+        ui->leafSizeSlider, ui->leafSizeTextbox, settings.leafSize, 0, 5));
 
+    BIND(ChoiceBinding::bindRadioButtons(seasonButtonGroup, 4, settings.season, ui->summerRadioButton, ui->fallRadioButton, ui->winterRadioButton, ui->springRadioButton));
 }
 
 void MainWindow::settingsChanged(){
 
+}
+
+void MainWindow::on_treeOptionsComboBox_activated(const QString &arg1)
+{
+
+}
+
+void MainWindow::on_treeOptionsComboBox_currentIndexChanged(int index)
+{
+    settings.treeOption = index;
 }
