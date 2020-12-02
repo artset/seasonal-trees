@@ -7,17 +7,16 @@ LSystem::LSystem():
     m_sequence("X")
 {
     // Straight tree.
-//    m_rules.insert(std::pair<std::string, std::vector<std::string>>("F",{"FF"}));
-//    m_rules.insert(std::pair<std::string, std::vector<std::string>>("X",{"F[+X][-X]FX"}));
+//    m_rules.insert(std::pair<std::string, std::vector<std::string>>("F",{"F[+X]", "F[-X]"}));
+//    m_rules.insert(std::pair<std::string, std::vector<std::string>>("X",{"F[+X][-X]F"}));
 
-//    // Wavy tree
-//    m_rules.insert(std::pair<std::string, std::vector<std::string>>("F",{"FF"}));
-//    m_rules.insert(std::pair<std::string, std::vector<std::string>>("X",{"F-[[X]+X]+F[+FX]-X"}));
+    // More strange wavy tree
+//    m_rules.insert(std::pair<std::string, std::vector<std::string>>("F",{"F[+X]", "F", "F[-X]"}));
+//    m_rules.insert(std::pair<std::string, std::vector<std::string>>("X",{"F[-X]F[-X]", "F+[[X]-X]-F[-FX]"}));
 
-    // Other tree?
-    m_rules.insert(std::pair<std::string, std::vector<std::string>>("F",{"FF"}));
-    m_rules.insert(std::pair<std::string, std::vector<std::string>>("X",{"F[-X]F[-X]", "F+[[X]-X]-F[-FX]"}));
-
+    // weird stuff katherine was making
+    m_rules.insert(std::pair<std::string, std::vector<std::string>>("F",{"F[+X]", "F[-X]F[+X]"}));
+    m_rules.insert(std::pair<std::string, std::vector<std::string>>("X",{"F-[[X]+X]+F[+FX]-X", "F+[[X]-X]-F[-FX]+X"}));
 
     // Sierpinski's Triangle
 //    m_rules.insert(std::pair<std::string, std::vector<std::string>>("F",{"+X-F-X+"}));

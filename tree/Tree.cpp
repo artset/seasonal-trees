@@ -4,9 +4,10 @@
 #include "LSystem/LSystem.h"
 #include "Settings.h"
 #include "time.h"
+#include <random>
 
 const float Tree::BRANCH_LENGTH = 1.f;
-const glm::vec3 Tree::SCALE_FACTOR = glm::vec3(.5f, .8f, .5f);
+const glm::vec3 Tree::SCALE_FACTOR = glm::vec3(.6f, .8f, .6f);
 //const glm::vec3 Tree::INIT_SCALE_FACTOR = glm::vec3(.05f, .2f, .05f);
 // the .6f below is totally arbitrary, I'm not sure why it works
 const glm::vec3 Tree::TRANSLATE = glm::vec3(0, Tree::BRANCH_LENGTH * .5f, 0);
@@ -48,8 +49,8 @@ std::vector<std::string> strings = {
 Tree::Tree():
     m_lsystem()
 {
-
-    m_branchData.reserve(settings.recursions * 2); // TODO more optimal allocation
+    m_branchData.reserve(settings.recursions * 2);
+    m_is2D = false;
 }
 
 Tree::~Tree() {
@@ -69,7 +70,6 @@ void Tree::buildTree(const glm::mat4 &model) {
     srand(time(NULL));
 
     std::string string = m_lsystem.getSequence();
-    std::cout << string << std::endl;
 
     std::vector<char> forwardSymbols;
     forwardSymbols.reserve(m_lsystem.getRules().size());
@@ -132,19 +132,30 @@ void Tree::buildTree(const glm::mat4 &model) {
         return true;
     };
 
-    auto getRandAxis = [] (const int branchNum) {
-        return ROTATE_AXES[branchNum % (ROTATE_AXES.size() - 1)];
-//        return ROTATE_AXES[2];
+
+    // Returns some variance to the original angle by some random degree.
+    // Potentially let the RANGE be decided by the UI?
+    auto getRandomAngle = [] (const int &branchNum, const float &angle) {
+        int RANGE = 5;
+        std::default_random_engine generator;
+        std::uniform_int_distribution<int> distribution(0, RANGE);
+        int newAngle = distribution(generator);
+        if (branchNum % 2) {
+            return angle - newAngle;
+        }
+        return angle + newAngle;
     };
 
-
     //Parse the string
-    int branchNum = 0;
+    std::default_random_engine generator;
+    std::uniform_int_distribution<int> distribution(0, ROTATE_AXES.size());
+    int branchNum = distribution(generator);
+
     for (size_t i = 0 ; i < string.size() ; i++) {
         switch (string[i]) {
             case '-': {
                 //Rotate the current rotation matrix to the left
-                glm::vec3 axis = getRandAxis(branchNum);
+                glm::vec3 axis = getRotateAxis(branchNum);
                 currState.rotate = glm::rotate(-ANGLE, axis) * currState.rotate;
                 if (currState.length == 0) {
                     //Need to update initial state for branch that hasn't been drawn yet
@@ -154,7 +165,7 @@ void Tree::buildTree(const glm::mat4 &model) {
             }
             case '+': {
                 //Rotate the current rotation matrix to the right
-                glm::vec3 axis = getRandAxis(branchNum);
+                glm::vec3 axis = getRotateAxis(branchNum);
                 currState.rotate = glm::rotate(ANGLE, axis) * currState.rotate;
                 if (currState.length == 0) {
                     //Need to update initial state for branch that hasn't been drawn yet
@@ -179,8 +190,8 @@ void Tree::buildTree(const glm::mat4 &model) {
         default:
             if (std::find(forwardSymbols.begin(), forwardSymbols.end(), string[i]) != forwardSymbols.end()) {
                 branchNum++;
-                //For "Forward" symbols, translate a small distance in the current direction
 
+                //For "Forward" symbols, translate a small distance in the current direction
                 //Start a new line if the scale or rotation matrices are different from the initial branch transformation
                 //Otherwise, continue the current line
                 bool isNewBranch =
@@ -220,3 +231,12 @@ void Tree::buildTree(const glm::mat4 &model) {
 std::vector<glm::mat4> Tree::getBranchData() {
     return m_branchData;
 }
+
+glm::vec3 Tree::getRotateAxis(int branchNum) {
+    if (m_is2D) {
+       return Tree::ROTATE_AXES[2];
+    }
+    return Tree::ROTATE_AXES[branchNum % (ROTATE_AXES.size() - 1)];
+}
+
+
