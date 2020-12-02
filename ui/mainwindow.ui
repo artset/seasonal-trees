@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1100</width>
-    <height>700</height>
+    <width>978</width>
+    <height>784</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -23,17 +23,17 @@
      <verstretch>0</verstretch>
     </sizepolicy>
    </property>
-   <layout class="QHBoxLayout" name="horizontalLayout">
+   <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,3,0">
     <item>
-     <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0">
+     <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0">
       <property name="spacing">
        <number>0</number>
       </property>
       <property name="topMargin">
-       <number>2</number>
+       <number>0</number>
       </property>
       <property name="bottomMargin">
-       <number>2</number>
+       <number>0</number>
       </property>
       <item>
        <widget class="QLabel" name="label">
@@ -46,6 +46,18 @@
        <widget class="QPushButton" name="defaultShaderButton">
         <property name="text">
          <string>Default</string>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>16</width>
+          <height>16</height>
+         </size>
+        </property>
+        <property name="autoDefault">
+         <bool>false</bool>
+        </property>
+        <property name="default">
+         <bool>false</bool>
         </property>
        </widget>
       </item>
@@ -69,9 +81,6 @@
          <enum>Qt::Horizontal</enum>
         </property>
        </widget>
-      </item>
-      <item>
-       <layout class="QVBoxLayout" name="verticalLayout_4"/>
       </item>
       <item>
        <widget class="QLabel" name="label_2">
@@ -116,7 +125,7 @@
        </widget>
       </item>
       <item>
-       <layout class="QGridLayout" name="sliderGrid" columnstretch="2,0" columnminimumwidth="2,0">
+       <layout class="QGridLayout" name="sliderGrid" columnstretch="2,1">
         <property name="sizeConstraint">
          <enum>QLayout::SetMinAndMaxSize</enum>
         </property>
@@ -127,8 +136,21 @@
          <number>5</number>
         </property>
         <property name="horizontalSpacing">
-         <number>6</number>
+         <number>4</number>
         </property>
+        <item row="0" column="0">
+         <widget class="QLabel" name="recursionsLabel">
+          <property name="text">
+           <string>Number of recursions:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="1">
+         <widget class="QLineEdit" name="angleTextbox"/>
+        </item>
+        <item row="5" column="1">
+         <widget class="QLineEdit" name="leafSizeTextbox"/>
+        </item>
         <item row="1" column="0">
          <widget class="QSlider" name="recursionsSlider">
           <property name="minimum">
@@ -155,6 +177,20 @@
           </property>
          </widget>
         </item>
+        <item row="4" column="0">
+         <widget class="QLabel" name="leafSizeLabel">
+          <property name="text">
+           <string>Leaf Size:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="angleLabel">
+          <property name="text">
+           <string>Angle (degrees)</string>
+          </property>
+         </widget>
+        </item>
         <item row="1" column="1">
          <widget class="QLineEdit" name="recursionsTextbox">
           <property name="maxLength">
@@ -171,33 +207,6 @@
            <enum>Qt::Horizontal</enum>
           </property>
          </widget>
-        </item>
-        <item row="3" column="1">
-         <widget class="QLineEdit" name="angleTextbox"/>
-        </item>
-        <item row="4" column="0">
-         <widget class="QLabel" name="leafSizeLabel">
-          <property name="text">
-           <string>Leaf Size:</string>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="0">
-         <widget class="QLabel" name="angleLabel">
-          <property name="text">
-           <string>Angle (degrees)</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="0">
-         <widget class="QLabel" name="recursionsLabel">
-          <property name="text">
-           <string>Number of recursions:</string>
-          </property>
-         </widget>
-        </item>
-        <item row="5" column="1">
-         <widget class="QLineEdit" name="leafSizeTextbox"/>
         </item>
        </layout>
       </item>
@@ -299,6 +308,19 @@
        </widget>
       </item>
       <item>
+       <spacer name="horizontalSpacer_3">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
        <widget class="Line" name="line_3">
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
@@ -350,13 +372,6 @@
        </widget>
       </item>
       <item>
-       <widget class="Line" name="line_5">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-       </widget>
-      </item>
-      <item>
        <spacer name="verticalSpacer">
         <property name="orientation">
          <enum>Qt::Vertical</enum>
@@ -372,12 +387,18 @@
      </layout>
     </item>
     <item>
-     <layout class="QVBoxLayout" name="verticalLayout_2">
+     <layout class="QVBoxLayout" name="verticalLayout_2" stretch="0">
       <property name="spacing">
        <number>0</number>
       </property>
       <property name="sizeConstraint">
-       <enum>QLayout::SetDefaultConstraint</enum>
+       <enum>QLayout::SetMaximumSize</enum>
+      </property>
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
       </property>
       <item>
        <spacer name="horizontalSpacer">

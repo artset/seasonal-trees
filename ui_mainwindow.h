@@ -38,7 +38,6 @@ public:
     QPushButton *shader1Button;
     QPushButton *shader2Button;
     QFrame *line;
-    QVBoxLayout *verticalLayout_4;
     QLabel *label_2;
     QPushButton *sphereButton;
     QPushButton *cubeButton;
@@ -46,15 +45,15 @@ public:
     QPushButton *coneTreeButton;
     QFrame *line_2;
     QGridLayout *sliderGrid;
+    QLabel *recursionsLabel;
+    QLineEdit *angleTextbox;
+    QLineEdit *leafSizeTextbox;
     QSlider *recursionsSlider;
     QSlider *angleSlider;
-    QLineEdit *recursionsTextbox;
-    QSlider *leafSizeSlider;
-    QLineEdit *angleTextbox;
     QLabel *leafSizeLabel;
     QLabel *angleLabel;
-    QLabel *recursionsLabel;
-    QLineEdit *leafSizeTextbox;
+    QLineEdit *recursionsTextbox;
+    QSlider *leafSizeSlider;
     QLabel *seasonLabel;
     QRadioButton *summerRadioButton;
     QRadioButton *fallRadioButton;
@@ -68,13 +67,13 @@ public:
     QPushButton *animScaleMoveButton;
     QPushButton *animRotate1Button;
     QPushButton *animRotate2Button;
+    QSpacerItem *horizontalSpacer_3;
     QFrame *line_3;
     QLabel *label_4;
     QFrame *line_4;
     QLabel *label_5;
     QCheckBox *wireframeCheckbox;
     QCheckBox *checkBox;
-    QFrame *line_5;
     QSpacerItem *verticalSpacer;
     QVBoxLayout *verticalLayout_2;
     QSpacerItem *horizontalSpacer;
@@ -87,7 +86,7 @@ public:
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QString::fromUtf8("MainWindow"));
-        MainWindow->resize(1100, 700);
+        MainWindow->resize(978, 784);
         MainWindow->setAutoFillBackground(false);
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QString::fromUtf8("centralWidget"));
@@ -103,7 +102,7 @@ public:
         verticalLayout = new QVBoxLayout();
         verticalLayout->setSpacing(0);
         verticalLayout->setObjectName(QString::fromUtf8("verticalLayout"));
-        verticalLayout->setContentsMargins(-1, 2, -1, 2);
+        verticalLayout->setContentsMargins(-1, 0, -1, 0);
         label = new QLabel(centralWidget);
         label->setObjectName(QString::fromUtf8("label"));
 
@@ -111,6 +110,8 @@ public:
 
         defaultShaderButton = new QPushButton(centralWidget);
         defaultShaderButton->setObjectName(QString::fromUtf8("defaultShaderButton"));
+        defaultShaderButton->setIconSize(QSize(16, 16));
+        defaultShaderButton->setAutoDefault(false);
 
         verticalLayout->addWidget(defaultShaderButton);
 
@@ -130,12 +131,6 @@ public:
         line->setFrameShadow(QFrame::Sunken);
 
         verticalLayout->addWidget(line);
-
-        verticalLayout_4 = new QVBoxLayout();
-        verticalLayout_4->setSpacing(6);
-        verticalLayout_4->setObjectName(QString::fromUtf8("verticalLayout_4"));
-
-        verticalLayout->addLayout(verticalLayout_4);
 
         label_2 = new QLabel(centralWidget);
         label_2->setObjectName(QString::fromUtf8("label_2"));
@@ -173,8 +168,23 @@ public:
         sliderGrid->setSpacing(6);
         sliderGrid->setObjectName(QString::fromUtf8("sliderGrid"));
         sliderGrid->setSizeConstraint(QLayout::SetMinAndMaxSize);
-        sliderGrid->setHorizontalSpacing(6);
+        sliderGrid->setHorizontalSpacing(4);
         sliderGrid->setContentsMargins(-1, 5, -1, 5);
+        recursionsLabel = new QLabel(centralWidget);
+        recursionsLabel->setObjectName(QString::fromUtf8("recursionsLabel"));
+
+        sliderGrid->addWidget(recursionsLabel, 0, 0, 1, 1);
+
+        angleTextbox = new QLineEdit(centralWidget);
+        angleTextbox->setObjectName(QString::fromUtf8("angleTextbox"));
+
+        sliderGrid->addWidget(angleTextbox, 3, 1, 1, 1);
+
+        leafSizeTextbox = new QLineEdit(centralWidget);
+        leafSizeTextbox->setObjectName(QString::fromUtf8("leafSizeTextbox"));
+
+        sliderGrid->addWidget(leafSizeTextbox, 5, 1, 1, 1);
+
         recursionsSlider = new QSlider(centralWidget);
         recursionsSlider->setObjectName(QString::fromUtf8("recursionsSlider"));
         recursionsSlider->setMinimum(1);
@@ -191,6 +201,16 @@ public:
 
         sliderGrid->addWidget(angleSlider, 3, 0, 1, 1);
 
+        leafSizeLabel = new QLabel(centralWidget);
+        leafSizeLabel->setObjectName(QString::fromUtf8("leafSizeLabel"));
+
+        sliderGrid->addWidget(leafSizeLabel, 4, 0, 1, 1);
+
+        angleLabel = new QLabel(centralWidget);
+        angleLabel->setObjectName(QString::fromUtf8("angleLabel"));
+
+        sliderGrid->addWidget(angleLabel, 2, 0, 1, 1);
+
         recursionsTextbox = new QLineEdit(centralWidget);
         recursionsTextbox->setObjectName(QString::fromUtf8("recursionsTextbox"));
         recursionsTextbox->setMaxLength(100);
@@ -204,34 +224,8 @@ public:
 
         sliderGrid->addWidget(leafSizeSlider, 5, 0, 1, 1);
 
-        angleTextbox = new QLineEdit(centralWidget);
-        angleTextbox->setObjectName(QString::fromUtf8("angleTextbox"));
-
-        sliderGrid->addWidget(angleTextbox, 3, 1, 1, 1);
-
-        leafSizeLabel = new QLabel(centralWidget);
-        leafSizeLabel->setObjectName(QString::fromUtf8("leafSizeLabel"));
-
-        sliderGrid->addWidget(leafSizeLabel, 4, 0, 1, 1);
-
-        angleLabel = new QLabel(centralWidget);
-        angleLabel->setObjectName(QString::fromUtf8("angleLabel"));
-
-        sliderGrid->addWidget(angleLabel, 2, 0, 1, 1);
-
-        recursionsLabel = new QLabel(centralWidget);
-        recursionsLabel->setObjectName(QString::fromUtf8("recursionsLabel"));
-
-        sliderGrid->addWidget(recursionsLabel, 0, 0, 1, 1);
-
-        leafSizeTextbox = new QLineEdit(centralWidget);
-        leafSizeTextbox->setObjectName(QString::fromUtf8("leafSizeTextbox"));
-
-        sliderGrid->addWidget(leafSizeTextbox, 5, 1, 1, 1);
-
-        sliderGrid->setColumnStretch(0, 3);
+        sliderGrid->setColumnStretch(0, 2);
         sliderGrid->setColumnStretch(1, 1);
-        sliderGrid->setColumnMinimumWidth(0, 2);
 
         verticalLayout->addLayout(sliderGrid);
 
@@ -299,6 +293,10 @@ public:
 
         verticalLayout->addWidget(animRotate2Button);
 
+        horizontalSpacer_3 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        verticalLayout->addItem(horizontalSpacer_3);
+
         line_3 = new QFrame(centralWidget);
         line_3->setObjectName(QString::fromUtf8("line_3"));
         line_3->setFrameShape(QFrame::HLine);
@@ -336,13 +334,6 @@ public:
 
         verticalLayout->addWidget(checkBox);
 
-        line_5 = new QFrame(centralWidget);
-        line_5->setObjectName(QString::fromUtf8("line_5"));
-        line_5->setFrameShape(QFrame::HLine);
-        line_5->setFrameShadow(QFrame::Sunken);
-
-        verticalLayout->addWidget(line_5);
-
         verticalSpacer = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
 
         verticalLayout->addItem(verticalSpacer);
@@ -353,7 +344,8 @@ public:
         verticalLayout_2 = new QVBoxLayout();
         verticalLayout_2->setSpacing(0);
         verticalLayout_2->setObjectName(QString::fromUtf8("verticalLayout_2"));
-        verticalLayout_2->setSizeConstraint(QLayout::SetDefaultConstraint);
+        verticalLayout_2->setSizeConstraint(QLayout::SetMaximumSize);
+        verticalLayout_2->setContentsMargins(0, 0, -1, -1);
         horizontalSpacer = new QSpacerItem(200, 0, QSizePolicy::MinimumExpanding, QSizePolicy::Minimum);
 
         verticalLayout_2->addItem(horizontalSpacer);
@@ -382,9 +374,13 @@ public:
 
         horizontalLayout->addLayout(verticalLayout_3);
 
+        horizontalLayout->setStretch(1, 3);
         MainWindow->setCentralWidget(centralWidget);
 
         retranslateUi(MainWindow);
+
+        defaultShaderButton->setDefault(false);
+
 
         QMetaObject::connectSlotsByName(MainWindow);
     } // setupUi
@@ -401,9 +397,9 @@ public:
         cubeButton->setText(QCoreApplication::translate("MainWindow", "Cube", nullptr));
         cylinderTreeButton->setText(QCoreApplication::translate("MainWindow", "Cylinder", nullptr));
         coneTreeButton->setText(QCoreApplication::translate("MainWindow", "Cone", nullptr));
+        recursionsLabel->setText(QCoreApplication::translate("MainWindow", "Number of recursions:", nullptr));
         leafSizeLabel->setText(QCoreApplication::translate("MainWindow", "Leaf Size:", nullptr));
         angleLabel->setText(QCoreApplication::translate("MainWindow", "Angle (degrees)", nullptr));
-        recursionsLabel->setText(QCoreApplication::translate("MainWindow", "Number of recursions:", nullptr));
         seasonLabel->setText(QCoreApplication::translate("MainWindow", "Season:", nullptr));
         summerRadioButton->setText(QCoreApplication::translate("MainWindow", "Summer", nullptr));
         fallRadioButton->setText(QCoreApplication::translate("MainWindow", "Fall", nullptr));
