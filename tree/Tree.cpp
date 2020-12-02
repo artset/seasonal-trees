@@ -12,7 +12,9 @@ const glm::vec3 Tree::SCALE_FACTOR = glm::vec3(.5f, .8f, .5f);
 const glm::vec3 Tree::TRANSLATE = glm::vec3(0, Tree::BRANCH_LENGTH * .5f, 0);
 const std::vector<glm::vec3> Tree::ROTATE_AXES = {
     glm::vec3(1.f,0,0),
+    glm::vec3(-1.f,0, 0),
     glm::vec3(0,0,1.f),
+    glm::vec3(0,0,-1.f),
     glm::vec3(.5f,0,.5f),
 };
 
@@ -67,6 +69,7 @@ void Tree::buildTree(const glm::mat4 &model) {
     srand(time(NULL));
 
     std::string string = m_lsystem.getSequence();
+    std::cout << string << std::endl;
 
     std::vector<char> forwardSymbols;
     forwardSymbols.reserve(m_lsystem.getRules().size());
@@ -129,18 +132,19 @@ void Tree::buildTree(const glm::mat4 &model) {
         return true;
     };
 
-    auto getRandAxis = [] () {
-//        return ROTATE_AXES[rand() % (ROTATE_AXES.size() - 1)];
-        return ROTATE_AXES[2];
+    auto getRandAxis = [] (const int branchNum) {
+        return ROTATE_AXES[branchNum % (ROTATE_AXES.size() - 1)];
+//        return ROTATE_AXES[2];
     };
 
 
     //Parse the string
+    int branchNum = 0;
     for (size_t i = 0 ; i < string.size() ; i++) {
         switch (string[i]) {
             case '-': {
                 //Rotate the current rotation matrix to the left
-                glm::vec3 axis = getRandAxis();
+                glm::vec3 axis = getRandAxis(branchNum);
                 currState.rotate = glm::rotate(-ANGLE, axis) * currState.rotate;
                 if (currState.length == 0) {
                     //Need to update initial state for branch that hasn't been drawn yet
@@ -150,7 +154,7 @@ void Tree::buildTree(const glm::mat4 &model) {
             }
             case '+': {
                 //Rotate the current rotation matrix to the right
-                glm::vec3 axis = getRandAxis();
+                glm::vec3 axis = getRandAxis(branchNum);
                 currState.rotate = glm::rotate(ANGLE, axis) * currState.rotate;
                 if (currState.length == 0) {
                     //Need to update initial state for branch that hasn't been drawn yet
@@ -174,6 +178,7 @@ void Tree::buildTree(const glm::mat4 &model) {
             }
         default:
             if (std::find(forwardSymbols.begin(), forwardSymbols.end(), string[i]) != forwardSymbols.end()) {
+                branchNum++;
                 //For "Forward" symbols, translate a small distance in the current direction
 
                 //Start a new line if the scale or rotation matrices are different from the initial branch transformation

@@ -16,7 +16,7 @@ LSystem::LSystem():
 
     // Other tree?
     m_rules.insert(std::pair<std::string, std::vector<std::string>>("F",{"FF"}));
-    m_rules.insert(std::pair<std::string, std::vector<std::string>>("X",{"F[-X]F[-X]+X"}));
+    m_rules.insert(std::pair<std::string, std::vector<std::string>>("X",{"F[-X]F[-X]", "F+[[X]-X]-F[-FX]"}));
 
 
     // Sierpinski's Triangle
