@@ -292,14 +292,14 @@ void MainWindow::updateSeasonParameters(int season){
     switch (season){
         //Summer
         case 0:
-            settings.leafSize = 1.f;
+            settings.leafSize = 0.8f;
             //Update slider
-            ui->leafSizeTextbox->setText("1");
+            ui->leafSizeTextbox->setText("0.8");
             break;
         //Fall
         case 1:
-            settings.leafSize = 1.f;
-            ui->leafSizeTextbox->setText("5");
+            settings.leafSize = 0.8f;
+            ui->leafSizeTextbox->setText("0.8");
             //Different colored leaves
             break;
         //Winter
@@ -311,8 +311,8 @@ void MainWindow::updateSeasonParameters(int season){
         //Spring
         case 3:
             //Smaller leaves
-            settings.leafSize = 1.f;
-            ui->leafSizeTextbox->setText("1");
+            settings.leafSize = 0.5f;
+            ui->leafSizeTextbox->setText("0.5");
             break;
     }
 }
@@ -323,6 +323,7 @@ void MainWindow::dataBind(){
     m_bindings.push_back(_b); \
     assert(connect(_b, SIGNAL(dataChanged()), this, SLOT(settingsChanged()))); \
 }
+    std::cout << "in data bind" << std::endl;
     QButtonGroup *seasonButtonGroup = new QButtonGroup;
     m_buttonGroups.push_back(seasonButtonGroup);
 
@@ -333,7 +334,7 @@ void MainWindow::dataBind(){
         ui->angleSlider, ui->angleTextbox, settings.angle, 10, 90));
 
     BIND(FloatBinding::bindSliderAndTextbox(
-        ui->leafSizeSlider, ui->leafSizeTextbox, settings.leafSize, .3, 10));
+        ui->leafSizeSlider, ui->leafSizeTextbox, settings.leafSize, 0, 5));
 
     BIND(ChoiceBinding::bindRadioButtons(seasonButtonGroup, 4, settings.season, ui->summerRadioButton, ui->fallRadioButton, ui->winterRadioButton, ui->springRadioButton));
 }
