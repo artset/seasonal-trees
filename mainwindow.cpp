@@ -323,7 +323,6 @@ void MainWindow::dataBind(){
     m_bindings.push_back(_b); \
     assert(connect(_b, SIGNAL(dataChanged()), this, SLOT(settingsChanged()))); \
 }
-    std::cout << "in data bind" << std::endl;
     QButtonGroup *seasonButtonGroup = new QButtonGroup;
     m_buttonGroups.push_back(seasonButtonGroup);
 
