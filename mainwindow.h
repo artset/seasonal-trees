@@ -75,6 +75,8 @@ private slots:
 
     void on_treeOptionsComboBox_activated(const QString &arg1);
 
+    void on_treeOptionsComboBox_currentIndexChanged(int index);
+
 public slots:
     void handleUniformDeleted(UniformWidget *deleted);
     void changeUniform(const UniformVariable *uniform, const QString &newVal);

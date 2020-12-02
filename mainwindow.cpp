@@ -352,3 +352,8 @@ void MainWindow::on_treeOptionsComboBox_activated(const QString &arg1)
 {
 
 }
+
+void MainWindow::on_treeOptionsComboBox_currentIndexChanged(int index)
+{
+    settings.treeOption = index;
+}

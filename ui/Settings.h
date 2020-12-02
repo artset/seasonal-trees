@@ -33,6 +33,7 @@ struct Settings {
     float angle;
     float leafSize;
     int season;
+    int treeOption;
 
 };
 
