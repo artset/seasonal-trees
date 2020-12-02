@@ -32,8 +32,11 @@ private:
     static const std::vector<glm::vec3> ROTATE_AXES;
 
     std::vector<glm::mat4> processBranch(const glm::mat4 &curr, const std::string &string);
+    glm::vec3 getRotateAxis(int branchNum);
+
     LSystem m_lsystem;
     std::vector<glm::mat4> m_branchData;
+    bool m_is2D;
 
 
 };

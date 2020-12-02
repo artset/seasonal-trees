@@ -14,5 +14,5 @@ vec4 getColor() {
 }
 
 void main() {
-    fragColor = getColor();
+    fragColor = vec4(0, 0, 255, 1);
 }
