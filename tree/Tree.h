@@ -33,6 +33,7 @@ private:
     std::vector<glm::mat4> processBranch(const glm::mat4 &curr, const std::string &string);
     LSystem m_lsystem;
     std::vector<glm::mat4> m_branchData;
+    void addTreeOptionRule(int treeOption);
 
 
 };

@@ -6,13 +6,16 @@ LSystem::LSystem():
     m_recursions(2),
     m_sequence("X")
 {
+    //Binary tree
+//    m_rules.insert(std::pair<std::string, std::vector<std::string>>("X",{"F[-X][+X]"}));
+
     // Straight tree.
 //    m_rules.insert(std::pair<std::string, std::vector<std::string>>("F",{"FF"}));
 //    m_rules.insert(std::pair<std::string, std::vector<std::string>>("X",{"F[+X][-X]FX"}));
 
 //    // Wavy tree
-    m_rules.insert(std::pair<std::string, std::vector<std::string>>("F",{"FF"}));
-    m_rules.insert(std::pair<std::string, std::vector<std::string>>("X",{"F-[[X]+X]+F[+FX]-X"}));
+//    m_rules.insert(std::pair<std::string, std::vector<std::string>>("F",{"FF"}));
+//    m_rules.insert(std::pair<std::string, std::vector<std::string>>("X",{"F-[[X]+X]+F[+FX]-X"}));
 
     // Other tree?
 //    m_rules.insert(std::pair<std::string, std::vector<std::string>>("F",{"FF"}));
@@ -76,6 +79,10 @@ std::string LSystem::getSequence(){
     return m_sequence;
 }
 
+void LSystem::setAxiom(std::string axiom){
+    m_sequence = axiom;
+}
+
 std::map<std::string, std::vector<std::string>> LSystem::getRules(){
     return m_rules;
 }
@@ -87,15 +94,20 @@ std::map<std::string, std::vector<std::string>> LSystem::getRules(){
  * @param replacement value to add to vector in map
  */
 void LSystem::addRule(std::string key, std::string replacement){
+    std::cout << "adding rule" << std::endl;
     if (key == "F"){
        std::map<std::string, std::vector<std::string>>::iterator it = m_rules.find("F");
        if (it != m_rules.end()){
            it->second.push_back(replacement);
+       } else {
+           m_rules.insert(std::pair<std::string, std::vector<std::string>>(key,{replacement}));
        }
     } else if (key == "X"){
         std::map<std::string, std::vector<std::string>>::iterator it = m_rules.find("X");
         if (it != m_rules.end()){
             it->second.push_back(replacement);
+        } else {
+            m_rules.insert(std::pair<std::string, std::vector<std::string>>(key,{replacement}));
         }
     }
 }

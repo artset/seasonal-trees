@@ -58,6 +58,7 @@ Tree::~Tree() {
  * @return
  */
 void Tree::buildTree(const glm::mat4 &model) {
+    addTreeOptionRule(settings.treeOption);
     float ANGLE = glm::radians(settings.angle);
     m_lsystem.setRecursion(settings.recursions);
     m_lsystem.generateSequence();
@@ -65,6 +66,7 @@ void Tree::buildTree(const glm::mat4 &model) {
     srand(time(NULL));
 
     std::string string = m_lsystem.getSequence();
+    std::cout << string << std::endl;
     std::vector<char> forwardSymbols;
     forwardSymbols.reserve(m_lsystem.getRules().size());
     for (auto const& key_val : m_lsystem.getRules()) {
@@ -194,6 +196,38 @@ void Tree::buildTree(const glm::mat4 &model) {
     }
     if (prevStates.size() != 0) {
         std::cout << "Missed " << prevStates.size() << " cached states" << std::endl;
+    }
+}
+
+void Tree::addTreeOptionRule(int treeOption){
+    std::cout << "add tree option rule " << treeOption << std::endl;
+    m_lsystem.clearRules();
+    switch (treeOption){
+        //Binary tree
+        case 0:
+            m_lsystem.addRule("X", "F[-X][+X]");
+            break;
+        case 1:
+            m_lsystem.addRule("F", "FF");
+            m_lsystem.addRule("X", "F[+X][-X]FX");
+            break;
+        case 2:
+            m_lsystem.addRule("F", "FF");
+            m_lsystem.addRule("X", "F-[[X]+X]+F[+FX]-X");
+            break;
+        case 3:
+            m_lsystem.addRule("F", "FF-[-F+F+F]+[+F-F-F]");
+            break;
+        //Twiggy weed
+        case 4:
+            m_lsystem.addRule("F", "FF");
+            m_lsystem.addRule("X", "F[-X]F[-X]+X");
+            break;
+        case 5:
+            m_lsystem.addRule("F", "FF");
+            m_lsystem.addRule("X", "F-[[X]+X]+F[+FX]-X");
+            m_lsystem.addRule("X", "F+[[X]-X]-F[-FX]+X");
+
     }
 }
 

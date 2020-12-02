@@ -136,7 +136,8 @@ void MainWindow::init()
     ui->treeOptionsComboBox->addItem("Arrow Weed");
     ui->treeOptionsComboBox->addItem("Fuzzy Weed");
     ui->treeOptionsComboBox->addItem("Wavy Seaweed");
-    ui->treeOptionsComboBox->addItem("Stochastic");
+    ui->treeOptionsComboBox->addItem("Twiggy Weed");
+    ui->treeOptionsComboBox->addItem("Stochastic Fuzzy Weed");
 }
 
 void MainWindow::handleUniformDeleted(UniformWidget *deleted)
