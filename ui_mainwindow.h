@@ -12,6 +12,7 @@
 #include <QtCore/QVariant>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QCheckBox>
+#include <QtWidgets/QComboBox>
 #include <QtWidgets/QFrame>
 #include <QtWidgets/QGridLayout>
 #include <QtWidgets/QHBoxLayout>
@@ -43,7 +44,10 @@ public:
     QPushButton *cubeButton;
     QPushButton *cylinderTreeButton;
     QPushButton *coneTreeButton;
-    QFrame *line_2;
+    QSpacerItem *horizontalSpacer_4;
+    QLabel *treeOptionsLabel;
+    QComboBox *treeOptionsComboBox;
+    QSpacerItem *horizontalSpacer_5;
     QGridLayout *sliderGrid;
     QLabel *recursionsLabel;
     QLineEdit *angleTextbox;
@@ -157,12 +161,23 @@ public:
 
         verticalLayout->addWidget(coneTreeButton);
 
-        line_2 = new QFrame(centralWidget);
-        line_2->setObjectName(QString::fromUtf8("line_2"));
-        line_2->setFrameShape(QFrame::HLine);
-        line_2->setFrameShadow(QFrame::Sunken);
+        horizontalSpacer_4 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
 
-        verticalLayout->addWidget(line_2);
+        verticalLayout->addItem(horizontalSpacer_4);
+
+        treeOptionsLabel = new QLabel(centralWidget);
+        treeOptionsLabel->setObjectName(QString::fromUtf8("treeOptionsLabel"));
+
+        verticalLayout->addWidget(treeOptionsLabel);
+
+        treeOptionsComboBox = new QComboBox(centralWidget);
+        treeOptionsComboBox->setObjectName(QString::fromUtf8("treeOptionsComboBox"));
+
+        verticalLayout->addWidget(treeOptionsComboBox);
+
+        horizontalSpacer_5 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        verticalLayout->addItem(horizontalSpacer_5);
 
         sliderGrid = new QGridLayout();
         sliderGrid->setSpacing(6);
@@ -397,6 +412,7 @@ public:
         cubeButton->setText(QCoreApplication::translate("MainWindow", "Cube", nullptr));
         cylinderTreeButton->setText(QCoreApplication::translate("MainWindow", "Cylinder", nullptr));
         coneTreeButton->setText(QCoreApplication::translate("MainWindow", "Cone", nullptr));
+        treeOptionsLabel->setText(QCoreApplication::translate("MainWindow", "Tree Options:", nullptr));
         recursionsLabel->setText(QCoreApplication::translate("MainWindow", "Number of recursions:", nullptr));
         leafSizeLabel->setText(QCoreApplication::translate("MainWindow", "Leaf Size:", nullptr));
         angleLabel->setText(QCoreApplication::translate("MainWindow", "Angle (degrees)", nullptr));

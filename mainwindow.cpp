@@ -131,6 +131,12 @@ void MainWindow::init()
     } else {
         loadShader(":/shaders/default.vert", ":/shaders/default.frag");
     }
+
+    ui->treeOptionsComboBox->addItem("Binary Tree");
+    ui->treeOptionsComboBox->addItem("Arrow Weed");
+    ui->treeOptionsComboBox->addItem("Fuzzy Weed");
+    ui->treeOptionsComboBox->addItem("Wavy Seaweed");
+    ui->treeOptionsComboBox->addItem("Stochastic");
 }
 
 void MainWindow::handleUniformDeleted(UniformWidget *deleted)
@@ -339,5 +345,10 @@ void MainWindow::dataBind(){
 }
 
 void MainWindow::settingsChanged(){
+
+}
+
+void MainWindow::on_treeOptionsComboBox_activated(const QString &arg1)
+{
 
 }

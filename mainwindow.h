@@ -73,6 +73,8 @@ private slots:
 
     void on_springRadioButton_clicked();
 
+    void on_treeOptionsComboBox_activated(const QString &arg1);
+
 public slots:
     void handleUniformDeleted(UniformWidget *deleted);
     void changeUniform(const UniformVariable *uniform, const QString &newVal);
