@@ -58,6 +58,7 @@ Tree::~Tree() {
  * @return
  */
 void Tree::buildTree(const glm::mat4 &model) {
+    addTreeOptionRule(settings.treeOption);
     float ANGLE = glm::radians(settings.angle);
     m_lsystem.setRecursion(settings.recursions);
     m_lsystem.generateSequence();
@@ -208,6 +209,7 @@ void Tree::addTreeOptionRule(int treeOption){
         //Binary tree
         case 0:
             m_lsystem.setAxiom("X");
+            m_lsystem.addRule("F", "F");
             m_lsystem.addRule("X", "F[-X][+X]");
             break;
         //Arrow Weed
