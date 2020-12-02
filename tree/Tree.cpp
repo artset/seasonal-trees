@@ -205,25 +205,35 @@ void Tree::addTreeOptionRule(int treeOption){
     switch (treeOption){
         //Binary tree
         case 0:
+            m_lsystem.setAxiom("X");
             m_lsystem.addRule("X", "F[-X][+X]");
             break;
+        //Arrow Weed
         case 1:
+            m_lsystem.setAxiom("X");
             m_lsystem.addRule("F", "FF");
             m_lsystem.addRule("X", "F[+X][-X]FX");
             break;
+        //Fuzzy Weed
         case 2:
+            m_lsystem.setAxiom("X");
             m_lsystem.addRule("F", "FF");
             m_lsystem.addRule("X", "F-[[X]+X]+F[+FX]-X");
             break;
+        //Wavy Seaweed
         case 3:
+            m_lsystem.setAxiom("F");
             m_lsystem.addRule("F", "FF-[-F+F+F]+[+F-F-F]");
             break;
         //Twiggy weed
         case 4:
+            m_lsystem.setAxiom("X");
             m_lsystem.addRule("F", "FF");
             m_lsystem.addRule("X", "F[-X]F[-X]+X");
             break;
+        //Stochastic Fuzzy Weed
         case 5:
+            m_lsystem.setAxiom("X");
             m_lsystem.addRule("F", "FF");
             m_lsystem.addRule("X", "F-[[X]+X]+F[+FX]-X");
             m_lsystem.addRule("X", "F+[[X]-X]-F[-FX]+X");

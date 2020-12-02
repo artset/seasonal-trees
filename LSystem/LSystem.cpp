@@ -33,7 +33,6 @@ LSystem::LSystem():
  * @brief LSystem::generateSequence
  */
 void LSystem::generateSequence(){
-    m_sequence = "X";
     for (int i = 0; i < m_recursions; i++){
         expand();
     }
