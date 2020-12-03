@@ -357,7 +357,7 @@ void GLWidget::renderLeaves() {
     if (settings.season == 0){
         leaf_shader->setUniformValue("color", QVector4D(0.f, 1.f, 0.f, 0.f));
     } else if (settings.season == 1){
-        leaf_shader->setUniformValue("color", QVector4D(1.f, 0.f, 0.f, 0.f));
+        leaf_shader->setUniformValue("color", QVector4D(0.9f, 0.6f, 0.3f, 0.f));
     } else {
         leaf_shader->setUniformValue("color", QVector4D(0.2f, 0.8f, 0.3f, 0.f));
     }
