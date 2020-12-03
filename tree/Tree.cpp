@@ -50,7 +50,6 @@ Tree::Tree():
     m_lsystem()
 {
     m_branchData.reserve(settings.recursions * 2);
-    m_is2D = false;
 }
 
 Tree::~Tree() {
@@ -240,36 +239,61 @@ void Tree::addTreeOptionRule(int treeOption){
             m_lsystem.setAxiom("X");
             m_lsystem.addRule("F", "F");
             m_lsystem.addRule("X", "F[-X][+X]");
+            m_is2D = true;
             break;
         //Arrow Weed
         case 1:
             m_lsystem.setAxiom("X");
-            m_lsystem.addRule("F", "FF");
-            m_lsystem.addRule("X", "F[+X][-X]FX");
+            // Temporary visual patch as the FF creates this long string
+            m_lsystem.addRule("F", "F");
+            m_lsystem.addRule("F", "F[+X]");
+            m_lsystem.addRule("F", "F[-X]");
+            m_lsystem.addRule("X", "F[+X][-X]F");
+            // Original Rules
+//            m_lsystem.addRule("F", "FF");
+//            m_lsystem.addRule("X", "F[+X][-X]FX");
+            m_is2D = false;
             break;
         //Fuzzy Weed
         case 2:
             m_lsystem.setAxiom("X");
-            m_lsystem.addRule("F", "FF");
+//            m_lsystem.addRule("F", "FF"); // Original rule
+            m_lsystem.addRule("F", "F"); // Temp rule
             m_lsystem.addRule("X", "F-[[X]+X]+F[+FX]-X");
+            m_is2D = false;
             break;
         //Wavy Seaweed
         case 3:
             m_lsystem.setAxiom("F");
             m_lsystem.addRule("F", "FF-[-F+F+F]+[+F-F-F]");
+            m_is2D = false;
             break;
         //Twiggy weed
         case 4:
             m_lsystem.setAxiom("X");
-            m_lsystem.addRule("F", "FF");
+//            m_lsystem.addRule("F", "FF"); // Original Rule
+            // Temporary visual patch as the FF creates this long string
+            m_lsystem.addRule("F", "F");
+            m_lsystem.addRule("F", "F[X]");
+            // End visual patch
+
             m_lsystem.addRule("X", "F[-X]F[-X]+X");
+            m_is2D = false;
             break;
         //Stochastic Fuzzy Weed
         case 5:
             m_lsystem.setAxiom("X");
-            m_lsystem.addRule("F", "FF");
+            m_lsystem.addRule("F", "FF"); // Original Rule
+
+            // Temp Visual Patch
+            m_lsystem.addRule("F", "F");
+            m_lsystem.addRule("F", "F[+X]");
+            m_lsystem.addRule("F", "F[-X]");
+            // End Visual Patch
+
             m_lsystem.addRule("X", "F-[[X]+X]+F[+FX]-X");
             m_lsystem.addRule("X", "F+[[X]-X]-F[-FX]+X");
+            m_is2D = false;
 
     }
 }
