@@ -94,58 +94,6 @@ void Tree::buildTree(const glm::mat4 &model) {
     };
     std::vector<LState> prevStates;
 
-    //Calculates the overall transformation matrix of a branch given its current state
-    auto getBranchTransform = [] (const glm::mat4 &model, const LState &state) {
-        if (state.length == 0) {
-            return glm::mat4(0);
-        }
-        glm::mat4 selfScale = glm::scale(glm::mat4(), { 1.f, BRANCH_LENGTH * state.length, 1.f });
-        return state.translate * state.rotate * state.scale * (selfScale) * model;
-    };
-
-    //Produces an LState with all of the initial values of the given state
-    //except for the length
-    auto getBranchInitialStateTransforms = [] (const LState &state) {
-        LState initState = state;
-        initState.rotate = initState.initialRotate;
-        initState.scale = initState.initialScale;
-        return initState;
-    };
-
-    //Initializes the state of a child branching off from the given state
-    auto createNewBranchState = [] (const LState &state) {
-        LState newState = state;
-        newState.initialRotate = newState.rotate;
-        newState.initialScale = newState.scale;
-        newState.length = 0;
-        return newState;
-    };
-
-    //Determines if two matrices are equal within epsilon
-    auto matEq = [] (const glm::mat4 &A, const glm::mat4 &B, float epsilon=1e-4) {
-        int height = 4;
-        for (int i = 0 ; i < height ; i++) {
-            if (!glm::all(glm::epsilonEqual(A[i], B[i], epsilon))) {
-                return false;
-            }
-        }
-        return true;
-    };
-
-
-    // Returns some variance to the original angle by some random degree.
-    // Potentially let the RANGE be decided by the UI?
-    auto getRandomAngle = [] (const int &branchNum, const float &angle) {
-        int RANGE = 5;
-        std::default_random_engine generator;
-        std::uniform_int_distribution<int> distribution(0, RANGE);
-        int newAngle = distribution(generator);
-        if (branchNum % 2) {
-            return angle - newAngle;
-        }
-        return angle + newAngle;
-    };
-
     //Parse the string
     std::default_random_engine generator;
     std::uniform_int_distribution<int> distribution(0, ROTATE_AXES.size());
@@ -311,4 +259,57 @@ glm::vec3 Tree::getRotateAxis(int branchNum) {
     return Tree::ROTATE_AXES[branchNum % (ROTATE_AXES.size() - 1)];
 }
 
+//Calculates the overall transformation matrix of a branch given its current state
+glm::mat4 Tree::getBranchTransform (const glm::mat4 &model, const LState &state) {
+    if (state.length == 0) {
+        return glm::mat4(0);
+    }
+    glm::mat4 selfScale = glm::scale(glm::mat4(), { 1.f, BRANCH_LENGTH * state.length, 1.f });
+    return state.translate * state.rotate * state.scale * (selfScale) * model;
+};
+
+//Produces an LState with all of the initial values of the given state
+//except for the length
+LState Tree::getBranchInitialStateTransforms(const LState &state) {
+    LState initState = state;
+    initState.rotate = initState.initialRotate;
+    initState.scale = initState.initialScale;
+    return initState;
+};
+
+
+//Initializes the state of a child branching off from the given state
+LState Tree::createNewBranchState(const LState &state) {
+    LState newState = state;
+    newState.initialRotate = newState.rotate;
+    newState.initialScale = newState.scale;
+    newState.length = 0;
+    return newState;
+};
+
+
+//Determines if two matrices are equal within epsilon
+bool Tree::matEq(const glm::mat4 &A, const glm::mat4 &B) {
+    float epsilon=1e-4;
+    int height = 4;
+    for (int i = 0 ; i < height ; i++) {
+        if (!glm::all(glm::epsilonEqual(A[i], B[i], epsilon))) {
+            return false;
+        }
+    }
+    return true;
+};
+
+// Returns some variance to the original angle by some random degree.
+// Potentially let the RANGE be decided by the UI?
+float Tree::getRandomAngle(const int &branchNum, const float &angle) {
+    int RANGE = 5;
+    std::default_random_engine generator;
+    std::uniform_int_distribution<int> distribution(0, RANGE);
+    int newAngle = distribution(generator);
+    if (branchNum % 2) {
+        return angle - newAngle;
+    }
+    return angle + newAngle;
+};
 
