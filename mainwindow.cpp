@@ -96,6 +96,8 @@ void MainWindow::on_cubeButton_clicked() {
 }
 
 void MainWindow::loadShader(QString vert, QString frag) {
+    std::cout << "load shader" << std::endl;
+    qDebug().nospace() << "abc" << qPrintable(vert) << "def";
     QString error;
     if (m_oldFrag != "" && !m_hasError)
         m_glwidget->saveUniforms(m_oldFrag);

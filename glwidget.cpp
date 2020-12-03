@@ -135,8 +135,10 @@ void GLWidget::initializeGL() {
     glDisable(GL_BLEND);
     glEnable(GL_TEXTURE_CUBE_MAP_SEAMLESS);
 
+    default_shader = ResourceLoader::newShaderProgram(context(), ":/shaders/default.vert", ":/shaders/default.frag");
     skybox_shader = ResourceLoader::newShaderProgram(context(), ":/shaders/skybox.vert", ":/shaders/skybox.frag");
     wireframe_shader = ResourceLoader::newShaderProgram(context(), ":/shaders/standard.vert", ":/shaders/color.frag");
+    phong_shader = ResourceLoader::newShaderProgram(context(), ":/shaders/light.vert", ":/shaders/light.frag");
     leaf_shader = ResourceLoader::newShaderProgram(context(), ":/shaders/leaf.vert", ":/shaders/leaf.frag");
 
     s_skybox = new UniformVariable(this->context()->contextHandle());
@@ -356,19 +358,20 @@ void GLWidget::renderLeaves() {
 //        leaf_shader->setUniformValue("color", QVector4D(0.f, 168.f, 0.f, 0.f));
 //    }
 
+//    std::cout << leaf_shader->uniformLocation("color") << std::endl;
     bindAndUpdateShader(leaf_shader);
-//    leaf_shader->link();
-//    leaf_shader->bind();
-    std::cout << leaf_shader->uniformLocation("color") << std::endl;
-    std::cout << leaf_shader->uniformLocation("test") << std::endl;
+
+    //Set Uniform
     leaf_shader->setUniformValue("color", QVector4D(1.f, 0.f, 0.f, 0.f));
-    std::cout << "set uniform value" << std::endl;
+//    leaf_shader->setUniformValue("color", QVector4D(1.f, 0.f, 0.f, 0.f));
 
     m_shape->draw();
     releaseShader(leaf_shader);
-
 }
 
+void GLWidget::renderPhongLighting(){
+
+}
 // TODO: any changes to the UI component should also add to this function.
 bool GLWidget::hasSettingsChanged() {
     if (m_settings.treeOption != settings.treeOption){
