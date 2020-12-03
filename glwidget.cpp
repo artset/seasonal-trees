@@ -138,6 +138,7 @@ void GLWidget::initializeGL() {
     skybox_shader = ResourceLoader::newShaderProgram(context(), ":/shaders/skybox.vert", ":/shaders/skybox.frag");
     wireframe_shader = ResourceLoader::newShaderProgram(context(), ":/shaders/standard.vert", ":/shaders/color.frag");
     leaf_shader = ResourceLoader::newShaderProgram(context(), ":/shaders/leaf.vert", ":/shaders/leaf.frag");
+    island_shader = ResourceLoader::newShaderProgram(context(), ":/shaders/island.vert", ":/shaders/island.frag");
 
     s_skybox = new UniformVariable(this->context()->contextHandle());
     s_skybox->setName("skybox");
@@ -356,18 +357,20 @@ void GLWidget::renderLeaves() {
 }
 
 void GLWidget::renderIsland() {
-    RenderType old = m_renderMode;
-    changeRenderMode(SHAPE_CYLINDER);
-    glm::mat4 scale = glm::scale(glm::mat4(), glm::vec3(1.f, .05f, 1.f));
-    glm::mat4 translate = glm::translate(glm::mat4(), glm::vec3(0.f, -.5f, 0.f));
+    RenderType oldRenderType = m_renderMode;
+    glm::mat4 scale = glm::scale(glm::mat4(), glm::vec3(1.f, .2f, 1.f));
+    glm::mat4 translate = glm::translate(glm::mat4(), glm::vec3(0.f, -.55f, 0.f));
 
     model = translate * scale * model;
     modelChanged(model);
     modelviewProjectionChanged(camera->getProjectionMatrix() * camera->getModelviewMatrix());
-    bindAndUpdateShader(current_shader);
+    bindAndUpdateShader(island_shader);
+
+    changeRenderMode(SHAPE_CONE);
     m_shape->draw();
-    releaseShader(current_shader);
-    changeRenderMode(old);
+
+    releaseShader(island_shader);
+    changeRenderMode(oldRenderType);
 }
 
 

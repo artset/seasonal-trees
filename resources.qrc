@@ -14,6 +14,8 @@
         <file>glass.vars</file>
         <file>leaf.frag</file>
         <file>leaf.vert</file>
+        <file>island.frag</file>
+        <file>island.vert</file>
     </qresource>
     <qresource prefix="/skybox">
         <file>negx.jpg</file>

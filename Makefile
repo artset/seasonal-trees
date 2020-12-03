@@ -835,6 +835,7 @@ qrc_resources.cpp: resources.qrc \
 		skybox.vert \
 		glass.vert \
 		metal.frag \
+		island.vert \
 		leaf.frag \
 		metal.vars \
 		standard.vert \
@@ -842,6 +843,7 @@ qrc_resources.cpp: resources.qrc \
 		skybox.frag \
 		metal.vert \
 		glass.frag \
+		island.frag \
 		color.frag \
 		negx.jpg \
 		posx.jpg \

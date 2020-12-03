@@ -102,6 +102,8 @@ private:
     QGLShaderProgram *current_shader;
 
     QGLShaderProgram *leaf_shader;
+    QGLShaderProgram *island_shader;
+
 
     QList<const UniformVariable*> *activeUniforms;
     QList<const UniformVariable*> permUniforms;
