@@ -4,7 +4,7 @@
 
 #include "shapes/RoundedCylinder.h"
 #include "shapes/Leaf.h"
-#include "shapes/Sphere.h"
+#include "shapes/sphere.h"
 #include "shapes/Cone.h"
 #include "shapes/cube.h"
 #include "camera/orbitingcamera.h"
@@ -27,6 +27,7 @@ UniformVariable *GLWidget::s_mvp = NULL;
 UniformVariable *GLWidget::s_time = NULL;
 UniformVariable *GLWidget::s_size = NULL;
 UniformVariable *GLWidget::s_mouse = NULL;
+
 std::vector<UniformVariable*> *GLWidget::s_staticVars = NULL;
 
 GLWidget::GLWidget(QGLFormat format, QWidget *parent)
@@ -298,7 +299,7 @@ void GLWidget::releaseShader(QGLShaderProgram *shader) {
     }
 }
 
-
+// Broken for trees, probably doens't matter.
 void GLWidget::renderWireframe() {
     if (drawWireframe) {
         glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
@@ -307,7 +308,6 @@ void GLWidget::renderWireframe() {
             wireframe_shader->bind();
             s_mvp->setValue(wireframe_shader);
             wireframe_shader->setUniformValue("color", 0, 0, 0, 1);
-
             m_shape->draw();
             wireframe_shader->release();
             break;
@@ -349,6 +349,13 @@ void GLWidget::renderLeaves() {
     model = glm::scale(glm::mat4(), glm::vec3(settings.leafSize, .5, 1.f));
     modelChanged(model);
     modelviewProjectionChanged(camera->getProjectionMatrix() * camera->getModelviewMatrix());
+    // Does not work :(
+//    if (settings.season == 0) {
+//        leaf_shader->set("color", QVector4D(0, 0, 0, 1));
+//    } else {
+//        leaf_shader->setUniformValue("color", QVector4D(0.f, 168.f, 0.f, 0.f));
+//    }
+
     bindAndUpdateShader(leaf_shader);
     m_shape->draw();
     releaseShader(leaf_shader);
@@ -407,12 +414,6 @@ void GLWidget::paintGL() {
 
             }
         }
-
-
-//        if (current_shader) {
-//            current_shader->release();
-//        }
-
         renderWireframe();
     }
     renderSkybox();

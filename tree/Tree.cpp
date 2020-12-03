@@ -242,6 +242,7 @@ void Tree::addTreeOptionRule(int treeOption){
             m_lsystem.addRule("X", "F-[[X]+X]+F[+FX]-X");
             m_lsystem.addRule("X", "F+[[X]-X]-F[-FX]+X");
             m_is2D = false;
+            break;
 
     }
 }
@@ -303,10 +304,11 @@ bool Tree::matEq(const glm::mat4 &A, const glm::mat4 &B) {
 // Returns some variance to the original angle by some random degree.
 // Potentially let the RANGE be decided by the UI?
 float Tree::getRandomAngle(const int &branchNum, const float &angle) {
-    int RANGE = 5;
+    int RANGE = 2;
     std::default_random_engine generator;
     std::uniform_int_distribution<int> distribution(0, RANGE);
-    int newAngle = distribution(generator);
+    int newAngle = glm::radians(distribution(generator) * 1.f);
+
     if (branchNum % 2) {
         return angle - newAngle;
     }
