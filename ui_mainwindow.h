@@ -408,8 +408,8 @@ public:
         shader1Button->setText(QCoreApplication::translate("MainWindow", "Metal", nullptr));
         shader2Button->setText(QCoreApplication::translate("MainWindow", "Glass", nullptr));
         label_2->setText(QCoreApplication::translate("MainWindow", "Shapes:", nullptr));
-        sphereButton->setText(QCoreApplication::translate("MainWindow", "Rounded Cylinder", nullptr));
-        cubeButton->setText(QCoreApplication::translate("MainWindow", "Leaf", nullptr));
+        sphereButton->setText(QCoreApplication::translate("MainWindow", "Sphere", nullptr));
+        cubeButton->setText(QCoreApplication::translate("MainWindow", "Cube", nullptr));
         cylinderTreeButton->setText(QCoreApplication::translate("MainWindow", "Cylinder", nullptr));
         coneTreeButton->setText(QCoreApplication::translate("MainWindow", "Cone", nullptr));
         treeOptionsLabel->setText(QCoreApplication::translate("MainWindow", "Tree Options:", nullptr));

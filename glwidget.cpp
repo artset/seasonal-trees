@@ -357,6 +357,13 @@ void GLWidget::renderLeaves() {
 //    }
 
     bindAndUpdateShader(leaf_shader);
+//    leaf_shader->link();
+//    leaf_shader->bind();
+    std::cout << leaf_shader->uniformLocation("color") << std::endl;
+    std::cout << leaf_shader->uniformLocation("test") << std::endl;
+    leaf_shader->setUniformValue("color", QVector4D(1.f, 0.f, 0.f, 0.f));
+    std::cout << "set uniform value" << std::endl;
+
     m_shape->draw();
     releaseShader(leaf_shader);
 
