@@ -82,6 +82,7 @@ protected:
     void renderBranches();
     void renderLeaves();
     void renderSkybox();
+    void renderIsland();
     bool hasSettingsChanged();
 
 private:

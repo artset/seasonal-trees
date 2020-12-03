@@ -349,18 +349,27 @@ void GLWidget::renderLeaves() {
     model = glm::scale(glm::mat4(), glm::vec3(settings.leafSize, .5, 1.f));
     modelChanged(model);
     modelviewProjectionChanged(camera->getProjectionMatrix() * camera->getModelviewMatrix());
-    // Does not work :(
-//    if (settings.season == 0) {
-//        leaf_shader->set("color", QVector4D(0, 0, 0, 1));
-//    } else {
-//        leaf_shader->setUniformValue("color", QVector4D(0.f, 168.f, 0.f, 0.f));
-//    }
-
     bindAndUpdateShader(leaf_shader);
     m_shape->draw();
     releaseShader(leaf_shader);
 
 }
+
+void GLWidget::renderIsland() {
+    RenderType old = m_renderMode;
+    changeRenderMode(SHAPE_CYLINDER);
+    glm::mat4 scale = glm::scale(glm::mat4(), glm::vec3(1.f, .05f, 1.f));
+    glm::mat4 translate = glm::translate(glm::mat4(), glm::vec3(0.f, -.5f, 0.f));
+
+    model = translate * scale * model;
+    modelChanged(model);
+    modelviewProjectionChanged(camera->getProjectionMatrix() * camera->getModelviewMatrix());
+    bindAndUpdateShader(current_shader);
+    m_shape->draw();
+    releaseShader(current_shader);
+    changeRenderMode(old);
+}
+
 
 // TODO: any changes to the UI component should also add to this function.
 bool GLWidget::hasSettingsChanged() {
@@ -402,6 +411,7 @@ void GLWidget::paintGL() {
                 m_tree->buildTree(model);
             } else {
                 renderBranches();
+                renderIsland();
             }
 
         } else {// todo: remove this once all primitives are made :)
