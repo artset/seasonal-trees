@@ -1136,6 +1136,8 @@ moc_mainwindow.cpp: mainwindow.h \
 		tree/Tree.h \
 		LSystem/LSystem.h \
 		ui/Settings.h \
+		../../../Qt5.14.2/5.14.2/clang_64/lib/QtWidgets.framework/Headers/QButtonGroup \
+		../../../Qt5.14.2/5.14.2/clang_64/lib/QtWidgets.framework/Headers/qbuttongroup.h \
 		moc_predefs.h \
 		../../../Qt5.14.2/5.14.2/clang_64/bin/moc
 	/Users/ksang/Qt5.14.2/5.14.2/clang_64/bin/moc $(DEFINES) --include /Users/ksang/Documents/cs1230/cs123-final/moc_predefs.h -I/Users/ksang/Qt5.14.2/5.14.2/clang_64/mkspecs/macx-clang -I/Users/ksang/Documents/cs1230/cs123-final -I/Users/ksang/Documents/cs1230/cs123-final/glm -I/Users/ksang/Documents/cs1230/cs123-final/ui -I/Users/ksang/Documents/cs1230/cs123-final/glew-1.10.0/include -I/Users/ksang/Qt5.14.2/5.14.2/clang_64/lib/QtOpenGL.framework/Headers -I/Users/ksang/Qt5.14.2/5.14.2/clang_64/lib/QtWidgets.framework/Headers -I/Users/ksang/Qt5.14.2/5.14.2/clang_64/lib/QtGui.framework/Headers -I/Users/ksang/Qt5.14.2/5.14.2/clang_64/lib/QtXml.framework/Headers -I/Users/ksang/Qt5.14.2/5.14.2/clang_64/lib/QtCore.framework/Headers -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1 -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/11.0.3/include -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk/usr/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -F/Users/ksang/Qt5.14.2/5.14.2/clang_64/lib mainwindow.h -o moc_mainwindow.cpp
@@ -1805,7 +1807,9 @@ main.o: main.cpp ../../../Qt5.14.2/5.14.2/clang_64/lib/QtWidgets.framework/Heade
 		shapes/BarrelComponent.h \
 		tree/Tree.h \
 		LSystem/LSystem.h \
-		ui/Settings.h
+		ui/Settings.h \
+		../../../Qt5.14.2/5.14.2/clang_64/lib/QtWidgets.framework/Headers/QButtonGroup \
+		../../../Qt5.14.2/5.14.2/clang_64/lib/QtWidgets.framework/Headers/qbuttongroup.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o main.cpp
 
 glew.o: glew-1.10.0/src/glew.c glew-1.10.0/include/GL/glew.h \
@@ -1939,7 +1943,7 @@ glwidget.o: glwidget.cpp glwidget.h \
 		../../../Qt5.14.2/5.14.2/clang_64/lib/QtGui.framework/Headers/qevent.h \
 		shapes/RoundedCylinder.h \
 		shapes/Leaf.h \
-		shapes/Sphere.h \
+		shapes/sphere.h \
 		shapes/SphereComponent.h \
 		shapes/Cone.h \
 		shapes/ConeComponent.h \
@@ -2082,6 +2086,8 @@ mainwindow.o: mainwindow.cpp mainwindow.h \
 		tree/Tree.h \
 		LSystem/LSystem.h \
 		ui/Settings.h \
+		../../../Qt5.14.2/5.14.2/clang_64/lib/QtWidgets.framework/Headers/QButtonGroup \
+		../../../Qt5.14.2/5.14.2/clang_64/lib/QtWidgets.framework/Headers/qbuttongroup.h \
 		ui_mainwindow.h \
 		uniforms/uniformwidget.h \
 		../../../Qt5.14.2/5.14.2/clang_64/lib/QtWidgets.framework/Headers/QMessageBox \
@@ -2097,8 +2103,6 @@ mainwindow.o: mainwindow.cpp mainwindow.h \
 		../../../Qt5.14.2/5.14.2/clang_64/lib/QtWidgets.framework/Headers/qlineedit.h \
 		../../../Qt5.14.2/5.14.2/clang_64/lib/QtWidgets.framework/Headers/QCheckBox \
 		../../../Qt5.14.2/5.14.2/clang_64/lib/QtWidgets.framework/Headers/qcheckbox.h \
-		../../../Qt5.14.2/5.14.2/clang_64/lib/QtWidgets.framework/Headers/QButtonGroup \
-		../../../Qt5.14.2/5.14.2/clang_64/lib/QtWidgets.framework/Headers/qbuttongroup.h \
 		../../../Qt5.14.2/5.14.2/clang_64/lib/QtWidgets.framework/Headers/QRadioButton \
 		../../../Qt5.14.2/5.14.2/clang_64/lib/QtWidgets.framework/Headers/qradiobutton.h \
 		../../../Qt5.14.2/5.14.2/clang_64/lib/QtWidgets.framework/Headers/QDockWidget \
