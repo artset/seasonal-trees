@@ -8,14 +8,12 @@ github: artset, lxcyqx, gkupsaw
 
 
 IMMEDIATE TODOS:
-
-- [ ] Position leaves
-        - One leaf at end of each branch other than trunk - Griffin
+- [ ] displacement mapping for the baby island - Katherine
+- [ ] normal / displacement mapping for the tree - Griffin
+- [ ] Lighting
+- [ ] Position leaves - Potentially katherine after island
+        - One leaf at end of each branch other than trunk
         - More intelligently leaf positioning (coming! Soon!)
-- [ ] Stochastically rotating branches - Katherine
-- [ ] Toggling for different seasons, leaves disappearing in winter - Lucy
-- [ ] Dropdown for different trees/snowflake? triangle? ! - Griffin
-- [ ] Separate shader for leaves and branches - Katherine
 - [ ] Quick video - For Monday - Katherine
 
 NICE 2 HAVE
@@ -24,7 +22,6 @@ NICE 2 HAVE
 - [ ] Figure out how to use meshes instead of primitives (big maybe)
 - [ ] Displacement mapping for wobbling tree
 - [ ] Skybox - Katherine
-- [ ] Terrain
 - [ ] Lighting
 - [ ] Particles for snow?
 - [ ] Moving leaves (maybe fragment shader?)
@@ -34,3 +31,7 @@ NICE 2 HAVE
 - [x] Rounded cylinder ends - Katherine
 - [x] Leaves mesh - Katherine
 - [x] Add Lucy's code to our branch - Griffin
+- [x] Stochastically rotating branches - Katherine
+- [x] Toggling for different seasons, leaves disappearing in winter - Lucy
+- [x] Separate shader for leaves - Katherine
+- [x] Dropdown for different trees/snowflake? - Lucy
