@@ -135,8 +135,10 @@ void GLWidget::initializeGL() {
     glDisable(GL_BLEND);
     glEnable(GL_TEXTURE_CUBE_MAP_SEAMLESS);
 
+    default_shader = ResourceLoader::newShaderProgram(context(), ":/shaders/default.vert", ":/shaders/default.frag");
     skybox_shader = ResourceLoader::newShaderProgram(context(), ":/shaders/skybox.vert", ":/shaders/skybox.frag");
     wireframe_shader = ResourceLoader::newShaderProgram(context(), ":/shaders/standard.vert", ":/shaders/color.frag");
+    phong_shader = ResourceLoader::newShaderProgram(context(), ":/shaders/light.vert", ":/shaders/light.frag");
     leaf_shader = ResourceLoader::newShaderProgram(context(), ":/shaders/leaf.vert", ":/shaders/leaf.frag");
 
     s_skybox = new UniformVariable(this->context()->contextHandle());
@@ -349,19 +351,24 @@ void GLWidget::renderLeaves() {
     model = glm::scale(glm::mat4(), glm::vec3(settings.leafSize, .5, 1.f));
     modelChanged(model);
     modelviewProjectionChanged(camera->getProjectionMatrix() * camera->getModelviewMatrix());
-    // Does not work :(
-//    if (settings.season == 0) {
-//        leaf_shader->set("color", QVector4D(0, 0, 0, 1));
-//    } else {
-//        leaf_shader->setUniformValue("color", QVector4D(0.f, 168.f, 0.f, 0.f));
-//    }
-
     bindAndUpdateShader(leaf_shader);
+
+    //Set color based on season
+    if (settings.season == 0){
+        leaf_shader->setUniformValue("color", QVector4D(0.f, 1.f, 0.f, 0.f));
+    } else if (settings.season == 1){
+        leaf_shader->setUniformValue("color", QVector4D(0.9f, 0.6f, 0.3f, 0.f));
+    } else {
+        leaf_shader->setUniformValue("color", QVector4D(0.2f, 0.8f, 0.3f, 0.f));
+    }
+
     m_shape->draw();
     releaseShader(leaf_shader);
-
 }
 
+void GLWidget::renderPhongLighting(){
+
+}
 // TODO: any changes to the UI component should also add to this function.
 bool GLWidget::hasSettingsChanged() {
     if (m_settings.treeOption != settings.treeOption){
