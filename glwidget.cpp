@@ -351,19 +351,16 @@ void GLWidget::renderLeaves() {
     model = glm::scale(glm::mat4(), glm::vec3(settings.leafSize, .5, 1.f));
     modelChanged(model);
     modelviewProjectionChanged(camera->getProjectionMatrix() * camera->getModelviewMatrix());
-    // Does not work :(
-//    if (settings.season == 0) {
-//        leaf_shader->set("color", QVector4D(0, 0, 0, 1));
-//    } else {
-//        leaf_shader->setUniformValue("color", QVector4D(0.f, 168.f, 0.f, 0.f));
-//    }
-
-//    std::cout << leaf_shader->uniformLocation("color") << std::endl;
     bindAndUpdateShader(leaf_shader);
 
-    //Set Uniform
-    leaf_shader->setUniformValue("color", QVector4D(1.f, 0.f, 0.f, 0.f));
-//    leaf_shader->setUniformValue("color", QVector4D(1.f, 0.f, 0.f, 0.f));
+    //Set color based on season
+    if (settings.season == 0){
+        leaf_shader->setUniformValue("color", QVector4D(0.f, 1.f, 0.f, 0.f));
+    } else if (settings.season == 1){
+        leaf_shader->setUniformValue("color", QVector4D(1.f, 0.f, 0.f, 0.f));
+    } else {
+        leaf_shader->setUniformValue("color", QVector4D(0.2f, 0.8f, 0.3f, 0.f));
+    }
 
     m_shape->draw();
     releaseShader(leaf_shader);
