@@ -150,16 +150,6 @@ void GLWidget::initializeGL() {
     phong_shader = ResourceLoader::newShaderProgram(context(), ":/shaders/light.vert", ":/shaders/light.frag");
     leaf_shader = ResourceLoader::newShaderProgram(context(), ":/shaders/leaf.vert", ":/shaders/leaf.frag");
 
-//    phong_shader->setUniformValue("shininess", 43.f);
-//    phong_shader->setUniformValue("lightIntensity", 5.f);
-//    phong_shader->setUniformValue("lightColor", QVector3D(1.f, 0.85f, 0.0f));
-//    phong_shader->setUniformValue("attQuadratic", 0.41f);
-//    phong_shader->setUniformValue("attLinear", 0.f);
-//    phong_shader->setUniformValue("attConstant", 0.f);
-//    phong_shader->setUniformValue("ambientIntensity", 0.62f);
-//    phong_shader->setUniformValue("diffuseIntensity", 0.88f);
-//    phong_shader->setUniformValue("specularIntensity", 0.58f);
-
     s_ambientIntensity = new UniformVariable(this->context()->contextHandle());
     s_ambientIntensity->setName("ambientIntensity");
     s_ambientIntensity->setType(UniformVariable::TYPE_FLOAT);

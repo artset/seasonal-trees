@@ -129,7 +129,7 @@ void MainWindow::init()
         loadShader(info.absolutePath() + "/" + info.baseName() + ".vert",
                    info.absolutePath() + "/" + info.baseName() + ".frag");
     } else {
-        loadShader(":/shaders/default.vert", ":/shaders/default.frag");
+        loadShader(":/shaders/phong.vert", ":/shaders/phong.frag");
     }
 
     ui->treeOptionsComboBox->addItem("Binary Tree");
