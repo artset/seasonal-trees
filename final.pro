@@ -33,6 +33,7 @@ SOURCES += \
     shapes/Cone.cpp \
     shapes/ConeComponent.cpp \
     shapes/Cylinder.cpp \
+    shapes/Island.cpp \
     shapes/Leaf.cpp \
     shapes/RoundedCylinder.cpp \
     shapes/Shape.cpp \
@@ -61,6 +62,7 @@ HEADERS += \
     shapes/Cone.h \
     shapes/ConeComponent.h \
     shapes/Cylinder.h \
+    shapes/Island.h \
     shapes/Leaf.h \
     shapes/RoundedCylinder.h \
     shapes/Shape.h \
