@@ -101,9 +101,9 @@ private:
     QGLShaderProgram *wireframe_shader2;
     QGLShaderProgram *current_shader;
     QGLShaderProgram *phong_shader;
-    QGLShaderProgram *default_shader;
 
     QGLShaderProgram *leaf_shader;
+    QGLShaderProgram *normal_mapping_shader;
 
     QList<const UniformVariable*> *activeUniforms;
     QList<const UniformVariable*> permUniforms;
