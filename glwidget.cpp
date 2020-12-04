@@ -135,8 +135,10 @@ void GLWidget::initializeGL() {
     glDisable(GL_BLEND);
     glEnable(GL_TEXTURE_CUBE_MAP_SEAMLESS);
 
+    default_shader = ResourceLoader::newShaderProgram(context(), ":/shaders/default.vert", ":/shaders/default.frag");
     skybox_shader = ResourceLoader::newShaderProgram(context(), ":/shaders/skybox.vert", ":/shaders/skybox.frag");
     wireframe_shader = ResourceLoader::newShaderProgram(context(), ":/shaders/standard.vert", ":/shaders/color.frag");
+    phong_shader = ResourceLoader::newShaderProgram(context(), ":/shaders/light.vert", ":/shaders/light.frag");
     leaf_shader = ResourceLoader::newShaderProgram(context(), ":/shaders/leaf.vert", ":/shaders/leaf.frag");
     island_shader = ResourceLoader::newShaderProgram(context(), ":/shaders/island.vert", ":/shaders/island.frag");
 
@@ -227,7 +229,7 @@ void GLWidget::initializeGL() {
     m_cylinder->buildVAO();
 
     m_cone = std::make_unique<OpenGLShape>();
-    std::unique_ptr<Shape> cone = std::make_unique<Cone>(1, 10);
+    std::unique_ptr<Shape> cone = std::make_unique<Cone>(1, 5);
     std::vector<GLfloat> coneData = cone->getData();
     m_cone = std::make_unique<OpenGLShape>();
     m_cone->setVertexData(&coneData[0], coneData.size(), VBO::GEOMETRY_LAYOUT::LAYOUT_TRIANGLES, coneData.size() / NUM_FLOATS_PER_VERTEX);
@@ -351,9 +353,18 @@ void GLWidget::renderLeaves() {
     modelChanged(model);
     modelviewProjectionChanged(camera->getProjectionMatrix() * camera->getModelviewMatrix());
     bindAndUpdateShader(leaf_shader);
+
+    //Set color based on season
+    if (settings.season == 0){
+        leaf_shader->setUniformValue("color", QVector4D(0.f, 1.f, 0.f, 0.f));
+    } else if (settings.season == 1){
+        leaf_shader->setUniformValue("color", QVector4D(0.9f, 0.6f, 0.3f, 0.f));
+    } else {
+        leaf_shader->setUniformValue("color", QVector4D(0.2f, 0.8f, 0.3f, 0.f));
+    }
+
     m_shape->draw();
     releaseShader(leaf_shader);
-
 }
 
 void GLWidget::renderIsland() {
@@ -364,15 +375,20 @@ void GLWidget::renderIsland() {
     model = translate * scale * model;
     modelChanged(model);
     modelviewProjectionChanged(camera->getProjectionMatrix() * camera->getModelviewMatrix());
-    bindAndUpdateShader(island_shader);
+    bindAndUpdateShader(current_shader);
 
     changeRenderMode(SHAPE_CONE);
     m_shape->draw();
 
-    releaseShader(island_shader);
+    releaseShader(current_shader);
     changeRenderMode(oldRenderType);
 }
 
+
+
+void GLWidget::renderPhongLighting(){
+
+}
 
 // TODO: any changes to the UI component should also add to this function.
 bool GLWidget::hasSettingsChanged() {

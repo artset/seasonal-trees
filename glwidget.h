@@ -83,6 +83,7 @@ protected:
     void renderLeaves();
     void renderSkybox();
     void renderIsland();
+    void renderPhongLighting();
     bool hasSettingsChanged();
 
 private:
@@ -100,6 +101,8 @@ private:
     QGLShaderProgram *wireframe_shader;
     QGLShaderProgram *wireframe_shader2;
     QGLShaderProgram *current_shader;
+    QGLShaderProgram *phong_shader;
+    QGLShaderProgram *default_shader;
 
     QGLShaderProgram *leaf_shader;
     QGLShaderProgram *island_shader;

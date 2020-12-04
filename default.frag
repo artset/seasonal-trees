@@ -2,6 +2,7 @@
 
 in vec3 fragPos;
 
+uniform vec4 color;
 out vec4 fragColor;
 
 uniform float time;
