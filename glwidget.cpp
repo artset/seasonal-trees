@@ -27,6 +27,15 @@ UniformVariable *GLWidget::s_mvp = NULL;
 UniformVariable *GLWidget::s_time = NULL;
 UniformVariable *GLWidget::s_size = NULL;
 UniformVariable *GLWidget::s_mouse = NULL;
+UniformVariable *GLWidget::s_ambientIntensity= NULL;
+UniformVariable *GLWidget::s_diffuseIntensity= NULL;
+UniformVariable *GLWidget::s_specularIntensity= NULL;
+UniformVariable *GLWidget::s_attLinear= NULL;
+UniformVariable *GLWidget::s_attQuadratic= NULL;
+UniformVariable *GLWidget::s_attConstant= NULL;
+UniformVariable *GLWidget::s_shininess= NULL;
+UniformVariable *GLWidget::s_lightColor= NULL;
+UniformVariable *GLWidget::s_lightIntensity= NULL;
 
 std::vector<UniformVariable*> *GLWidget::s_staticVars = NULL;
 
@@ -140,6 +149,61 @@ void GLWidget::initializeGL() {
     wireframe_shader = ResourceLoader::newShaderProgram(context(), ":/shaders/standard.vert", ":/shaders/color.frag");
     phong_shader = ResourceLoader::newShaderProgram(context(), ":/shaders/light.vert", ":/shaders/light.frag");
     leaf_shader = ResourceLoader::newShaderProgram(context(), ":/shaders/leaf.vert", ":/shaders/leaf.frag");
+
+//    phong_shader->setUniformValue("shininess", 43.f);
+//    phong_shader->setUniformValue("lightIntensity", 5.f);
+//    phong_shader->setUniformValue("lightColor", QVector3D(1.f, 0.85f, 0.0f));
+//    phong_shader->setUniformValue("attQuadratic", 0.41f);
+//    phong_shader->setUniformValue("attLinear", 0.f);
+//    phong_shader->setUniformValue("attConstant", 0.f);
+//    phong_shader->setUniformValue("ambientIntensity", 0.62f);
+//    phong_shader->setUniformValue("diffuseIntensity", 0.88f);
+//    phong_shader->setUniformValue("specularIntensity", 0.58f);
+
+    s_ambientIntensity = new UniformVariable(this->context()->contextHandle());
+    s_ambientIntensity->setName("ambientIntensity");
+    s_ambientIntensity->setType(UniformVariable::TYPE_FLOAT);
+    s_ambientIntensity->parse("0.62");
+
+    s_diffuseIntensity = new UniformVariable(this->context()->contextHandle());
+    s_diffuseIntensity->setName("dffuseIntensity");
+    s_diffuseIntensity->setType(UniformVariable::TYPE_FLOAT);
+    s_diffuseIntensity->parse("0.88");
+
+    s_specularIntensity = new UniformVariable(this->context()->contextHandle());
+    s_specularIntensity->setName("specularIntensity");
+    s_specularIntensity->setType(UniformVariable::TYPE_FLOAT);
+    s_specularIntensity->parse("0.58");
+
+    s_attQuadratic = new UniformVariable(this->context()->contextHandle());
+    s_attQuadratic->setName("attQuadratic");
+    s_attQuadratic->setType(UniformVariable::TYPE_FLOAT);
+    s_attQuadratic->parse("0.41");
+
+    s_attLinear = new UniformVariable(this->context()->contextHandle());
+    s_attLinear->setName("attLinear");
+    s_attLinear->setType(UniformVariable::TYPE_FLOAT);
+    s_attLinear->parse("0");
+
+    s_attConstant = new UniformVariable(this->context()->contextHandle());
+    s_attConstant->setName("attConstant");
+    s_attConstant->setType(UniformVariable::TYPE_FLOAT);
+    s_attConstant->parse("0");
+
+    s_shininess = new UniformVariable(this->context()->contextHandle());
+    s_shininess->setName("shininess");
+    s_shininess->setType(UniformVariable::TYPE_FLOAT);
+    s_shininess->parse("43");
+
+    s_lightIntensity = new UniformVariable(this->context()->contextHandle());
+    s_lightIntensity->setName("lightIntensity");
+    s_lightIntensity->setType(UniformVariable::TYPE_FLOAT);
+    s_lightIntensity->parse("5");
+
+    s_lightColor = new UniformVariable(this->context()->contextHandle());
+    s_lightColor->setName("lightColor");
+    s_lightColor->setType(UniformVariable::TYPE_FLOAT3);
+    s_lightColor->parse("1, 0.85, 0");
 
     s_skybox = new UniformVariable(this->context()->contextHandle());
     s_skybox->setName("skybox");

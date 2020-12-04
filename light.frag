@@ -37,4 +37,5 @@ void main(){
     vec4 reflectionVector = vec4(reflect(normalize(newL), normalize(normal)), 1);
     float dotProduct = dot(normalize(eyeVector), reflectionVector);
     fragColor += color * lightColor * specularIntensity * pow(max(0, dotProduct), shininess) * attenuation;
+//    fragColor = vec3(255,0,0);
 }

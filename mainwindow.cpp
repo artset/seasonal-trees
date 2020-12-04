@@ -192,11 +192,6 @@ void MainWindow::closeEvent(QCloseEvent *e) {
     m_glwidget->saveUniforms(m_oldFrag);
 }
 
-void MainWindow::on_defaultShaderButton_clicked()
-{
-    loadShader(":/shaders/default.vert", ":/shaders/default.frag");
-}
-
 void MainWindow::on_animMoveButton_clicked()
 {
     m_glwidget->changeAnimMode(ANIM_MOVE);
@@ -258,6 +253,11 @@ QString tipsText = "<h2>Attributes</h2>\n"
 void MainWindow::on_tipsButton_clicked()
 {
     QMessageBox::information(this, "Tips", tipsText);
+}
+
+void MainWindow::on_defaultShaderButton_clicked()
+{
+    loadShader(":/shaders/light.vert", ":/shaders/light.frag");
 }
 
 void MainWindow::on_shader1Button_clicked()

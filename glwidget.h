@@ -41,95 +41,106 @@ public:
     static UniformVariable* s_time;
     static UniformVariable* s_size;
     static UniformVariable* s_mouse;
+    static UniformVariable* s_ambientIntensity;
+    static UniformVariable* s_diffuseIntensity;
+    static UniformVariable* s_specularIntensity;
+    static UniformVariable* s_attLinear;
+    static UniformVariable* s_attQuadratic;
+    static UniformVariable* s_attConstant;
+    static UniformVariable* s_shininess;
+    static UniformVariable* s_lightColor;
+    static UniformVariable* s_lightIntensity;
 
-    static std::vector<UniformVariable*> *s_staticVars;
-
-signals:
-    void addUniform(UniformVariable::Type type, const QString &name, bool editable = true, int size = 1);
-    void addUniform(UniformVariable *uniform, bool editable = true);
-    void changeUniform(const UniformVariable *uniform, const QString &newVal);
-    void changeUniform(const QString &name, const QString &newVal);
 
 
-public slots:
-    void changeRenderMode(RenderType mode);
-    void changeAnimMode(AnimType mode);
-    void toggleDrawWireframe(bool draw);
-    void setWireframeMode(WireframeType mode);
-    bool loadShader(QString vert, QString frag, QString *errors = 0);
-    void uniformDeleted(const UniformVariable *uniform);
-    void uniformAdded(const UniformVariable *uniform);
-    void viewChanged(const glm::mat4 &modelview);
-    void projectionChanged(const glm::mat4 &projection);
-    void modelviewProjectionChanged(const glm::mat4 &modelviewProjection);
-    void modelChanged(const glm::mat4 &modelview);
-    void setPaused(bool paused);
+        static std::vector<UniformVariable*> *s_staticVars;
 
-protected:
-    void initializeGL();
-    void resizeGL(int w, int h);
-    void paintGL();
-    void mousePressEvent(QMouseEvent *event);
-    void mouseReleaseEvent(QMouseEvent *event);
-    void mouseMoveEvent(QMouseEvent *event);
-    void wheelEvent(QWheelEvent *event);
+    signals:
+        void addUniform(UniformVariable::Type type, const QString &name, bool editable = true, int size = 1);
+        void addUniform(UniformVariable *uniform, bool editable = true);
+        void changeUniform(const UniformVariable *uniform, const QString &newVal);
+        void changeUniform(const QString &name, const QString &newVal);
 
-    void buildTree();
-    void bindAndUpdateShader(QGLShaderProgram *shader);
-    void releaseShader(QGLShaderProgram *shader);
 
-    void renderWireframe();
-    void renderBranches();
-    void renderLeaves();
-    void renderSkybox();
-    void renderPhongLighting();
-    bool hasSettingsChanged();
+    public slots:
+        void changeRenderMode(RenderType mode);
+        void changeAnimMode(AnimType mode);
+        void toggleDrawWireframe(bool draw);
+        void setWireframeMode(WireframeType mode);
+        bool loadShader(QString vert, QString frag, QString *errors = 0);
+        void uniformDeleted(const UniformVariable *uniform);
+        void uniformAdded(const UniformVariable *uniform);
+        void viewChanged(const glm::mat4 &modelview);
+        void projectionChanged(const glm::mat4 &projection);
+        void modelviewProjectionChanged(const glm::mat4 &modelviewProjection);
+        void modelChanged(const glm::mat4 &modelview);
+        void setPaused(bool paused);
 
-private:
-    std::unique_ptr<OpenGLShape> m_leaf;
-    std::unique_ptr<OpenGLShape> m_sphere;
-    std::unique_ptr<OpenGLShape> m_cylinder;
-    std::unique_ptr<OpenGLShape> m_cube;
-    std::unique_ptr<OpenGLShape> m_cone;
-    std::unique_ptr<OpenGLShape> m_roundedCylinder;
+    protected:
+        void initializeGL();
+        void resizeGL(int w, int h);
+        void paintGL();
+        void mousePressEvent(QMouseEvent *event);
+        void mouseReleaseEvent(QMouseEvent *event);
+        void mouseMoveEvent(QMouseEvent *event);
+        void wheelEvent(QWheelEvent *event);
 
-    OpenGLShape *m_shape;
-    Camera *camera;
-    std::unique_ptr<OpenGLShape> skybox_cube;
-    QGLShaderProgram *skybox_shader;
-    QGLShaderProgram *wireframe_shader;
-    QGLShaderProgram *wireframe_shader2;
-    QGLShaderProgram *current_shader;
-    QGLShaderProgram *phong_shader;
-    QGLShaderProgram *default_shader;
+        void buildTree();
+        void bindAndUpdateShader(QGLShaderProgram *shader);
+        void releaseShader(QGLShaderProgram *shader);
 
-    QGLShaderProgram *leaf_shader;
+        void renderWireframe();
+        void renderBranches();
+        void renderLeaves();
+        void renderSkybox();
+        void renderPhongLighting();
+        bool hasSettingsChanged();
 
-    QList<const UniformVariable*> *activeUniforms;
-    QList<const UniformVariable*> permUniforms;
+    private:
+        std::unique_ptr<OpenGLShape> m_leaf;
+        std::unique_ptr<OpenGLShape> m_sphere;
+        std::unique_ptr<OpenGLShape> m_cylinder;
+        std::unique_ptr<OpenGLShape> m_cube;
+        std::unique_ptr<OpenGLShape> m_cone;
+        std::unique_ptr<OpenGLShape> m_roundedCylinder;
 
-    QOpenGLFunctions gl;
+        OpenGLShape *m_shape;
+        Camera *camera;
+        std::unique_ptr<OpenGLShape> skybox_cube;
+        QGLShaderProgram *skybox_shader;
+        QGLShaderProgram *wireframe_shader;
+        QGLShaderProgram *wireframe_shader2;
+        QGLShaderProgram *current_shader;
+        QGLShaderProgram *phong_shader;
+        QGLShaderProgram *default_shader;
 
-    QTimer *timer;
+        QGLShaderProgram *leaf_shader;
 
-    glm::mat4 model;
+        QList<const UniformVariable*> *activeUniforms;
+        QList<const UniformVariable*> permUniforms;
 
-    AnimType animMode;
-    glm::vec3 pos, dir;
-    float scale, dscale;
-    float angle, dangle;
+        QOpenGLFunctions gl;
 
-    bool drawWireframe;
-    WireframeType wireframeMode;
+        QTimer *timer;
 
-    void handleAnimation();
+        glm::mat4 model;
 
-    RenderType m_renderMode;
+        AnimType animMode;
+        glm::vec3 pos, dir;
+        float scale, dscale;
+        float angle, dangle;
 
-    bool mouseDown;
-    std::unique_ptr<Tree> m_tree;// Tree with L System
-    Settings m_settings;  // Local version of settings to keep track of changes.
+        bool drawWireframe;
+        WireframeType wireframeMode;
 
-};
+        void handleAnimation();
 
-#endif // GLWIDGET_H
+        RenderType m_renderMode;
+
+        bool mouseDown;
+        std::unique_ptr<Tree> m_tree;// Tree with L System
+        Settings m_settings;  // Local version of settings to keep track of changes.
+
+    };
+
+    #endif // GLWIDGET_H
