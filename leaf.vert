@@ -1,16 +1,16 @@
-#version 400 core
+#version 330 core
 
-in vec3 position;
-in vec3 normal;
+layout(location = 0) in vec3 ObjectSpace_position; // object-space vertex position
+layout(location = 1) in vec3 ObjectSpace_normal;   // object-space vertex normal
 
-out vec3 fragPos;
+uniform mat4 model, view, projection;
 
-uniform mat4 mvp;
-uniform mat4 model;
-uniform mat4 trans;
+out vec3 normal;
+out vec3 position;
 
-void main(void) {
-    fragPos = (model * vec4(position, 1)).xyz;
-    vec4 pos = mvp * vec4(position, 1);
-    gl_Position = pos;
+void main() {
+
+    gl_Position = projection * view * model * vec4(ObjectSpace_position, 1.0);
+    normal = vec3(model * vec4(ObjectSpace_normal, 0.0));
+    position = vec3(model * vec4(ObjectSpace_position, 1.0));
 }

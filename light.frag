@@ -27,7 +27,6 @@ out vec3 fragColor;
 void main(){
 
     fragColor = color*ambientIntensity;
-//    vec3 L = (view*vec4(WorldSpace_lightPos-position, 1)).xyz;
     vec3 L  = vec3(WorldSpace_lightPos - position);
     float d = sqrt(pow(L[0], 2) + pow(L[1],2) + pow(L[2], 2));
     float attenuation = lightIntensity * min(1/(attConstant + attLinear*d + attQuadratic*pow(d,2)), 1);
@@ -38,7 +37,4 @@ void main(){
     vec4 reflectionVector = vec4(reflect(normalize(newL), normalize(normal)), 1);
     float dotProduct = dot(normalize(eyeVector), reflectionVector);
     fragColor += color * lightColor * specularIntensity * pow(max(0, dotProduct), shininess) * attenuation;
-
-//    fragColor += color * lightColor * specularIntensity * pow(max(0, dot(normalize(-position), reflect(-L, normalize(normal)))), shininess) * attenuation;
-
 }

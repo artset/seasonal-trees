@@ -328,6 +328,8 @@ void GLWidget::renderWireframe() {
     }
 }
 void GLWidget::renderBranches() {
+    glm::mat4 oldModel = model;
+
     //  Note: the wireframes won't work because it's not connected to that,
     // must choose a shader to get it working.
 
@@ -355,7 +357,7 @@ void GLWidget::renderLeaves() {
 
     //Set color based on season
     if (settings.season == 0){
-        leaf_shader->setUniformValue("color", QVector4D(0.f, 1.f, 0.f, 0.f));
+        leaf_shader->setUniformValue("color", QVector4D(0.1f, 0.4f, 0.08f, 0.f));
     } else if (settings.season == 1){
         leaf_shader->setUniformValue("color", QVector4D(0.9f, 0.6f, 0.3f, 0.f));
     } else {
@@ -366,9 +368,6 @@ void GLWidget::renderLeaves() {
     releaseShader(leaf_shader);
 }
 
-void GLWidget::renderPhongLighting(){
-
-}
 // TODO: any changes to the UI component should also add to this function.
 bool GLWidget::hasSettingsChanged() {
     if (m_settings.treeOption != settings.treeOption){
@@ -399,10 +398,32 @@ void GLWidget::renderSkybox() {
     skybox_shader->release();
 }
 
+void GLWidget::renderPhongLighting(){
+    glm::mat4 oldModel = model;
+//    model = glm::scale(glm::mat4(), glm::vec3(settings.leafSize, .5, 1.f));
+    modelChanged(model);
+    modelviewProjectionChanged(camera->getProjectionMatrix() * camera->getModelviewMatrix());
+    bindAndUpdateShader(phong_shader);
+
+    //Set uniforms
+    phong_shader->setUniformValue("shininess", 43.f);
+    phong_shader->setUniformValue("lightIntensity", 5.f);
+    phong_shader->setUniformValue("lightColor", QVector3D(1.f, 0.85f, 0.0f));
+    phong_shader->setUniformValue("attQuadratic", 0.41f);
+    phong_shader->setUniformValue("attLinear", 0.f);
+    phong_shader->setUniformValue("attConstant", 0.f);
+    phong_shader->setUniformValue("ambientIntensity", 0.62f);
+    phong_shader->setUniformValue("diffuseIntensity", 0.88f);
+    phong_shader->setUniformValue("specularIntensity", 0.58f);
+
+//    m_shape->draw();
+
+    phong_shader->release();
+}
+
 void GLWidget::paintGL() {
     handleAnimation();
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
     if (m_shape) {
         if (m_renderMode == SHAPE_CYLINDER || m_renderMode == SHAPE_CONE) {
             if (hasSettingsChanged()) {
@@ -424,6 +445,7 @@ void GLWidget::paintGL() {
         renderWireframe();
     }
     renderSkybox();
+//    renderPhongLighting();
 }
 
 void GLWidget::changeRenderMode(RenderType mode)
