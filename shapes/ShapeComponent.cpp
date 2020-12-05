@@ -90,11 +90,17 @@ void ShapeComponent::setTriangleVertexData(PrimitiveType shape, const glm::mat4 
     glm::vec3 n1 = vert1.normal;
     glm::vec3 n2 = vert2.normal;
 
-    glm::vec3 tangent = Utilities::getTriangleTangentVec({v0, v1, v2});
-
     glm::vec2 uv0 = Utilities::computeUV(shape, v0, n0);
     glm::vec2 uv1 = Utilities::computeUV(shape, v1, n1);
     glm::vec2 uv2 = Utilities::computeUV(shape, v2, n2);
+
+    // I don't believe the order of these matters, but I could totally be wrong
+    glm::vec3 edge0 = v1 - v0;
+    glm::vec3 edge1 = v2 - v0;
+    glm::vec2 deltaUV0 = glm::abs(uv0 - uv1);
+    glm::vec2 deltaUV1 = glm::abs(uv0 - uv2);
+
+    glm::vec3 tangent = Utilities::getTriangleTangentVec(edge0, edge1, deltaUV0, deltaUV1);
 
     if (transformation != glm::mat4(1.f)) {
         v0 = (transformation * glm::vec4(v0, 1)).xyz();

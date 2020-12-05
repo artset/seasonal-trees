@@ -37,8 +37,8 @@ namespace Utilities {
     float lerp(float x, float x0, float xf, float y0, float yf);
 
     // NormalMappingUtils
-    glm::vec3 getTriangleTangentVec(const std::vector<glm::vec3> &triangleVerts);
-    glm::vec3 calculateTriangleTangentVec(const glm::vec3 &edge0, const glm::vec3 &edge1,
+//    glm::vec3 getTriangleTangentVec(const std::vector<glm::vec3> &triangleVerts);
+    glm::vec3 getTriangleTangentVec(const glm::vec3 &edge0, const glm::vec3 &edge1,
                                                               const glm::vec2 &deltaUV0, const glm::vec2 &deltaUV1);
 
     // TextureMappingUtils
