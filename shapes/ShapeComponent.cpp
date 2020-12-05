@@ -27,7 +27,8 @@ ShapeComponent::~ShapeComponent() {
 
 }
 
-const int ShapeComponent::COORDINATES_PER_TRIANGLE = 6;
+// 3(vert) + 3(norm) + 2(uv) + 3(tangent)
+const int ShapeComponent::COORDINATES_PER_TRIANGLE = 11;
 
 void ShapeComponent::draw() {
     if (m_VAO) {

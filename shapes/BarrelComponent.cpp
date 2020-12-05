@@ -47,11 +47,14 @@ void BarrelComponent::setData() {
             glm::vec3 tangent1 = Utilities::getTriangleTangentVec({v0, v1, v2});
             glm::vec3 tangent2 = Utilities::getTriangleTangentVec({v2, v3, v0});
 
-            glm::vec3 uv0, uv1, uv2; // ??? glm::vec2
-            glm::vec3 uv3, uv4, uv5; // ??? glm::vec2
+            glm::vec2 uv0 = Utilities::computeUV(PrimitiveType::PRIMITIVE_CYLINDER, v0, n0);
+            glm::vec2 uv1 = Utilities::computeUV(PrimitiveType::PRIMITIVE_CYLINDER, v1, n1);
+            glm::vec2 uv2 = Utilities::computeUV(PrimitiveType::PRIMITIVE_CYLINDER, v2, n2);
+            glm::vec2 uv3 = Utilities::computeUV(PrimitiveType::PRIMITIVE_CYLINDER, v3, n3);
 
-            triangles.insert(triangles.end(), {v2, n2, uv0, tangent1, v1, n1, uv1, tangent1, v0, n0, uv2, tangent1});
-            triangles.insert(triangles.end(), {v3, n3, uv3, tangent2, v1, n1, uv4, tangent2, v2, n2, uv5, tangent2});
+//            Utilities::insert
+//            triangles.insert(triangles.end(), {v2, n2, uv0, tangent1, v1, n1, uv1, tangent1, v0, n0, uv2, tangent1});
+//            triangles.insert(triangles.end(), {v3, n3, uv3, tangent2, v1, n1, uv1, tangent2, v2, n2, uv2, tangent2});
        }
     }
 
