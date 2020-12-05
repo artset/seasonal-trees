@@ -25,6 +25,8 @@ void ConeComponent::setData() {
     float y = (1.0/ m_param1);
     float r = (RADIUS / m_param1);
 
+    bool useTransformation = m_transformation != glm::mat4(1.f);
+
     for (int i = 0; i < m_param2; i++) {
         this->setFan(triangles, i);
         for (int j = 1; j < m_param1; j++) {
