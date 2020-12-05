@@ -49,9 +49,9 @@ void BarrelComponent::setData() {
             glm::vec3 n3 = getNormal(v3);
 
             // "bottom left" triangle
-            setTriangleVertexData({ v0, n0 }, { v1, n1 }, { v2, n2 });
+            setTriangleVertexData(PrimitiveType::PRIMITIVE_CYLINDER, { v0, n0 }, { v1, n1 }, { v2, n2 });
             // "upper right" triangle
-            setTriangleVertexData({ v1, n1 }, { v3, n3 }, { v2, n2 });
+            setTriangleVertexData(PrimitiveType::PRIMITIVE_CYLINDER, { v1, n1 }, { v3, n3 }, { v2, n2 });
        }
     }
 

@@ -80,7 +80,7 @@ void ShapeComponent::applyTransformation(std::vector<glm::vec3> &triangles) {
  * @param n1
  * @param n2
  */
-void ShapeComponent::setTriangleVertexData(const Vertex &vert0, const Vertex &vert1, const Vertex &vert2) {
+void ShapeComponent::setTriangleVertexData(PrimitiveType shape, const Vertex &vert0, const Vertex &vert1, const Vertex &vert2) {
     glm::vec3 v0 = vert0.pos;
     glm::vec3 v1 = vert1.pos;
     glm::vec3 v2 = vert2.pos;
@@ -91,9 +91,9 @@ void ShapeComponent::setTriangleVertexData(const Vertex &vert0, const Vertex &ve
 
     glm::vec3 tangent = Utilities::getTriangleTangentVec({v0, v1, v2});
 
-    glm::vec2 uv0 = Utilities::computeUV(PrimitiveType::PRIMITIVE_CYLINDER, v0, n0);
-    glm::vec2 uv1 = Utilities::computeUV(PrimitiveType::PRIMITIVE_CYLINDER, v1, n1);
-    glm::vec2 uv2 = Utilities::computeUV(PrimitiveType::PRIMITIVE_CYLINDER, v2, n2);
+    glm::vec2 uv0 = Utilities::computeUV(shape, v0, n0);
+    glm::vec2 uv1 = Utilities::computeUV(shape, v1, n1);
+    glm::vec2 uv2 = Utilities::computeUV(shape, v2, n2);
 
     // there's definitely a nicer way to do this
     if (m_transformation != glm::mat4(1.f)) {

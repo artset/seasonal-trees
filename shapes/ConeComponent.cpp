@@ -51,9 +51,9 @@ void ConeComponent::setData() {
             glm::vec3 n3 = getNormal(v3);
 
             // "bottom left" triangle
-            setTriangleVertexData({ v0, n0 }, { v1, n1 }, { v2, n2 });
+            setTriangleVertexData(PrimitiveType::PRIMITIVE_CONE, { v0, n0 }, { v1, n1 }, { v2, n2 });
             // "upper right" triangle
-            setTriangleVertexData({ v1, n1 }, { v3, n3 }, { v2, n2 });
+            setTriangleVertexData(PrimitiveType::PRIMITIVE_CONE, { v1, n1 }, { v3, n3 }, { v2, n2 });
         }
     }
 
@@ -79,7 +79,7 @@ void ConeComponent::setFan(int angleIndex) {
     glm::vec3 n2 = getNormal(v2);
     glm::vec3 n1 = getNormal(v1);
 
-    setTriangleVertexData({ v0, n0 }, { v1, n1 }, { v2, n2 });
+    setTriangleVertexData(PrimitiveType::PRIMITIVE_CONE, { v0, n0 }, { v1, n1 }, { v2, n2 });
 }
 
 /**
