@@ -16,7 +16,6 @@ namespace CS123 { namespace GL { namespace ShaderAttrib {
     const GLuint NORMAL = 1;
     const GLuint TEXCOORD = 2;
     const GLuint TANGENT = 3;
-    const GLuint BITANGENT = 3;
 
 }}}
 

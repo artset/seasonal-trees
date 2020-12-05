@@ -46,18 +46,14 @@ void ConeComponent::setData() {
             glm::vec3 n3 = getNormal(v3);
             glm::vec3 n4 = getNormal(v4);
 
-            std::pair<glm::vec3, glm::vec3> tanBit1 = Utilities::getTriangleTangentBitangent({v1, v2, v3});
-            glm::vec3 tangent1 = tanBit1.first;
-            glm::vec3 bitangent1 = tanBit1.second;
-            std::pair<glm::vec3, glm::vec3> tanBit2 = Utilities::getTriangleTangentBitangent({v3, v4, v1});
-            glm::vec3 tangent2 = tanBit2.first;
-            glm::vec3 bitangent2 = tanBit2.second;
+            glm::vec3 tangent1 = Utilities::getTriangleTangentVec({v1, v2, v3});
+            glm::vec3 tangent2 = Utilities::getTriangleTangentVec({v3, v4, v1});
 
             glm::vec3 uv1, uv2, uv3; // ??? glm::vec2
             glm::vec3 uv4, uv5, uv6; // ??? glm::vec2
 
-            triangles.insert(triangles.end(), {v3, n3, uv1, tangent1, bitangent1, v2, n2, uv2, tangent1, bitangent1, v1, n1, uv3, tangent1, bitangent1});
-            triangles.insert(triangles.end(), {v4, n4, uv4, tangent2, bitangent2, v2, n2, uv5, tangent2, bitangent2, v3, n3, uv6, tangent2, bitangent2});
+            triangles.insert(triangles.end(), {v3, n3, uv1, tangent1, v2, n2, uv2, tangent1, v1, n1, uv3, tangent1});
+            triangles.insert(triangles.end(), {v4, n4, uv4, tangent2, v2, n2, uv5, tangent2, v3, n3, uv6, tangent2});
         }
     }
 

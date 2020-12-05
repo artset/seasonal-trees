@@ -197,7 +197,6 @@ void GLWidget::initializeGL() {
     m_sphere->setAttribute(ShaderAttrib::NORMAL, 3, 3*sizeof(GLfloat), VBOAttribMarker::DATA_TYPE::FLOAT, false);
     m_sphere->setAttribute(ShaderAttrib::TEXCOORD, 2, 3*3*sizeof(GLfloat), VBOAttribMarker::DATA_TYPE::FLOAT, false);
     m_sphere->setAttribute(ShaderAttrib::TANGENT, 3, 2*3*3*sizeof(GLfloat), VBOAttribMarker::DATA_TYPE::FLOAT, false);
-    m_sphere->setAttribute(ShaderAttrib::BITANGENT, 3, 3*2*3*3*sizeof(GLfloat), VBOAttribMarker::DATA_TYPE::FLOAT, false);
     m_sphere->buildVAO();
 
     std::unique_ptr<Shape> test = std::make_unique<Leaf>(6, 1);
@@ -208,7 +207,6 @@ void GLWidget::initializeGL() {
     m_cube->setAttribute(ShaderAttrib::NORMAL, 3, 3*sizeof(GLfloat), VBOAttribMarker::DATA_TYPE::FLOAT, false);
     m_cube->setAttribute(ShaderAttrib::TEXCOORD, 2, 3*3*sizeof(GLfloat), VBOAttribMarker::DATA_TYPE::FLOAT, false);
     m_cube->setAttribute(ShaderAttrib::TANGENT, 3, 2*3*3*sizeof(GLfloat), VBOAttribMarker::DATA_TYPE::FLOAT, false);
-    m_cube->setAttribute(ShaderAttrib::BITANGENT, 3, 3*2*3*3*sizeof(GLfloat), VBOAttribMarker::DATA_TYPE::FLOAT, false);
     m_cube->buildVAO();
 
     std::vector<GLfloat> cubeData = CUBE_DATA_POSITIONS;
@@ -224,7 +222,6 @@ void GLWidget::initializeGL() {
     skybox_cube->setAttribute(ShaderAttrib::NORMAL, 3, 3*sizeof(GLfloat), VBOAttribMarker::DATA_TYPE::FLOAT, false);
     skybox_cube->setAttribute(ShaderAttrib::TEXCOORD, 2, 3*3*sizeof(GLfloat), VBOAttribMarker::DATA_TYPE::FLOAT, false);
     skybox_cube->setAttribute(ShaderAttrib::TANGENT, 3, 2*3*3*sizeof(GLfloat), VBOAttribMarker::DATA_TYPE::FLOAT, false);
-    skybox_cube->setAttribute(ShaderAttrib::BITANGENT, 3, 3*2*3*3*sizeof(GLfloat), VBOAttribMarker::DATA_TYPE::FLOAT, false);
     skybox_cube->buildVAO();
 
     m_cylinder = std::make_unique<OpenGLShape>();
@@ -236,7 +233,6 @@ void GLWidget::initializeGL() {
     m_cylinder->setAttribute(ShaderAttrib::NORMAL, 3, 3*sizeof(GLfloat), VBOAttribMarker::DATA_TYPE::FLOAT, false);
     m_cylinder->setAttribute(ShaderAttrib::TEXCOORD, 2, 3*3*sizeof(GLfloat), VBOAttribMarker::DATA_TYPE::FLOAT, false);
     m_cylinder->setAttribute(ShaderAttrib::TANGENT, 3, 2*3*3*sizeof(GLfloat), VBOAttribMarker::DATA_TYPE::FLOAT, false);
-    m_cylinder->setAttribute(ShaderAttrib::BITANGENT, 3, 3*2*3*3*sizeof(GLfloat), VBOAttribMarker::DATA_TYPE::FLOAT, false);
     m_cylinder->buildVAO();
 
     m_cone = std::make_unique<OpenGLShape>();
@@ -248,7 +244,6 @@ void GLWidget::initializeGL() {
     m_cone->setAttribute(ShaderAttrib::NORMAL, 3, 3*sizeof(GLfloat), VBOAttribMarker::DATA_TYPE::FLOAT, false);
     m_cone->setAttribute(ShaderAttrib::TEXCOORD, 2, 3*3*sizeof(GLfloat), VBOAttribMarker::DATA_TYPE::FLOAT, false);
     m_cone->setAttribute(ShaderAttrib::TANGENT, 3, 2*3*3*sizeof(GLfloat), VBOAttribMarker::DATA_TYPE::FLOAT, false);
-    m_cone->setAttribute(ShaderAttrib::BITANGENT, 3, 3*2*3*3*sizeof(GLfloat), VBOAttribMarker::DATA_TYPE::FLOAT, false);
     m_cone->buildVAO();
 
     m_shape = m_sphere.get();
