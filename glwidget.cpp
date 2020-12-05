@@ -187,16 +187,16 @@ void GLWidget::initializeGL() {
 
     gl = QOpenGLFunctions(context()->contextHandle());
 
-    const int NUM_FLOATS_PER_VERTEX = 3;
+    const int NUM_FLOATS_PER_VERTEX = 11; // 3(vert) + 3(norm) + 2(uv) + 3(tangent)
 
     std::unique_ptr<Shape> sphere = std::make_unique<RoundedCylinder>(7, 7);
     std::vector<GLfloat> sphereData = sphere->getData();
     m_sphere = std::make_unique<OpenGLShape>();
-    m_sphere->setVertexData(&sphereData[0], sphereData.size(), VBO::GEOMETRY_LAYOUT::LAYOUT_TRIANGLES, sphereData.size());
+    m_sphere->setVertexData(&sphereData[0], sphereData.size(), VBO::GEOMETRY_LAYOUT::LAYOUT_TRIANGLES, sphereData.size() / NUM_FLOATS_PER_VERTEX);
     m_sphere->setAttribute(ShaderAttrib::POSITION, 3, 0, VBOAttribMarker::DATA_TYPE::FLOAT, false);
     m_sphere->setAttribute(ShaderAttrib::NORMAL, 3, 3*sizeof(GLfloat), VBOAttribMarker::DATA_TYPE::FLOAT, false);
-    m_sphere->setAttribute(ShaderAttrib::TEXCOORD, 2, 3*3*sizeof(GLfloat), VBOAttribMarker::DATA_TYPE::FLOAT, false);
-    m_sphere->setAttribute(ShaderAttrib::TANGENT, 3, 2*3*3*sizeof(GLfloat), VBOAttribMarker::DATA_TYPE::FLOAT, false);
+    m_sphere->setAttribute(ShaderAttrib::TEXCOORD, 2, (3+3)*sizeof(GLfloat), VBOAttribMarker::DATA_TYPE::FLOAT, false);
+    m_sphere->setAttribute(ShaderAttrib::TANGENT, 3, (2+3+3)*sizeof(GLfloat), VBOAttribMarker::DATA_TYPE::FLOAT, false);
     m_sphere->buildVAO();
 
     std::unique_ptr<Shape> test = std::make_unique<Leaf>(6, 1);
@@ -205,8 +205,8 @@ void GLWidget::initializeGL() {
     m_cube->setVertexData(&testData[0], testData.size(), VBO::GEOMETRY_LAYOUT::LAYOUT_TRIANGLES, testData.size());
     m_cube->setAttribute(ShaderAttrib::POSITION, 3, 0, VBOAttribMarker::DATA_TYPE::FLOAT, false);
     m_cube->setAttribute(ShaderAttrib::NORMAL, 3, 3*sizeof(GLfloat), VBOAttribMarker::DATA_TYPE::FLOAT, false);
-    m_cube->setAttribute(ShaderAttrib::TEXCOORD, 2, 3*3*sizeof(GLfloat), VBOAttribMarker::DATA_TYPE::FLOAT, false);
-    m_cube->setAttribute(ShaderAttrib::TANGENT, 3, 2*3*3*sizeof(GLfloat), VBOAttribMarker::DATA_TYPE::FLOAT, false);
+    m_cube->setAttribute(ShaderAttrib::TEXCOORD, 2, (3+3)*sizeof(GLfloat), VBOAttribMarker::DATA_TYPE::FLOAT, false);
+    m_cube->setAttribute(ShaderAttrib::TANGENT, 3, (2+3+3)*sizeof(GLfloat), VBOAttribMarker::DATA_TYPE::FLOAT, false);
     m_cube->buildVAO();
 
     std::vector<GLfloat> cubeData = CUBE_DATA_POSITIONS;
@@ -229,8 +229,8 @@ void GLWidget::initializeGL() {
     m_cylinder->setVertexData(&cylinderData[0], cylinderData.size(), VBO::GEOMETRY_LAYOUT::LAYOUT_TRIANGLES, cylinderData.size() / NUM_FLOATS_PER_VERTEX);
     m_cylinder->setAttribute(ShaderAttrib::POSITION, 3, 0, VBOAttribMarker::DATA_TYPE::FLOAT, false);
     m_cylinder->setAttribute(ShaderAttrib::NORMAL, 3, 3*sizeof(GLfloat), VBOAttribMarker::DATA_TYPE::FLOAT, false);
-    m_cylinder->setAttribute(ShaderAttrib::TEXCOORD, 2, 3*3*sizeof(GLfloat), VBOAttribMarker::DATA_TYPE::FLOAT, false);
-    m_cylinder->setAttribute(ShaderAttrib::TANGENT, 3, 2*3*3*sizeof(GLfloat), VBOAttribMarker::DATA_TYPE::FLOAT, false);
+    m_cylinder->setAttribute(ShaderAttrib::TEXCOORD, 2, (3+3)*sizeof(GLfloat), VBOAttribMarker::DATA_TYPE::FLOAT, false);
+    m_cylinder->setAttribute(ShaderAttrib::TANGENT, 3, (2+3+3)*sizeof(GLfloat), VBOAttribMarker::DATA_TYPE::FLOAT, false);
     m_cylinder->buildVAO();
     std::cout<<cylinderData.size()<<std::endl;
 
@@ -241,8 +241,8 @@ void GLWidget::initializeGL() {
     m_cone->setVertexData(&coneData[0], coneData.size(), VBO::GEOMETRY_LAYOUT::LAYOUT_TRIANGLES, coneData.size() / NUM_FLOATS_PER_VERTEX);
     m_cone->setAttribute(ShaderAttrib::POSITION, 3, 0, VBOAttribMarker::DATA_TYPE::FLOAT, false);
     m_cone->setAttribute(ShaderAttrib::NORMAL, 3, 3*sizeof(GLfloat), VBOAttribMarker::DATA_TYPE::FLOAT, false);
-    m_cone->setAttribute(ShaderAttrib::TEXCOORD, 2, 3*3*sizeof(GLfloat), VBOAttribMarker::DATA_TYPE::FLOAT, false);
-    m_cone->setAttribute(ShaderAttrib::TANGENT, 3, 2*3*3*sizeof(GLfloat), VBOAttribMarker::DATA_TYPE::FLOAT, false);
+    m_cone->setAttribute(ShaderAttrib::TEXCOORD, 2, (3+3)*sizeof(GLfloat), VBOAttribMarker::DATA_TYPE::FLOAT, false);
+    m_cone->setAttribute(ShaderAttrib::TANGENT, 3, (2+3+3)*sizeof(GLfloat), VBOAttribMarker::DATA_TYPE::FLOAT, false);
     m_cone->buildVAO();
 
     m_shape = m_sphere.get();

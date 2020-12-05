@@ -1,7 +1,7 @@
 #version 400 core
 
-//layout (location = 0) in vec3 position;
-//layout (location = 1) in vec3 normal;
+layout (location = 0) in vec3 position;
+layout (location = 1) in vec3 normal;
 //layout (location = 2) in vec2 aTexCoords;
 //layout (location = 3) in vec3 tangent;
 
@@ -35,8 +35,8 @@
 //    tangentViewDir = TBN_inv * normalize(viewPos - fragPos);
 //}
 
-in vec3 position;
-in vec3 normal;
+//in vec3 position;
+//in vec3 normal;
 
 out vec3 fragPos;
 
