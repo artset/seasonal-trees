@@ -17,6 +17,11 @@ enum class PrimitiveType {
     PRIMITIVE_SPHERE
 };
 
+struct Vertex {
+    glm::vec3 pos;
+    glm::vec3 normal;
+};
+
 struct VertexData {
     glm::vec3 pos;
     glm::vec3 normal;

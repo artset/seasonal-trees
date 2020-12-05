@@ -51,9 +51,9 @@ void BarrelComponent::setData() {
             glm::vec3 n3 = getNormal(v3);
 
             // "bottom left" triangle
-            setTriangleVertexData(v1, v0, v3);
+            setTriangleVertexData({ v1, n1 }, { v0, n0 }, { v3, n3 });
             // "upper right" triangle
-            setTriangleVertexData(v0, v2, v3);
+            setTriangleVertexData({ v0, n0 }, { v2, n2 }, { v3, n3 });
        }
     }
 
