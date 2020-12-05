@@ -18,11 +18,11 @@ namespace Utilities{
         data.push_back(v.z);
     }
 
-    void insertVertexData(std::vector<float> &data, glm::vec3 pos, glm::vec3 n, glm::vec2 uv, glm::vec3 tangent) {
-        insertVec3(data, pos);
-        insertVec3(data, n);
-        insertVec2(data, uv);
-        insertVec3(data, tangent);
+    void insertVertexData(std::vector<float> &data, const VertexData &vdata) {
+        insertVec3(data, vdata.pos);
+        insertVec3(data, vdata.normal);
+        insertVec2(data, vdata.uv);
+        insertVec3(data, vdata.tangent);
     }
 
     bool equals(float given, float val, float epsilon) {

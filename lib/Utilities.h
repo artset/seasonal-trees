@@ -17,10 +17,17 @@ enum class PrimitiveType {
     PRIMITIVE_SPHERE
 };
 
+struct VertexData {
+    glm::vec3 pos;
+    glm::vec3 normal;
+    glm::vec2 uv;
+    glm::vec3 tangent;
+};
+
 namespace Utilities {
     void insertVec2(std::vector<float> &data, glm::vec2 v);
     void insertVec3(std::vector<float> &data, glm::vec3 v);
-    void insertVertexData(std::vector<float> &data, glm::vec3 pos, glm::vec3 n, glm::vec2 uv, glm::vec3 tangent);
+    void insertVertexData(std::vector<float> &data, const VertexData &vdata);
     bool equals(float given, float val, float epsilon);
     float lerp(float x, float x0, float xf, float y0, float yf);
 
