@@ -44,8 +44,18 @@ void BarrelComponent::setData() {
             glm::vec3 n2 = getNormal(v2);
             glm::vec3 n3 = getNormal(v3);
 
-            triangles.insert(triangles.end(), {v2, n2, v1, n1, v0, n0});
-            triangles.insert(triangles.end(), {v1, n1, v2, n2, v3, n3});
+            std::pair<glm::vec3, glm::vec3> tanBit1 = Utilities::getTriangleTangentBitangent({v0, v1, v2});
+            glm::vec3 tangent1 = tanBit1.first;
+            glm::vec3 bitangent1 = tanBit1.second;
+            std::pair<glm::vec3, glm::vec3> tanBit2 = Utilities::getTriangleTangentBitangent({v2, v3, v0});
+            glm::vec3 tangent2 = tanBit2.first;
+            glm::vec3 bitangent2 = tanBit2.second;
+
+            glm::vec3 uv0, uv1, uv2; // ??? glm::vec2
+            glm::vec3 uv3, uv4, uv5; // ??? glm::vec2
+
+            triangles.insert(triangles.end(), {v2, n2, uv0, tangent1, bitangent1, v1, n1, uv1, tangent1, bitangent1, v0, n0, uv2, tangent1, bitangent1});
+            triangles.insert(triangles.end(), {v3, n3, uv3, tangent2, bitangent2, v1, n1, uv4, tangent2, bitangent2, v2, n2, uv5, tangent2, bitangent2});
        }
     }
 

@@ -26,15 +26,15 @@ namespace Utilities{
      * @param triangle1Verts: bottom left triangle, 0=>topLeft, 1=>bottomLeft, 2=>bottomRight
      * @return
      */
-    std::pair<glm::vec3, glm::vec3> getTangentBitangent(const std::vector<glm::vec3> &triangle1Verts) {
+    std::pair<glm::vec3, glm::vec3> getTriangleTangentBitangent(const std::vector<glm::vec3> &triangleVerts) {
         glm::vec2 uv0 = { 1, 0 };
         glm::vec2 uv1 = { 0, 0 };
         glm::vec2 uv2 = { 0, 1 };
         glm::vec2 uv3 = { 1, 1 };
 
-        glm::vec3 v0 = triangle1Verts[0];
-        glm::vec3 v1 = triangle1Verts[1];
-        glm::vec3 v2 = triangle1Verts[2];
+        glm::vec3 v0 = triangleVerts[0];
+        glm::vec3 v1 = triangleVerts[1];
+        glm::vec3 v2 = triangleVerts[2];
 
         return calculateTangentBitangent(
                     v1 - v0,
