@@ -98,16 +98,47 @@ void ConeComponent::setFan(std::vector<glm::vec3> &triangles, int angleIndex) {
         r = .5f;
     }
 
-    glm::vec3 v1 = glm::vec3(0, HEIGHT / 2.0, 0);
-    glm::vec3 v2 = glm::vec3(r * cos(angleIndex * angle), y, r * sin(angleIndex * angle));
-    glm::vec3 v3 = glm::vec3(r * cos((angleIndex+1) * angle), y, r * sin((angleIndex+1) * angle));
+    glm::vec3 v0 = glm::vec3(0, HEIGHT / 2.0, 0);
+    glm::vec3 v1 = glm::vec3(r * cos(angleIndex * angle), y, r * sin(angleIndex * angle));
+    glm::vec3 v2 = glm::vec3(r * cos((angleIndex+1) * angle), y, r * sin((angleIndex+1) * angle));
 
-    Triangle t1 = Triangle();
-    t1.setTriangleData(v3, v2, v1);
-    glm::vec3 n3 = getNormal(v3);
+    Triangle t0 = Triangle();
+    t1.setTriangleData(v2, v1, v0);
     glm::vec3 n2 = getNormal(v2);
+    glm::vec3 n1 = getNormal(v1);
 
-    triangles.insert(triangles.end(), {v3, n3, v2, n2,v1, t1.getNormal()});
+    glm::vec3 tangent1 = Utilities::getTriangleTangentVec({v0, v1, v2});
+    glm::vec3 tangent2 = Utilities::getTriangleTangentVec({v2, v3, v0});
+
+    glm::vec2 uv0 = Utilities::computeUV(PrimitiveType::PRIMITIVE_CYLINDER, v0, n0);
+    glm::vec2 uv1 = Utilities::computeUV(PrimitiveType::PRIMITIVE_CYLINDER, v1, n1);
+    glm::vec2 uv2 = Utilities::computeUV(PrimitiveType::PRIMITIVE_CYLINDER, v2, n2);
+    glm::vec2 uv3 = Utilities::computeUV(PrimitiveType::PRIMITIVE_CYLINDER, v3, n3);
+
+    if (m_transformation != glm::mat4(1.f)) {
+        v0 = (m_transformation * glm::vec4(v0, 0)).xyz();
+        v1 = (m_transformation * glm::vec4(v1, 0)).xyz();
+        v2 = (m_transformation * glm::vec4(v2, 0)).xyz();
+        v3 = (m_transformation * glm::vec4(v3, 0)).xyz();
+
+        n0 = (m_transformation * glm::vec4(n0, 0)).xyz();
+        n1 = (m_transformation * glm::vec4(n1, 0)).xyz();
+        n2 = (m_transformation * glm::vec4(n2, 0)).xyz();
+        n3 = (m_transformation * glm::vec4(n3, 0)).xyz();
+
+        uv0 = (m_transformation * glm::vec4(uv0, 0, 0)).xy();
+        uv1 = (m_transformation * glm::vec4(uv1, 0, 0)).xy();
+        uv2 = (m_transformation * glm::vec4(uv2, 0, 0)).xy();
+        uv3 = (m_transformation * glm::vec4(uv3, 0, 0)).xy();
+
+        tangent1 = (m_transformation * glm::vec4(tangent1, 0)).xyz();
+        tangent2 = (m_transformation * glm::vec4(tangent2, 0)).xyz();
+    }
+
+//    triangles.insert(triangles.end(), {v2, n2, v1, n1, v0, t0.getNormal()});
+    Utilities::insertVertexData(m_vertexData, {v2, n2, uv2, tangent1});
+    Utilities::insertVertexData(m_vertexData, {v1, n1, uv1, tangent1});
+    Utilities::insertVertexData(m_vertexData, {v0, n0, uv0, tangent1});
 }
 
 /**
