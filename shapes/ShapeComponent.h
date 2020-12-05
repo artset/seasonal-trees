@@ -50,6 +50,9 @@ protected:
     static const int COORDINATES_PER_TRIANGLE;
     void applyTransformation(std::vector<glm::vec3> &triangles);
 
+    void setTriangleVertexData(glm::vec3 v0, glm::vec3 v1, glm::vec3 v2,
+                               glm::vec3 n0, glm::vec3 n1, glm::vec3 n2);
+
 };
 
 #endif // SHAPECOMPONENT_H

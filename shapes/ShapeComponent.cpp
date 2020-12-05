@@ -69,3 +69,43 @@ void ShapeComponent::applyTransformation(std::vector<glm::vec3> &triangles) {
         triangles[i] = transformed.xyz();
     }
 }
+
+/**
+ * @brief ShapeComponent::setTriangleVertexData - Sets the vertex data for an individual triangle given its vertices
+ * and corresponding normals in counter-clockwise order.
+ * @param v0
+ * @param v1
+ * @param v2
+ * @param n0
+ * @param n1
+ * @param n2
+ */
+void ShapeComponent::setTriangleVertexData(glm::vec3 v0, glm::vec3 v1, glm::vec3 v2,
+                                           glm::vec3 n0, glm::vec3 n1, glm::vec3 n2) {
+    glm::vec3 tangent = Utilities::getTriangleTangentVec({v0, v1, v2});
+
+    glm::vec2 uv0 = Utilities::computeUV(PrimitiveType::PRIMITIVE_CYLINDER, v0, n0);
+    glm::vec2 uv1 = Utilities::computeUV(PrimitiveType::PRIMITIVE_CYLINDER, v1, n1);
+    glm::vec2 uv2 = Utilities::computeUV(PrimitiveType::PRIMITIVE_CYLINDER, v2, n2);
+
+    // there's definitely a nicer way to do this
+    if (m_transformation != glm::mat4(1.f)) {
+        v0 = (m_transformation * glm::vec4(v0, 0)).xyz();
+        v1 = (m_transformation * glm::vec4(v1, 0)).xyz();
+        v2 = (m_transformation * glm::vec4(v2, 0)).xyz();
+
+        n0 = (m_transformation * glm::vec4(n0, 0)).xyz();
+        n1 = (m_transformation * glm::vec4(n1, 0)).xyz();
+        n2 = (m_transformation * glm::vec4(n2, 0)).xyz();
+
+        uv0 = (m_transformation * glm::vec4(uv0, 0, 0)).xy();
+        uv1 = (m_transformation * glm::vec4(uv1, 0, 0)).xy();
+        uv2 = (m_transformation * glm::vec4(uv2, 0, 0)).xy();
+
+        tangent = (m_transformation * glm::vec4(tangent, 0)).xyz();
+    }
+
+    Utilities::insertVertexData(m_vertexData, {v0, n0, uv0, tangent});
+    Utilities::insertVertexData(m_vertexData, {v1, n1, uv1, tangent});
+    Utilities::insertVertexData(m_vertexData, {v2, n2, uv2, tangent});
+}

@@ -103,7 +103,7 @@ void ConeComponent::setFan(std::vector<glm::vec3> &triangles, int angleIndex) {
     glm::vec3 v2 = glm::vec3(r * cos((angleIndex+1) * angle), y, r * sin((angleIndex+1) * angle));
 
     Triangle t0 = Triangle();
-    t1.setTriangleData(v2, v1, v0);
+    t0.setTriangleData(v2, v1, v0);
     glm::vec3 n2 = getNormal(v2);
     glm::vec3 n1 = getNormal(v1);
 
