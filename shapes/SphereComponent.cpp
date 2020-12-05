@@ -32,31 +32,32 @@ void SphereComponent::setData(){
             if (i == m_param1 - 1 || i == 0){
                 this->setFan(i, j, phi, theta);
             } else {
-                // bottom left
-                glm::vec3 v0 = glm::vec3(RADIUS * sin(phi * (i+1)) * cos(theta * (j)),
+                // bottom right
+                glm::vec3 v1 = glm::vec3(RADIUS * sin(phi * (i+1)) * cos(theta * (j)),
                                          RADIUS * cos(phi * (i+1)),
                                          RADIUS * sin(phi * (i+1)) * sin(theta * (j)));
-                // bottom right
-                glm::vec3 v1 = glm::vec3(RADIUS * sin(phi * (i+1)) * cos(theta * (j+1)),
+                // bottom left
+                glm::vec3 v0 = glm::vec3(RADIUS * sin(phi * (i+1)) * cos(theta * (j+1)),
                                          RADIUS * cos(phi * (i+1)),
                                          RADIUS * sin(phi * (i+1)) * sin(theta * (j+1)));
-                // top left
-                glm::vec3 v2 = glm::vec3(RADIUS * sin(phi * (i)) * cos(theta * j),
+                // top right
+                glm::vec3 v3 = glm::vec3(RADIUS * sin(phi * (i)) * cos(theta * j),
                                          RADIUS * cos(phi * (i)),
                                          RADIUS * sin(phi * (i)) * sin(theta * j));
-                // top right
-                glm::vec3 v3 = glm::vec3(RADIUS * sin(phi * (i)) * cos(theta * (j+1)),
+                // top left
+                glm::vec3 v2 = glm::vec3(RADIUS * sin(phi * (i)) * cos(theta * (j+1)),
                                          RADIUS * cos(phi * (i)),
                                          RADIUS * sin(phi * (i)) * sin(theta * (j+1)));
+
                 glm::vec3 n0 = glm::normalize(v0);
                 glm::vec3 n1 = glm::normalize(v1);
                 glm::vec3 n2 = glm::normalize(v2);
                 glm::vec3 n3 = glm::normalize(v3);
 
                 // "bottom left" triangle
-                setTriangleVertexData(PrimitiveType::PRIMITIVE_SPHERE, { v0, n0 }, { v1, n1 }, { v2, n2 });
+                setTriangleVertexData(PrimitiveType::PRIMITIVE_SPHERE, m_transformation, { v0, n0 }, { v1, n1 }, { v2, n2 });
                 // "upper right" triangle
-                setTriangleVertexData(PrimitiveType::PRIMITIVE_SPHERE, { v1, n1 }, { v3, n3 }, { v2, n2 });
+                setTriangleVertexData(PrimitiveType::PRIMITIVE_SPHERE, m_transformation, { v1, n1 }, { v3, n3 }, { v2, n2 });
             }
         }
     }
@@ -76,15 +77,10 @@ void SphereComponent::setFan(int i, int j, float phi, float theta) {
     float base = i > 0 ? -.5f : .5f;
     float pIndex = i > 0 ? i : i + 1;
 
-    // top
     glm::vec3 v1 = glm::vec3(0.f, base, 0.f);
-
-    //bottom left
     glm::vec3 v2 = glm::vec3(RADIUS * sin(phi * (pIndex)) * cos(theta * j),
                              RADIUS * cos(phi * (pIndex)),
                              RADIUS * sin(phi * (pIndex)) * sin(theta * j));
-
-    // bottom right
     glm::vec3 v3 = glm::vec3(RADIUS * sin(phi * (pIndex)) * cos(theta * (j+1)),
                              RADIUS * cos(phi * (pIndex)),
                              RADIUS * sin(phi * (pIndex)) * sin(theta * (j+1)));
@@ -94,9 +90,9 @@ void SphereComponent::setFan(int i, int j, float phi, float theta) {
     glm::vec3 n3 = getNormal(v3);
 
     if (i > 0) { // bottom fan
-        setTriangleVertexData(PrimitiveType::PRIMITIVE_SPHERE, { v1, n1 }, { v2, n2 }, { v3, n3 });
+        setTriangleVertexData(PrimitiveType::PRIMITIVE_SPHERE, m_transformation, { v2, n2 }, { v3, n3 }, { v1, n1 });
     } else { // top fan
-        setTriangleVertexData(PrimitiveType::PRIMITIVE_SPHERE, { v3, n3 }, { v2, n2 }, { v1, n1 });
+        setTriangleVertexData(PrimitiveType::PRIMITIVE_SPHERE, m_transformation, { v3, n3 }, { v2, n2 }, { v1, n1 });
     }
 }
 

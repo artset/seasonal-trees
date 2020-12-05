@@ -80,7 +80,8 @@ void ShapeComponent::applyTransformation(std::vector<glm::vec3> &triangles) {
  * @param n1
  * @param n2
  */
-void ShapeComponent::setTriangleVertexData(PrimitiveType shape, const Vertex &vert0, const Vertex &vert1, const Vertex &vert2) {
+void ShapeComponent::setTriangleVertexData(PrimitiveType shape, const glm::mat4 &transformation,
+                                           const Vertex &vert0, const Vertex &vert1, const Vertex &vert2) {
     glm::vec3 v0 = vert0.pos;
     glm::vec3 v1 = vert1.pos;
     glm::vec3 v2 = vert2.pos;
@@ -95,21 +96,20 @@ void ShapeComponent::setTriangleVertexData(PrimitiveType shape, const Vertex &ve
     glm::vec2 uv1 = Utilities::computeUV(shape, v1, n1);
     glm::vec2 uv2 = Utilities::computeUV(shape, v2, n2);
 
-    // there's definitely a nicer way to do this
-    if (m_transformation != glm::mat4(1.f)) {
-        v0 = (m_transformation * glm::vec4(v0, 0)).xyz();
-        v1 = (m_transformation * glm::vec4(v1, 0)).xyz();
-        v2 = (m_transformation * glm::vec4(v2, 0)).xyz();
+    if (transformation != glm::mat4(1.f)) {
+        v0 = (transformation * glm::vec4(v0, 1)).xyz();
+        v1 = (transformation * glm::vec4(v1, 1)).xyz();
+        v2 = (transformation * glm::vec4(v2, 1)).xyz();
 
-        n0 = (m_transformation * glm::vec4(n0, 0)).xyz();
-        n1 = (m_transformation * glm::vec4(n1, 0)).xyz();
-        n2 = (m_transformation * glm::vec4(n2, 0)).xyz();
+        n0 = (transformation * glm::vec4(n0, 1)).xyz();
+        n1 = (transformation * glm::vec4(n1, 1)).xyz();
+        n2 = (transformation * glm::vec4(n2, 1)).xyz();
 
-        uv0 = (m_transformation * glm::vec4(uv0, 0, 0)).xy();
-        uv1 = (m_transformation * glm::vec4(uv1, 0, 0)).xy();
-        uv2 = (m_transformation * glm::vec4(uv2, 0, 0)).xy();
+        uv0 = (transformation * glm::vec4(uv0, 0, 1)).xy();
+        uv1 = (transformation * glm::vec4(uv1, 0, 1)).xy();
+        uv2 = (transformation * glm::vec4(uv2, 0, 1)).xy();
 
-        tangent = (m_transformation * glm::vec4(tangent, 0)).xyz();
+        tangent = (transformation * glm::vec4(tangent, 1)).xyz();
     }
 
     Utilities::insertVertexData(m_vertexData, {v0, n0, uv0, tangent});
