@@ -27,21 +27,21 @@ void BarrelComponent::setData() {
     for (int j = 0; j < m_param1; j++) {
         for (int i = 0; i < m_param2; i++) {
             // bottom left
-            glm::vec3 v0 = glm::vec3(getCartesianCos(RADIUS, angle,1.f,i),
-                                     BASE + (interval * j) ,
-                                     getCartesianSin(RADIUS, angle,1.f,i));
-            // bottom right
-            glm::vec3 v1 = glm::vec3(getCartesianCos(RADIUS, angle,1.f,i+1),
+            glm::vec3 v0 = glm::vec3(getCartesianCos(RADIUS, angle,1.f,i+1),
                                      BASE + (interval * j),
                                      getCartesianSin(RADIUS, angle,1.f,i+1));
-            // top left
-            glm::vec3 v2 = glm::vec3(getCartesianCos(RADIUS, angle,1.f,i),
-                                     BASE + (interval * (j + 1)),
+            // bottom right
+            glm::vec3 v1 = glm::vec3(getCartesianCos(RADIUS, angle,1.f,i),
+                                     BASE + (interval * j) ,
                                      getCartesianSin(RADIUS, angle,1.f,i));
-            // top right
-            glm::vec3 v3 = glm::vec3(getCartesianCos(RADIUS, angle,1.f,i+1),
+            // top left
+            glm::vec3 v2 = glm::vec3(getCartesianCos(RADIUS, angle,1.f,i+1),
                                      BASE + (interval * (j + 1)),
                                      getCartesianSin(RADIUS, angle,1.f,i+1));
+            // top right
+            glm::vec3 v3 = glm::vec3(getCartesianCos(RADIUS, angle,1.f,i),
+                                     BASE + (interval * (j + 1)),
+                                     getCartesianSin(RADIUS, angle,1.f,i));
 
             glm::vec3 n0 = getNormal(v0);
             glm::vec3 n1 = getNormal(v1);

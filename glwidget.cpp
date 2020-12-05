@@ -232,7 +232,6 @@ void GLWidget::initializeGL() {
     m_cylinder->setAttribute(ShaderAttrib::TEXCOORD, 2, (3+3)*sizeof(GLfloat), VBOAttribMarker::DATA_TYPE::FLOAT, false);
     m_cylinder->setAttribute(ShaderAttrib::TANGENT, 3, (2+3+3)*sizeof(GLfloat), VBOAttribMarker::DATA_TYPE::FLOAT, false);
     m_cylinder->buildVAO();
-    std::cout<<cylinderData.size()<<std::endl;
 
     m_cone = std::make_unique<OpenGLShape>();
     std::unique_ptr<Shape> cone = std::make_unique<Cone>(1, 10);
