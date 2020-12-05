@@ -24,23 +24,21 @@ void BarrelComponent::setData() {
     int numTriangles = m_param2 * m_param1 * 2;
     triangles.reserve(numTriangles * COORDINATES_PER_TRIANGLE);
 
-    bool useTransformation = m_transformation != glm::mat4(1.f);
-
     for (int j = 0; j < m_param1; j++) {
         for (int i = 0; i < m_param2; i++) {
-            // bottom right
+            // bottom left
             glm::vec3 v0 = glm::vec3(getCartesianCos(RADIUS, angle,1.f,i),
                                      BASE + (interval * j) ,
                                      getCartesianSin(RADIUS, angle,1.f,i));
-            // bottom left
+            // bottom right
             glm::vec3 v1 = glm::vec3(getCartesianCos(RADIUS, angle,1.f,i+1),
                                      BASE + (interval * j),
                                      getCartesianSin(RADIUS, angle,1.f,i+1));
-            // top right
+            // top left
             glm::vec3 v2 = glm::vec3(getCartesianCos(RADIUS, angle,1.f,i),
                                      BASE + (interval * (j + 1)),
                                      getCartesianSin(RADIUS, angle,1.f,i));
-            // top left
+            // top right
             glm::vec3 v3 = glm::vec3(getCartesianCos(RADIUS, angle,1.f,i+1),
                                      BASE + (interval * (j + 1)),
                                      getCartesianSin(RADIUS, angle,1.f,i+1));
@@ -51,9 +49,9 @@ void BarrelComponent::setData() {
             glm::vec3 n3 = getNormal(v3);
 
             // "bottom left" triangle
-            setTriangleVertexData({ v1, n1 }, { v0, n0 }, { v3, n3 });
+            setTriangleVertexData({ v0, n0 }, { v1, n1 }, { v2, n2 });
             // "upper right" triangle
-            setTriangleVertexData({ v0, n0 }, { v2, n2 }, { v3, n3 });
+            setTriangleVertexData({ v1, n1 }, { v3, n3 }, { v2, n2 });
        }
     }
 
