@@ -6,14 +6,13 @@ uniform vec4 color;
 out vec4 fragColor;
 
 uniform float time;
+uniform sampler2D normalMap;
 
-vec4 getColor() {
-    float r = (sin(time/1.5)+1)/2;
-    float g = (sin(time/1.5*1.3)+1)/2;
-    float b = (sin(time/1.5*1.6)+1)/2;
-    return vec4(r,g,b,1);
-}
+
 
 void main() {
     fragColor = vec4(0, 0, 255, 1);
+
+    vec3 n = texture(normalMap, fragPos.TexCoords);
+    n = normalize(n * 2.0 - 1.0);
 }
