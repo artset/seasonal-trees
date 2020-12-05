@@ -105,9 +105,9 @@ void ShapeComponent::setTriangleVertexData(PrimitiveType shape, const glm::mat4 
         n1 = (transformation * glm::vec4(n1, 1)).xyz();
         n2 = (transformation * glm::vec4(n2, 1)).xyz();
 
-        uv0 = (transformation * glm::vec4(uv0, 0, 1)).xy();
-        uv1 = (transformation * glm::vec4(uv1, 0, 1)).xy();
-        uv2 = (transformation * glm::vec4(uv2, 0, 1)).xy();
+//        uv0 = (transformation * glm::vec4(uv0, 0, 1)).xy();
+//        uv1 = (transformation * glm::vec4(uv1, 0, 1)).xy();
+//        uv2 = (transformation * glm::vec4(uv2, 0, 1)).xy();
 
         tangent = (transformation * glm::vec4(tangent, 1)).xyz();
     }
