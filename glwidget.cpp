@@ -220,8 +220,6 @@ void GLWidget::initializeGL() {
     skybox_cube->setVertexData(&cubeData[0], cubeData.size(), VBO::GEOMETRY_LAYOUT::LAYOUT_TRIANGLES, NUM_CUBE_VERTICES);
     skybox_cube->setAttribute(ShaderAttrib::POSITION, 3, 0, VBOAttribMarker::DATA_TYPE::FLOAT, false);
     skybox_cube->setAttribute(ShaderAttrib::NORMAL, 3, 3*sizeof(GLfloat), VBOAttribMarker::DATA_TYPE::FLOAT, false);
-    skybox_cube->setAttribute(ShaderAttrib::TEXCOORD, 2, 3*3*sizeof(GLfloat), VBOAttribMarker::DATA_TYPE::FLOAT, false);
-    skybox_cube->setAttribute(ShaderAttrib::TANGENT, 3, 2*3*3*sizeof(GLfloat), VBOAttribMarker::DATA_TYPE::FLOAT, false);
     skybox_cube->buildVAO();
 
     m_cylinder = std::make_unique<OpenGLShape>();
@@ -234,6 +232,7 @@ void GLWidget::initializeGL() {
     m_cylinder->setAttribute(ShaderAttrib::TEXCOORD, 2, 3*3*sizeof(GLfloat), VBOAttribMarker::DATA_TYPE::FLOAT, false);
     m_cylinder->setAttribute(ShaderAttrib::TANGENT, 3, 2*3*3*sizeof(GLfloat), VBOAttribMarker::DATA_TYPE::FLOAT, false);
     m_cylinder->buildVAO();
+    std::cout<<cylinderData.size()<<std::endl;
 
     m_cone = std::make_unique<OpenGLShape>();
     std::unique_ptr<Shape> cone = std::make_unique<Cone>(1, 10);
