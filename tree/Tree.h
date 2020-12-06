@@ -24,6 +24,7 @@ public:
     ~Tree();
     void buildTree(const glm::mat4 &model);
     std::vector<glm::mat4> getBranchData();
+    std::vector<glm::mat4> getLeafData();
     void addTreeOptionRule(int treeOption);
 private:
     static const float BRANCH_LENGTH;
@@ -40,6 +41,7 @@ private:
     float getRandomAngle(const int &branchNum, const float &angle);
 
     LSystem m_lsystem;
+    std::vector <glm::mat4> m_leafData;
     std::vector<glm::mat4> m_branchData;
     bool m_is2D;
 

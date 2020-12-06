@@ -356,6 +356,41 @@ void GLWidget::renderBranches() {
 }
 
 void GLWidget::renderLeaves() {
+    std::vector<glm::mat4> trans = m_tree->getLeafData();
+
+    glm::mat4 oldModel = model;
+    glm::mat4 original = model;
+    RenderType oldRenderType = m_renderMode;
+
+
+    for (int i = 0; i < static_cast<int>(trans.size()); i++) {
+        model = trans[i];
+        modelChanged(model);
+        modelviewProjectionChanged(camera->getProjectionMatrix() * camera->getModelviewMatrix());
+        bindAndUpdateShader(leaf_shader); // needed before calling draw.
+
+        //Set color based on season
+        if (settings.season == 0){
+            leaf_shader->setUniformValue("color", QVector4D(0.f, 1.f, 0.f, 0.f));
+        } else if (settings.season == 1){
+            leaf_shader->setUniformValue("color", QVector4D(0.9f, 0.6f, 0.3f, 0.f));
+        } else {
+            leaf_shader->setUniformValue("color", QVector4D(0.2f, 0.8f, 0.3f, 0.f));
+        }
+
+        changeRenderMode(SHAPE_CUBE);
+
+        m_shape->draw();
+    }
+    // reset states
+    changeRenderMode(oldRenderType);
+    model = original;
+
+    releaseShader(leaf_shader);
+}
+
+
+void GLWidget::renderSingleLeaf() {
     glm::mat4 oldModel = model;
     model = glm::scale(glm::mat4(), glm::vec3(settings.leafSize, .5, 1.f));
     modelChanged(model);
@@ -438,12 +473,13 @@ void GLWidget::paintGL() {
                 m_tree->buildTree(model);
             } else {
                 renderBranches();
+                renderLeaves();
                 renderIsland();
             }
 
         } else {// todo: remove this once all primitives are made :)
             if (m_renderMode == SHAPE_CUBE) {
-                renderLeaves();
+                renderSingleLeaf();
             } else {
                 bindAndUpdateShader(current_shader);
                 m_shape->draw();
@@ -474,6 +510,9 @@ void GLWidget::changeRenderMode(RenderType mode)
         break;
     case SHAPE_ISLAND:
         m_shape = m_island.get();
+        break;
+    case SHAPE_LEAF:
+        m_shape = m_leaf.get();
         break;
     default:
         m_shape = m_cylinder.get();

@@ -67,6 +67,7 @@ void Tree::buildTree(const glm::mat4 &model) {
     m_lsystem.setRecursion(settings.recursions);
     m_lsystem.generateSequence();
     m_branchData.clear();
+    m_leafData.clear();
     srand(time(NULL));
 
     std::string string = m_lsystem.getSequence();
@@ -247,12 +248,15 @@ void Tree::addTreeOptionRule(int treeOption){
     }
 }
 
-// Using setter and getters instead to avoid having to rebuild the tree
-// when setting toggles don't change.
+
 std::vector<glm::mat4> Tree::getBranchData() {
     return m_branchData;
 }
 
+
+std::vector<glm::mat4> Tree::getLeafData() {
+    return m_leafData;
+}
 glm::vec3 Tree::getRotateAxis(int branchNum) {
     if (m_is2D) {
        return Tree::ROTATE_AXES[2];
