@@ -20,7 +20,7 @@ private:
     float getCurve(float incr, float incrIndex, bool top);
     static const float START;
     float m_increment;
-//    std::vector<GLfloat> m_leafData;
+    std::vector<GLfloat> m_leafData;
 
 };
 
