@@ -138,7 +138,7 @@ void Tree::buildTree(const glm::mat4 &model, const float leafScale) {
             case ']': {
                 //Resume parsing with the last saved state (the current branch is closed)
                 m_branchData.push_back(getBranchTransform(model, currState));
-                m_leafData.push_back(getLeafTransform(model, currState, branchNum));
+                buildLeaves(model, currState, branchNum);
                 currState = prevStates.back();
                 prevStates.pop_back();
 
@@ -182,6 +182,81 @@ void Tree::buildTree(const glm::mat4 &model, const float leafScale) {
         std::cout << "Missed " << prevStates.size() << " cached states" << std::endl;
     }
 }
+
+
+void Tree::buildLeaves(const glm::mat4 &model, const LState &state, const int branchLevel) {
+    m_leafData.push_back(getLeafTransform(model, state, branchLevel, TOP));
+    m_leafData.push_back(getLeafTransform(model, state, branchLevel, LEFT));
+    m_leafData.push_back(getLeafTransform(model, state, branchLevel, RIGHT));
+
+}
+
+/**
+ * Given the transformations
+ * @brief Tree::getLeafTransform
+ * @param model
+ * @param state
+ * @param branchNum
+ * @return
+ */
+glm::mat4 Tree::getLeafTransform(const glm::mat4 &model, const LState &state, const int branchLevel, LeafDir dir) {
+    if (state.length == 0) {
+        return glm::mat4(0);
+    }
+
+    glm::mat4 INIT_ROTATE = glm::rotate(glm::radians(90.f), Tree::ROTATE_AXES[2]);
+    glm::mat4 INIT_TRANSLATE = glm::translate(glm::mat4(), glm::vec3(0.f, 7.5f + 1.f * Tree::BRANCH_LENGTH, 0.f));
+    glm::mat4 INIT_SCALE = glm::scale(glm::mat4(), glm::vec3(m_leafScale, .8, 1.f)); // Scales to size of branches.
+
+    if (dir == LEFT) {
+        INIT_ROTATE = glm::rotate(glm::radians(50.f), getRotateAxis(branchLevel - 1));
+        INIT_TRANSLATE = glm::translate(glm::mat4(), glm::vec3(1.f,  Tree::BRANCH_LENGTH, 0.f));
+        INIT_SCALE = glm::scale(glm::mat4(), glm::vec3(m_leafScale, .8, 1.f)); // Scales to size of branches.
+    } else if (dir == RIGHT) {
+        INIT_ROTATE = glm::rotate(glm::radians(-50.f), getRotateAxis(branchLevel - 1));
+        INIT_TRANSLATE = glm::translate(glm::mat4(), glm::vec3(-1.f,  Tree::BRANCH_LENGTH, 0.f));
+        INIT_SCALE = glm::scale(glm::mat4(), glm::vec3(m_leafScale, .8, 1.f)); // Scales to size of branches.
+    }
+    glm::mat4 scale = glm::scale(glm::mat4(), glm::vec3(.01f, .01f, .01f));
+    glm::mat4 rotate = state.rotate;
+    glm::mat4 translate = state.translate;
+    return translate * rotate  * scale * INIT_TRANSLATE * INIT_ROTATE * INIT_SCALE * model;
+}
+
+
+//Calculates the overall transformation matrix of a branch given its current state
+glm::mat4 Tree::getBranchTransform (const glm::mat4 &model, const LState &state) {
+    if (state.length == 0) {
+        return glm::mat4(0);
+    }
+    glm::mat4 selfScale = glm::scale(glm::mat4(), { 1.f, BRANCH_LENGTH * state.length, 1.f });
+    return state.translate * state.rotate * state.scale * (selfScale) * model;
+};
+
+//Produces an LState with all of the initial values of the given state
+//except for the length
+LState Tree::getBranchInitialStateTransforms(const LState &state) {
+    LState initState = state;
+    initState.rotate = initState.initialRotate;
+    initState.scale = initState.initialScale;
+    return initState;
+};
+
+
+//Initializes the state of a child branching off from the given state
+LState Tree::createNewBranchState(const LState &state) {
+    LState newState = state;
+    newState.initialRotate = newState.rotate;
+    newState.initialScale = newState.scale;
+    newState.length = 0;
+    return newState;
+};
+
+
+std::vector<glm::mat4> Tree::getBranchData() {
+    return m_branchData;
+}
+
 
 /**
  * Adds the L-system rules and sets the axiom depending on the tree chosen in the dropdown of the ui.
@@ -256,12 +331,6 @@ void Tree::addTreeOptionRule(int treeOption){
     }
 }
 
-
-std::vector<glm::mat4> Tree::getBranchData() {
-    return m_branchData;
-}
-
-
 std::vector<glm::mat4> Tree::getLeafData() {
     return m_leafData;
 }
@@ -271,56 +340,6 @@ glm::vec3 Tree::getRotateAxis(const int branchNum) {
     }
     return Tree::ROTATE_AXES[branchNum % (ROTATE_AXES.size() - 1)];
 }
-
-
-glm::mat4 Tree::getLeafTransform(const glm::mat4 &model, const LState &state, const int branchNum) {
-    if (state.length == 0) {
-        return glm::mat4(0);
-    }
-
-    glm::mat4 scale = glm::scale(glm::mat4(), glm::vec3(.01f, .01f, .01f));
-
-//    const glm::mat4 INIT_ROTATE = glm::rotate(glm::radians(90.f), getRotateAxis(branchNum));
-    const glm::mat4 INIT_ROTATE = glm::rotate(glm::radians(90.f), Tree::ROTATE_AXES[2]);
-
-//    const glm::mat4 INIT_TRANSLATE = glm::translate(glm::mat4(), glm::vec3(0.f, Tree::BRANCH_LENGTH * .5f, 0.f));
-    const glm::mat4 INIT_TRANSLATE = glm::translate(glm::mat4(), glm::vec3(0.f, 7.5f + 1.f * Tree::BRANCH_LENGTH, 0.f));
-    const glm::mat4 INIT_SCALE = glm::scale(glm::mat4(), glm::vec3(m_leafScale, .8, 1.f));
-
-    glm::mat4 rotate = state.rotate;
-    rotate = glm::rotate(glm::radians(0.f), ROTATE_AXES[2]) * rotate;
-    glm::mat4 translate = state.translate;
-    return translate * rotate  * scale * INIT_TRANSLATE * INIT_ROTATE * INIT_SCALE* model;
-}
-
-//Calculates the overall transformation matrix of a branch given its current state
-glm::mat4 Tree::getBranchTransform (const glm::mat4 &model, const LState &state) {
-    if (state.length == 0) {
-        return glm::mat4(0);
-    }
-    glm::mat4 selfScale = glm::scale(glm::mat4(), { 1.f, BRANCH_LENGTH * state.length, 1.f });
-    return state.translate * state.rotate * state.scale * (selfScale) * model;
-};
-
-//Produces an LState with all of the initial values of the given state
-//except for the length
-LState Tree::getBranchInitialStateTransforms(const LState &state) {
-    LState initState = state;
-    initState.rotate = initState.initialRotate;
-    initState.scale = initState.initialScale;
-    return initState;
-};
-
-
-//Initializes the state of a child branching off from the given state
-LState Tree::createNewBranchState(const LState &state) {
-    LState newState = state;
-    newState.initialRotate = newState.rotate;
-    newState.initialScale = newState.scale;
-    newState.length = 0;
-    return newState;
-};
-
 
 //Determines if two matrices are equal within epsilon
 bool Tree::matEq(const glm::mat4 &A, const glm::mat4 &B) {

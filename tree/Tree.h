@@ -17,6 +17,10 @@ struct LState {
     glm::mat4 initialScale;
 };
 
+enum LeafDir {
+    TOP, LEFT, RIGHT };
+
+
 class Tree
 {
 public:
@@ -35,7 +39,8 @@ private:
     std::vector<glm::mat4> processBranch(const glm::mat4 &curr, const std::string &string);
     glm::vec3 getRotateAxis(const int branchNum);
     glm::mat4 getBranchTransform(const glm::mat4 &model, const LState &state);
-    glm::mat4 getLeafTransform(const glm::mat4 &model, const LState &state, const int branchLevel);
+    glm::mat4 getLeafTransform(const glm::mat4 &model, const LState &state, const int branchLevel, LeafDir dir);
+    void buildLeaves(const glm::mat4 &model, const LState &state, const int branchLevel);
 
     LState getBranchInitialStateTransforms(const LState &state);
     LState createNewBranchState(const LState &state);
