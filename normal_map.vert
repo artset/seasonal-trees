@@ -6,7 +6,7 @@ layout (location = 2) in vec2 aTexCoords;
 layout (location = 3) in vec3 tangent;
 
 out vec3 tangentFragPos;
-out vec3 surfaceNormal;
+//out vec3 surfaceNormal;
 out vec2 texCoords;
 out vec3 tangentLightPos;
 out vec3 tangentViewPos;
@@ -34,9 +34,9 @@ void main(void) {
 
     vec3 viewPos = (inverse(view) * -1.0 * view * model * vec4(position, 0.0)).xyz;
 
-    tangentFragPos = (model * vec4(position, 1.0)).xyz;//TBN_inv * (model * vec4(position, 1.0)).xyz;
-    surfaceNormal = N;
+    tangentFragPos = TBN_inv * (model * vec4(position, 1.0)).xyz;
+//    surfaceNormal = N;
     texCoords = aTexCoords;
-    tangentLightPos = lightPos;//TBN_inv * lightPos;
-    tangentViewPos = viewPos;//TBN_inv * viewPos;
+    tangentLightPos = TBN_inv * lightPos;
+    tangentViewPos = TBN_inv * viewPos;
 }

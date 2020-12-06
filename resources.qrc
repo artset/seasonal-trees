@@ -23,4 +23,8 @@
         <file>posy.jpg</file>
         <file>posz.jpg</file>
     </qresource>
+    <qresource prefix="/images">
+        <file>images/mandril.jpg</file>
+        <file>images/ostrich.jpg</file>
+    </qresource>
 </RCC>

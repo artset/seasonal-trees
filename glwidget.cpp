@@ -27,6 +27,7 @@ UniformVariable *GLWidget::s_mvp = NULL;
 UniformVariable *GLWidget::s_time = NULL;
 UniformVariable *GLWidget::s_size = NULL;
 UniformVariable *GLWidget::s_mouse = NULL;
+UniformVariable *GLWidget::s_normalMap = NULL;
 
 std::vector<UniformVariable*> *GLWidget::s_staticVars = NULL;
 
@@ -179,6 +180,12 @@ void GLWidget::initializeGL() {
     s_mouse->setName("mouse");
     s_mouse->setType(UniformVariable::TYPE_FLOAT3);
 
+//    s_normalMap = new UniformVariable(this->context()->contextHandle());
+//    s_normalMap->setName("normalMap");
+//    s_normalMap->setType(UniformVariable::TYPE_TEX2D);
+//    s_normalMap->parse(":/images/images/ostrich.jpg");
+//    s_normalMap->setValue(normal_mapping_shader);
+
     s_staticVars->push_back(s_skybox);
     s_staticVars->push_back(s_model);
     s_staticVars->push_back(s_projection);
@@ -187,6 +194,8 @@ void GLWidget::initializeGL() {
     s_staticVars->push_back(s_time);
     s_staticVars->push_back(s_size);
     s_staticVars->push_back(s_mouse);
+
+//    s_staticVars->push_back(s_normalMap);
 
     gl = QOpenGLFunctions(context()->contextHandle());
 
@@ -249,13 +258,25 @@ void GLWidget::initializeGL() {
 
     m_shape = m_sphere.get();
 
-    QImage image(":/images/ostrich.jpg");
     glGenTextures(1, &m_textureID);
     glBindTexture(GL_TEXTURE_2D, m_textureID);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, image.width(), image.height(), 0, GL_RGBA, GL_UNSIGNED_BYTE, image.bits());
-    glBindTexture(GL_TEXTURE_2D, m_textureID);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    QImage image(":/images/images/ostrich.jpg");
+    if (!image.isNull()) {
+//        for (int i = 0 ; i < image.height() ; i++) {
+//            for (int j = 0 ; j < image.width() ; j++) {
+//                QColor color = image.pixelColor(i, j);
+//                std::cout<<glm::to_string(glm::vec4(color.red() / 255.f, color.green() / 255.f, color.blue() / 255.f, 1.f))<<std::endl;
+//            }
+//        }
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, image.width(), image.height(), 0, GL_RGBA, GL_UNSIGNED_BYTE, image.bits());
+    } else {
+        std::cout << "Failed to load texture image" << std::endl;
+    }
+    glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 void GLWidget::resizeGL(int w, int h) {
@@ -435,7 +456,9 @@ void GLWidget::paintGL() {
                 renderLeaves();
             } else {
                 bindAndUpdateShader(current_shader);
+                glBindTexture(GL_TEXTURE_2D, m_textureID);
                 m_shape->draw();
+                glBindTexture(GL_TEXTURE_2D, 0);
                 releaseShader(current_shader);
 
             }
