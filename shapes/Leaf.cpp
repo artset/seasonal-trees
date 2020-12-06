@@ -19,36 +19,36 @@ Leaf::~Leaf()
 
 const float Leaf::START = -1.f;
 
-
+// Sets the leaf data. note that the front and back of the leaves have repeated
+// vertices and normals going on the opposite sides.
 std::vector<GLfloat> Leaf::getData(){
     const int NUM_TRIANGLES = (m_param1 - 2) * 2;
     const int COORDINATES_PER_TRIANGLE  = 3;
     const int SIDES = 2;
     m_increment = 2.f / m_param1;
 
-
     std::vector<glm::vec3> triangles;
     triangles.reserve(NUM_TRIANGLES * COORDINATES_PER_TRIANGLE * SIDES);
 
-    std::vector<GLfloat> leafData;
-    leafData.reserve(NUM_TRIANGLES * COORDINATES_PER_TRIANGLE * 2 * SIDES);
+    m_vertexData.reserve(NUM_TRIANGLES * COORDINATES_PER_TRIANGLE * 2 * SIDES);
 
     bool TOP = true;
 
     for (int i = 0; i < m_param1; i++) {
+        // These get the single triangles at both ends of the leaves
         setLeafEnds(triangles, TOP, i);
         setLeafEnds(triangles, !TOP, i);
         if (i > 0 && i < m_param1 - 1) {
-             setLeafBody(triangles, TOP, i);
-             setLeafBody(triangles, !TOP, i);
+             setLeafBody(triangles, TOP, i); // Sets the top part of the leaf (upper arch)
+             setLeafBody(triangles, !TOP, i); // Sets lower part of leaf (lower arch)
         }
     }
 
     for (int i = 0; i < static_cast<int>(triangles.size()); i++) {
-        Utilities::insertVec3(leafData, triangles[i]);
+        Utilities::insertVec3(m_vertexData, triangles[i]);
     }
 
-    return leafData;
+    return m_vertexData;
 }
 
 /**
@@ -81,7 +81,6 @@ void Leaf::setLeafBody(std::vector<glm::vec3> &triangles, bool top, int i) {
     t2.setTriangleData(v1, v4, v3);
     t1.getTriangleData(triangles);
     t2.getTriangleData(triangles);
-
 }
 
 /**
@@ -118,12 +117,13 @@ void Leaf::setLeafEnds(std::vector<glm::vec3> &triangles, bool top, int i) {
 }
 
 
+// Returns a point on the cos curve that the point will lay on.
 float Leaf::getCurve(float incr, float incrIndex, bool top) {
     float x = Leaf::START + (incr * incrIndex);
     float out = cos(x * M_PI_2);
     return top ? out : -out;
 }
 
-
+// Not needed
 void Leaf::setUpShapeComponents() {
 }

@@ -17,8 +17,7 @@ struct LState {
     glm::mat4 initialScale;
 };
 
-enum LeafDir {
-    TOP, LEFT, RIGHT };
+enum LeafDir { TOP, LEFT, RIGHT };
 
 
 class Tree

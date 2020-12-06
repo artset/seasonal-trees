@@ -184,15 +184,25 @@ void Tree::buildTree(const glm::mat4 &model, const float leafScale) {
 }
 
 
+/**
+ * Adds the leaf data to the member variable. If it's not a 2D array, will add
+ * 3 leaves per branch.
+ * @brief Tree::buildLeaves
+ * @param model
+ * @param state
+ * @param branchLevel
+ */
 void Tree::buildLeaves(const glm::mat4 &model, const LState &state, const int branchLevel) {
     m_leafData.push_back(getLeafTransform(model, state, branchLevel, TOP));
-    m_leafData.push_back(getLeafTransform(model, state, branchLevel, LEFT));
-    m_leafData.push_back(getLeafTransform(model, state, branchLevel, RIGHT));
 
+    if (!m_is2D) {
+        m_leafData.push_back(getLeafTransform(model, state, branchLevel, LEFT));
+        m_leafData.push_back(getLeafTransform(model, state, branchLevel, RIGHT));
+    }
 }
 
 /**
- * Given the transformations
+ * Gets the transformation of the leaf, given the branch state.
  * @brief Tree::getLeafTransform
  * @param model
  * @param state
@@ -204,6 +214,7 @@ glm::mat4 Tree::getLeafTransform(const glm::mat4 &model, const LState &state, co
         return glm::mat4(0);
     }
 
+    // Top positioning
     glm::mat4 INIT_ROTATE = glm::rotate(glm::radians(90.f), Tree::ROTATE_AXES[2]);
     glm::mat4 INIT_TRANSLATE = glm::translate(glm::mat4(), glm::vec3(0.f, 7.5f + 1.f * Tree::BRANCH_LENGTH, 0.f));
     glm::mat4 INIT_SCALE = glm::scale(glm::mat4(), glm::vec3(m_leafScale, .8, 1.f)); // Scales to size of branches.

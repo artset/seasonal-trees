@@ -479,9 +479,8 @@ void GLWidget::paintGL() {
 
         } else {// todo: remove this once all primitives are made :)
             if (m_renderMode == SHAPE_CUBE) {
-//                renderSingleLeaf();
-                renderLeaves();
-
+                renderSingleLeaf();
+//                renderLeaves(); // for debugging: renders all the leaves without the branches
             } else {
                 bindAndUpdateShader(current_shader);
                 m_shape->draw();

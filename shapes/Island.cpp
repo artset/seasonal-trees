@@ -15,17 +15,20 @@ const float Island::HEIGHT = 1.f;
 const float Island::RADIUS = .5f;
 
 
-// goes from 0 to 1
+// Goes from 0 to 2, gives fixed random height given seeds i and j.
 float Island::getRandom(int i, int j) {
     return 2.f * glm::fract(sin(i * 127.1f + j * 311.7f) * 43758.5453123f);
 }
 
+// This is kinda unnecessary for now, but this is a wrapper function in case
+// we create a more complex getHeight function for later, where random will
+// be only one part.
 float Island::getHeight(int i, int j) {
     return getRandom(i, j);
-
-//    return heightA;
 }
 
+// The island is based off a circle, with randomnized heights for the triangle
+// and the same normal per face.
 void Island::setData() {
     m_vertexData.clear();
     float angle = 2.f * M_PI / m_param2;
@@ -42,38 +45,28 @@ void Island::setData() {
 
         // goes through each of the levels
         for (int j = 1; j < m_param1; j++) {
+            // These edge cases are to get when angle = 360 and angle = 0
+            // we compute the same randomized height.
             int maxI = i + 1;
             if (maxI == m_param2) {
                 maxI = 0;
             }
 
-//            std::cout << i << " " << j << " " << y * getHeight(i, j) << std::endl;
-//            std::cout << i+1 << " " << j << " " << y * getHeight(maxI, j) << std::endl;
-//            std::cout << i+1 << " " << j+1 << " " << y * getHeight(maxI, j+1) << std::endl;
-
-//            std::cout << "--" << std::endl;
-
-            // interpolate between A and B
-
             glm::vec3 v1 = glm::vec3(getCartesianCos(r, angle,j,i),
                                       (y * getHeight(i, j)),
-//                                     TIP - (y * j),
                                      getCartesianSin(r, angle,j,i));
             glm::vec3 v2 = glm::vec3(getCartesianCos(r, angle,j+1,i),
-//                                     TIP - (y * (j + 1))  + getRandom(i, j),
                                      (y * getHeight(i, j+1)),
                                      getCartesianSin(r, angle,j+1,i));
             glm::vec3 v3 = glm::vec3(getCartesianCos(r, angle,j,i+1),
-//                                     TIP  - (y * j)  + getRandom(i, j),
                                       (y * getHeight(maxI, j)),
                                      getCartesianSin(r, angle,j,i+1));
             glm::vec3 v4 = glm::vec3(getCartesianCos(r, angle,j+1,i+1),
-//                                     TIP - (y * (j + 1))  + getRandom(i, j),
                                      (y * getHeight(maxI, j+1)),
                                      getCartesianSin(r, angle,j+1,i+1));
 
-
-
+            // Using the Triangle helper shape because it computes the normals
+            // on a single face, which gives the low poly effect.
             Triangle t1 = Triangle();
             t1.setTriangleData(v3, v2, v1);
             glm::vec3 n1 = t1.getNormal();
@@ -97,6 +90,7 @@ void Island::setData() {
     }
 }
 
+// Sets the inner circle of the island.
 void Island::setFan(std::vector<glm::vec3> &triangles, int angleIndex) {
     float angle = 2.f * M_PI / m_param2;
     float y = TIP - (1.0/ m_param1);
@@ -106,16 +100,13 @@ void Island::setFan(std::vector<glm::vec3> &triangles, int angleIndex) {
         r = .5f;
     }
 
-//    y = TIP - (y * getHeight(angleIndex, 0));
+    // These edge cases are to get when angle = 360 and angle = 0, we compute the same height.
     float y1 = (y * getHeight(angleIndex, 1));
-
     float angleIndexPlusOne = angleIndex + 1;
     if (m_param2 == angleIndexPlusOne) {
         angleIndexPlusOne = 0;
     }
     float y2 = (y * getHeight(angleIndexPlusOne, 1));
-
-
 
     glm::vec3 v1 = glm::vec3(0, HEIGHT / 2.0, 0);
     glm::vec3 v2 = glm::vec3(r * cos(angleIndex * angle), y1, r * sin(angleIndex * angle));
@@ -124,8 +115,6 @@ void Island::setFan(std::vector<glm::vec3> &triangles, int angleIndex) {
     Triangle t1 = Triangle();
     t1.setTriangleData(v3, v2, v1);
     glm::vec3 flatNormal = t1.getNormal();
-
-
     triangles.insert(triangles.end(), {v3, flatNormal, v2, flatNormal,v1, flatNormal});
 }
 
