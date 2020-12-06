@@ -15,8 +15,10 @@ uniform mat4 mvp;
 uniform mat4 model;
 uniform mat4 trans;
 
-uniform vec3 lightPos;
-uniform vec3 viewPos;
+uniform mat4 view;
+const vec3 lightPos = vec3(2, 2, 2);
+//uniform vec3 lightPos;
+//uniform vec3 viewPos;
 
 void main(void) {
     vec4 pos = mvp * vec4(position, 1);
@@ -30,9 +32,11 @@ void main(void) {
     // We can transpose here instead of inversing because TBN is orthogonal => TBN^T == TBN^(-1)
     mat3 TBN_inv = transpose(TBN);
 
-    tangentFragPos = TBN_inv * (model * vec4(position, 1.0)).xyz;
+    vec3 viewPos = (inverse(view) * -1.0 * view * model * vec4(position, 0.0)).xyz;
+
+    tangentFragPos = (model * vec4(position, 1.0)).xyz;//TBN_inv * (model * vec4(position, 1.0)).xyz;
     surfaceNormal = N;
     texCoords = aTexCoords;
-    tangentLightPos = TBN_inv * lightPos;
-    tangentViewPos = TBN_inv * viewPos;
+    tangentLightPos = lightPos;//TBN_inv * lightPos;
+    tangentViewPos = viewPos;//TBN_inv * viewPos;
 }
