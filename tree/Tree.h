@@ -33,9 +33,9 @@ private:
     static const std::vector<glm::vec3> ROTATE_AXES;
 
     std::vector<glm::mat4> processBranch(const glm::mat4 &curr, const std::string &string);
-    glm::vec3 getRotateAxis(int branchNum);
+    glm::vec3 getRotateAxis(const int branchNum);
     glm::mat4 getBranchTransform(const glm::mat4 &model, const LState &state);
-    glm::mat4 getLeafTransform(const glm::mat4 &model, const LState &state);
+    glm::mat4 getLeafTransform(const glm::mat4 &model, const LState &state, const int branchLevel);
 
     LState getBranchInitialStateTransforms(const LState &state);
     LState createNewBranchState(const LState &state);

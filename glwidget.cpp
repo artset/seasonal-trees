@@ -383,7 +383,6 @@ void GLWidget::renderLeaves() {
     // reset states
     changeRenderMode(oldRenderType); // honestly not sure if this should happen in for loop :0
     model = original;
-
     releaseShader(leaf_shader);
 }
 

@@ -301,7 +301,7 @@ void MainWindow::updateSeasonParameters(int season){
         case 0:
             settings.leafSize = 0.8f;
             //Update slider
-            ui->leafSizeTextbox->setText("0.8");
+            ui->leafSizeTextbox->setText("2.5");
             break;
         //Fall
         case 1:
@@ -339,7 +339,7 @@ void MainWindow::dataBind(){
         ui->angleSlider, ui->angleTextbox, settings.angle, 10, 90));
 
     BIND(FloatBinding::bindSliderAndTextbox(
-        ui->leafSizeSlider, ui->leafSizeTextbox, settings.leafSize, 0, 5));
+        ui->leafSizeSlider, ui->leafSizeTextbox, settings.leafSize, 0, 7));
 
     BIND(ChoiceBinding::bindRadioButtons(seasonButtonGroup, 4, settings.season, ui->summerRadioButton, ui->fallRadioButton, ui->winterRadioButton, ui->springRadioButton));
 }

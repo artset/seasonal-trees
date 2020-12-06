@@ -138,7 +138,7 @@ void Tree::buildTree(const glm::mat4 &model, const float leafScale) {
             case ']': {
                 //Resume parsing with the last saved state (the current branch is closed)
                 m_branchData.push_back(getBranchTransform(model, currState));
-                m_leafData.push_back(getLeafTransform(model, currState));
+                m_leafData.push_back(getLeafTransform(model, currState, branchNum));
                 currState = prevStates.back();
                 prevStates.pop_back();
 
@@ -265,7 +265,7 @@ std::vector<glm::mat4> Tree::getBranchData() {
 std::vector<glm::mat4> Tree::getLeafData() {
     return m_leafData;
 }
-glm::vec3 Tree::getRotateAxis(int branchNum) {
+glm::vec3 Tree::getRotateAxis(const int branchNum) {
     if (m_is2D) {
        return Tree::ROTATE_AXES[2];
     }
@@ -273,16 +273,18 @@ glm::vec3 Tree::getRotateAxis(int branchNum) {
 }
 
 
-glm::mat4 Tree::getLeafTransform(const glm::mat4 &model, const LState &state) {
+glm::mat4 Tree::getLeafTransform(const glm::mat4 &model, const LState &state, const int branchNum) {
     if (state.length == 0) {
         return glm::mat4(0);
     }
 
     glm::mat4 scale = glm::scale(glm::mat4(), glm::vec3(.01f, .01f, .01f));
 
-    const glm::mat4 INIT_ROTATE = glm::rotate(glm::radians(90.f), ROTATE_AXES[2]);
+//    const glm::mat4 INIT_ROTATE = glm::rotate(glm::radians(90.f), getRotateAxis(branchNum));
+    const glm::mat4 INIT_ROTATE = glm::rotate(glm::radians(90.f), Tree::ROTATE_AXES[2]);
+
 //    const glm::mat4 INIT_TRANSLATE = glm::translate(glm::mat4(), glm::vec3(0.f, Tree::BRANCH_LENGTH * .5f, 0.f));
-    const glm::mat4 INIT_TRANSLATE = glm::translate(glm::mat4(), glm::vec3(0.f, 8.3f + 1.f * Tree::BRANCH_LENGTH, 0.f));
+    const glm::mat4 INIT_TRANSLATE = glm::translate(glm::mat4(), glm::vec3(0.f, 7.5f + 1.f * Tree::BRANCH_LENGTH, 0.f));
     const glm::mat4 INIT_SCALE = glm::scale(glm::mat4(), glm::vec3(m_leafScale, .8, 1.f));
 
     glm::mat4 rotate = state.rotate;
