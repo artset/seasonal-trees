@@ -362,12 +362,11 @@ void GLWidget::renderLeaves() {
     glm::mat4 original = model;
     RenderType oldRenderType = m_renderMode;
 
-
+    changeRenderMode(SHAPE_LEAF);
     for (int i = 0; i < static_cast<int>(trans.size()); i++) {
         model = trans[i];
         modelChanged(model);
         modelviewProjectionChanged(camera->getProjectionMatrix() * camera->getModelviewMatrix());
-        bindAndUpdateShader(leaf_shader); // needed before calling draw.
 
         //Set color based on season
         if (settings.season == 0){
@@ -378,12 +377,11 @@ void GLWidget::renderLeaves() {
             leaf_shader->setUniformValue("color", QVector4D(0.2f, 0.8f, 0.3f, 0.f));
         }
 
-        changeRenderMode(SHAPE_CUBE);
-
+        bindAndUpdateShader(leaf_shader); // needed before calling draw.
         m_shape->draw();
     }
     // reset states
-    changeRenderMode(oldRenderType);
+    changeRenderMode(oldRenderType); // honestly not sure if this should happen in for loop :0
     model = original;
 
     releaseShader(leaf_shader);
@@ -479,7 +477,9 @@ void GLWidget::paintGL() {
 
         } else {// todo: remove this once all primitives are made :)
             if (m_renderMode == SHAPE_CUBE) {
-                renderSingleLeaf();
+//                renderSingleLeaf();
+                renderLeaves();
+
             } else {
                 bindAndUpdateShader(current_shader);
                 m_shape->draw();
@@ -512,7 +512,7 @@ void GLWidget::changeRenderMode(RenderType mode)
         m_shape = m_island.get();
         break;
     case SHAPE_LEAF:
-        m_shape = m_leaf.get();
+        m_shape = m_cube.get();
         break;
     default:
         m_shape = m_cylinder.get();

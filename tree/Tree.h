@@ -35,6 +35,8 @@ private:
     std::vector<glm::mat4> processBranch(const glm::mat4 &curr, const std::string &string);
     glm::vec3 getRotateAxis(int branchNum);
     glm::mat4 getBranchTransform(const glm::mat4 &model, const LState &state);
+    glm::mat4 getLeafTransform(const glm::mat4 &model, const LState &state);
+
     LState getBranchInitialStateTransforms(const LState &state);
     LState createNewBranchState(const LState &state);
     bool matEq(const glm::mat4 &A, const glm::mat4 &B);

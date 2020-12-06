@@ -8,8 +8,7 @@
 
 const float Tree::BRANCH_LENGTH = 1.f;
 const glm::vec3 Tree::SCALE_FACTOR = glm::vec3(.6f, .8f, .6f);
-//const glm::vec3 Tree::INIT_SCALE_FACTOR = glm::vec3(.05f, .2f, .05f);
-// the .6f below is totally arbitrary, I'm not sure why it works
+// the .5f below is totally arbitrary, I'm not sure why it works
 const glm::vec3 Tree::TRANSLATE = glm::vec3(0, Tree::BRANCH_LENGTH * .5f, 0);
 const std::vector<glm::vec3> Tree::ROTATE_AXES = {
     glm::vec3(1.f,0,0),
@@ -50,6 +49,8 @@ Tree::Tree():
     m_lsystem()
 {
     m_branchData.reserve(settings.recursions * 2);
+    m_leafData.reserve(settings.recursions * 2);
+
 }
 
 Tree::~Tree() {
@@ -71,6 +72,7 @@ void Tree::buildTree(const glm::mat4 &model) {
     srand(time(NULL));
 
     std::string string = m_lsystem.getSequence();
+//    string = "F[-F[-X][+X]]";
 
     std::vector<char> forwardSymbols;
     forwardSymbols.reserve(m_lsystem.getRules().size());
@@ -79,6 +81,7 @@ void Tree::buildTree(const glm::mat4 &model) {
     }
 
     const glm::vec3 INIT_SCALE_FACTOR = glm::vec3(0.05f, 0.2f, 0.05f);
+
     glm::vec4 origin = glm::vec4(0, 0, 0, 1.f);
     glm::mat4 identity = glm::mat4();
     glm::mat4 initScale = glm::scale(identity, INIT_SCALE_FACTOR);
@@ -95,11 +98,12 @@ void Tree::buildTree(const glm::mat4 &model) {
     };
     std::vector<LState> prevStates;
 
-    //Parse the string
+    // Creates a random distribution on how the angles of the branches are generated.
     std::default_random_engine generator;
     std::uniform_int_distribution<int> distribution(0, ROTATE_AXES.size());
     int branchNum = distribution(generator);
 
+    // Parse the string
     for (size_t i = 0 ; i < string.size() ; i++) {
         switch (string[i]) {
             case '-': {
@@ -124,6 +128,7 @@ void Tree::buildTree(const glm::mat4 &model) {
             }
             case '[': {
                 //Save the current state for later (splitting off into child branches)
+
                 prevStates.push_back(currState);
                 currState.scale = scale * currState.scale; //Scale down child branches
                 currState = createNewBranchState(currState); //Initialize child branch state
@@ -132,8 +137,10 @@ void Tree::buildTree(const glm::mat4 &model) {
             case ']': {
                 //Resume parsing with the last saved state (the current branch is closed)
                 m_branchData.push_back(getBranchTransform(model, currState));
+                m_leafData.push_back(getLeafTransform(model, currState));
                 currState = prevStates.back();
                 prevStates.pop_back();
+
                 break;
             }
         default:
@@ -264,6 +271,24 @@ glm::vec3 Tree::getRotateAxis(int branchNum) {
     return Tree::ROTATE_AXES[branchNum % (ROTATE_AXES.size() - 1)];
 }
 
+
+glm::mat4 Tree::getLeafTransform(const glm::mat4 &model, const LState &state) {
+    if (state.length == 0) {
+        return glm::mat4(0);
+    }
+
+    glm::mat4 scale = glm::scale(glm::mat4(), glm::vec3(.01f, .01f, .01f));
+
+    const glm::mat4 INIT_ROTATE = glm::rotate(glm::radians(90.f), ROTATE_AXES[2]);
+//    const glm::mat4 INIT_TRANSLATE = glm::translate(glm::mat4(), glm::vec3(0.f, Tree::BRANCH_LENGTH * .5f, 0.f));
+    const glm::mat4 INIT_TRANSLATE = glm::translate(glm::mat4(), glm::vec3(0.f, 8.3f + 1.f * Tree::BRANCH_LENGTH, 0.f));
+
+    glm::mat4 rotate = state.rotate;
+    rotate = glm::rotate(glm::radians(0.f), ROTATE_AXES[2]) * rotate;
+    glm::mat4 translate = state.translate;
+    return translate * rotate  * scale * INIT_TRANSLATE * INIT_ROTATE * model;
+}
+
 //Calculates the overall transformation matrix of a branch given its current state
 glm::mat4 Tree::getBranchTransform (const glm::mat4 &model, const LState &state) {
     if (state.length == 0) {
@@ -306,7 +331,7 @@ bool Tree::matEq(const glm::mat4 &A, const glm::mat4 &B) {
 };
 
 // Returns some variance to the original angle by some random degree.
-// Potentially let the RANGE be decided by the UI?
+// Potentially let the RANGE be decided by the UI. Not using rn.
 float Tree::getRandomAngle(const int &branchNum, const float &angle) {
     int RANGE = 2;
     std::default_random_engine generator;
