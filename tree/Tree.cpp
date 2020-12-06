@@ -62,7 +62,8 @@ Tree::~Tree() {
  * @param model: The initial model matrix.
  * @return
  */
-void Tree::buildTree(const glm::mat4 &model) {
+void Tree::buildTree(const glm::mat4 &model, const float leafScale) {
+    m_leafScale = leafScale;
     addTreeOptionRule(settings.treeOption);
     float ANGLE = glm::radians(settings.angle);
     m_lsystem.setRecursion(settings.recursions);
@@ -282,11 +283,12 @@ glm::mat4 Tree::getLeafTransform(const glm::mat4 &model, const LState &state) {
     const glm::mat4 INIT_ROTATE = glm::rotate(glm::radians(90.f), ROTATE_AXES[2]);
 //    const glm::mat4 INIT_TRANSLATE = glm::translate(glm::mat4(), glm::vec3(0.f, Tree::BRANCH_LENGTH * .5f, 0.f));
     const glm::mat4 INIT_TRANSLATE = glm::translate(glm::mat4(), glm::vec3(0.f, 8.3f + 1.f * Tree::BRANCH_LENGTH, 0.f));
+    const glm::mat4 INIT_SCALE = glm::scale(glm::mat4(), glm::vec3(m_leafScale, .8, 1.f));
 
     glm::mat4 rotate = state.rotate;
     rotate = glm::rotate(glm::radians(0.f), ROTATE_AXES[2]) * rotate;
     glm::mat4 translate = state.translate;
-    return translate * rotate  * scale * INIT_TRANSLATE * INIT_ROTATE * model;
+    return translate * rotate  * scale * INIT_TRANSLATE * INIT_ROTATE * INIT_SCALE* model;
 }
 
 //Calculates the overall transformation matrix of a branch given its current state

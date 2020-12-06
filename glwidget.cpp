@@ -446,6 +446,9 @@ bool GLWidget::hasSettingsChanged() {
         m_settings.recursions = settings.recursions;
         m_settings.angle = settings.angle;
         return true;
+    } if (m_settings.leafSize != settings.leafSize) {
+        m_settings.leafSize = settings.leafSize;
+        return true;
     }
     return false;
 }
@@ -468,7 +471,7 @@ void GLWidget::paintGL() {
     if (m_shape) {
         if (m_renderMode == SHAPE_CYLINDER || m_renderMode == SHAPE_CONE) {
             if (hasSettingsChanged()) {
-                m_tree->buildTree(model);
+                m_tree->buildTree(model, settings.leafSize);
             } else {
                 renderBranches();
                 renderLeaves();

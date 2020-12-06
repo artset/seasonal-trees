@@ -22,7 +22,7 @@ class Tree
 public:
     Tree();
     ~Tree();
-    void buildTree(const glm::mat4 &model);
+    void buildTree(const glm::mat4 &model, const float leafScale);
     std::vector<glm::mat4> getBranchData();
     std::vector<glm::mat4> getLeafData();
     void addTreeOptionRule(int treeOption);
@@ -45,6 +45,7 @@ private:
     LSystem m_lsystem;
     std::vector <glm::mat4> m_leafData;
     std::vector<glm::mat4> m_branchData;
+    float m_leafScale;
     bool m_is2D;
 
 
