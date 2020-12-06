@@ -32,7 +32,8 @@ std::vector<UniformVariable*> *GLWidget::s_staticVars = NULL;
 
 GLWidget::GLWidget(QGLFormat format, QWidget *parent)
     : QGLWidget(format, parent), m_sphere(nullptr), m_cube(nullptr), m_shape(nullptr), skybox_cube(nullptr),
-      m_tree(std::make_unique<Tree>())
+      m_tree(std::make_unique<Tree>()),
+      m_textureID(0)
 {
     camera = new OrbitingCamera();
     QObject::connect(camera, SIGNAL(viewChanged(glm::mat4)), this, SLOT(viewChanged(glm::mat4)));
@@ -71,6 +72,8 @@ GLWidget::~GLWidget() {
     foreach (const UniformVariable *v, permUniforms) {
         delete v;
     }
+
+    glDeleteTextures(1, &m_textureID);
 }
 
 bool GLWidget::saveUniforms(QString path)
@@ -245,6 +248,14 @@ void GLWidget::initializeGL() {
     m_cone->buildVAO();
 
     m_shape = m_sphere.get();
+
+    QImage image(":/images/ostrich.jpg");
+    glGenTextures(1, &m_textureID);
+    glBindTexture(GL_TEXTURE_2D, m_textureID);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, image.width(), image.height(), 0, GL_RGBA, GL_UNSIGNED_BYTE, image.bits());
+    glBindTexture(GL_TEXTURE_2D, m_textureID);
 }
 
 void GLWidget::resizeGL(int w, int h) {
