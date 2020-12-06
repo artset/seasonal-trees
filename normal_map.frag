@@ -26,7 +26,6 @@ const float lightIntensity = 5.0;
 
 void main() {
     fragColor = texture(normalMap, texCoords);
-//    fragColor = vec4(texCoords, 0, 0);
 
 //    vec3 tangentNormal = texture(normalMap, texCoords).rgb;
 //    tangentNormal = normalize(tangentNormal * 2.0 - 1.0);

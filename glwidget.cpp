@@ -144,7 +144,6 @@ void GLWidget::initializeGL() {
     phong_shader = ResourceLoader::newShaderProgram(context(), ":/shaders/light.vert", ":/shaders/light.frag");
     leaf_shader = ResourceLoader::newShaderProgram(context(), ":/shaders/leaf.vert", ":/shaders/leaf.frag");
     normal_mapping_shader = ResourceLoader::newShaderProgram(context(), ":/shaders/normal_map.vert", ":/shaders/normal_map.frag");
-    current_shader = normal_mapping_shader;
 
     s_skybox = new UniformVariable(this->context()->contextHandle());
     s_skybox->setName("skybox");
@@ -258,19 +257,19 @@ void GLWidget::initializeGL() {
 
     m_shape = m_sphere.get();
 
-//    glGenTextures(1, &m_textureID);
-//    glBindTexture(GL_TEXTURE_2D, m_textureID);
-//    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-//    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-//    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-//    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-//    QImage image(":/images/images/topleft.jpg");
-//    if (!image.isNull()) {
-//        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, image.width(), image.height(), 0, GL_RGBA, GL_UNSIGNED_BYTE, image.bits());
-//    } else {
-//        std::cout << "Failed to load texture image" << std::endl;
-//    }
-//    glBindTexture(GL_TEXTURE_2D, 0);
+    glGenTextures(1, &m_textureID);
+    glBindTexture(GL_TEXTURE_2D, m_textureID);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    QImage image(":/images/images/topleft.jpg");
+    if (!image.isNull()) {
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, image.width(), image.height(), 0, GL_RGBA, GL_UNSIGNED_BYTE, image.bits());
+    } else {
+        std::cout << "Failed to load texture image" << std::endl;
+    }
+    glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 void GLWidget::resizeGL(int w, int h) {
@@ -449,13 +448,11 @@ void GLWidget::paintGL() {
             if (m_renderMode == SHAPE_CUBE) {
                 renderLeaves();
             } else {
-                std::cout << activeUniforms->size() << std::endl;
                 bindAndUpdateShader(normal_mapping_shader);
-//                glBindTexture(GL_TEXTURE_2D, m_textureID);
+                glBindTexture(GL_TEXTURE_2D, m_textureID);
                 m_shape->draw();
-//                glBindTexture(GL_TEXTURE_2D, 0);
-//                releaseShader(current_shader);
-
+                glBindTexture(GL_TEXTURE_2D, 0);
+                releaseShader(normal_mapping_shader);
             }
         }
         renderWireframe();
