@@ -36,6 +36,9 @@ namespace Utilities {
     bool equals(float given, float val, float epsilon);
     float lerp(float x, float x0, float xf, float y0, float yf);
 
+//    void setTriangleVertexData(std::vector<GLfloat> &data, PrimitiveType shape, const glm::mat4 &transformation,
+//                                     const Vertex &vert0, const Vertex &vert1, const Vertex &vert2);
+
     // NormalMappingUtils
 //    glm::vec3 getTriangleTangentVec(const std::vector<glm::vec3> &triangleVerts);
     glm::vec3 getTriangleTangentVec(const glm::vec3 &edge0, const glm::vec3 &edge1,
