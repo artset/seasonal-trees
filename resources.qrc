@@ -26,5 +26,7 @@
     <qresource prefix="/images">
         <file>images/mandril.jpg</file>
         <file>images/ostrich.jpg</file>
+        <file>images/topleft.jpg</file>
+        <file>images/chessboard.jpg</file>
     </qresource>
 </RCC>

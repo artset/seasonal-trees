@@ -16,7 +16,7 @@ RoundedCylinder::~RoundedCylinder()
 {
 }
 
-const int RoundedCylinder::COMPONENT_COUNT = 3;
+const int RoundedCylinder::COMPONENT_COUNT = 2;
 
 
 std::vector<GLfloat> RoundedCylinder::getData() {
