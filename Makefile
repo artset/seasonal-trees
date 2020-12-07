@@ -831,17 +831,17 @@ qrc_resources.cpp: resources.qrc \
 		../../../Qt5.14.2/5.14.2/clang_64/bin/rcc \
 		leaf.vert \
 		glass.vars \
-		default.frag \
 		skybox.vert \
 		glass.vert \
 		metal.frag \
+		normal_map.vert \
 		leaf.frag \
 		metal.vars \
 		standard.vert \
-		default.vert \
 		skybox.frag \
 		metal.vert \
 		glass.frag \
+		normal_map.frag \
 		color.frag \
 		negx.jpg \
 		posx.jpg \
