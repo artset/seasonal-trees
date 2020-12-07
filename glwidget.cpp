@@ -144,6 +144,7 @@ void GLWidget::initializeGL() {
     leaf_shader = ResourceLoader::newShaderProgram(context(), ":/shaders/leaf.vert", ":/shaders/leaf.frag");
     normal_mapping_shader = ResourceLoader::newShaderProgram(context(), ":/shaders/normal_map.vert", ":/shaders/normal_map.frag");
     island_shader = ResourceLoader::newShaderProgram(context(), ":/shaders/island.vert", ":/shaders/island.frag");
+    glass_shader = ResourceLoader::newShaderProgram(context(), ":/shaders/glass.vert", ":/shaders/glass.frag");
 
     s_skybox = new UniformVariable(this->context()->contextHandle());
     s_skybox->setName("skybox");
@@ -433,7 +434,7 @@ void GLWidget::renderSingleLeaf() {
 
     //Set color based on season
     if (settings.season == 0){
-        leaf_shader->setUniformValue("color", QVector4D(0.f, 1.f, 0.f, 0.f));
+        leaf_shader->setUniformValue("color", QVector4D(0.2f, .8f, 0.3f, 0.f));
     } else if (settings.season == 1){
         leaf_shader->setUniformValue("color", QVector4D(0.9f, 0.6f, 0.3f, 0.f));
     } else {
@@ -452,12 +453,12 @@ void GLWidget::renderIsland() {
     model = translate * scale * model;
     modelChanged(model);
     modelviewProjectionChanged(camera->getProjectionMatrix() * camera->getModelviewMatrix());
-    bindAndUpdateShader(current_shader);
+    bindAndUpdateShader(glass_shader);
 
     changeRenderMode(SHAPE_ISLAND);
     m_shape->draw();
 
-    releaseShader(current_shader);
+    releaseShader(glass_shader);
     changeRenderMode(oldRenderType);
 }
 

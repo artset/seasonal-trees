@@ -833,22 +833,25 @@ compiler_rcc_clean:
 	-$(DEL_FILE) qrc_resources.cpp
 qrc_resources.cpp: resources.qrc \
 		../../../Qt5.14.2/5.14.2/clang_64/bin/rcc \
-		leaf.vert \
-		glass.vars \
-		skybox.vert \
 		glass.vert \
-		metal.frag \
 		island.vert \
-		normal_map.vert \
+		glass.vars \
 		leaf.frag \
-		metal.vars \
-		standard.vert \
-		skybox.frag \
+		normal_map.vert \
 		metal.vert \
+		light.frag \
+		metal.vars \
+		skybox.vert \
 		glass.frag \
 		island.frag \
+		standard.vert \
+		leaf.vert \
 		normal_map.frag \
+		metal.frag \
 		color.frag \
+		skybox.frag \
+		light.vert \
+		images/bark.png \
 		images/mandril.jpg \
 		images/ostrich.jpg \
 		images/topleft.jpg \

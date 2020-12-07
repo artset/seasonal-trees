@@ -111,6 +111,8 @@ private:
     QGLShaderProgram *leaf_shader;
     QGLShaderProgram *normal_mapping_shader;
     QGLShaderProgram *island_shader;
+    QGLShaderProgram *glass_shader;
+
 
     QList<const UniformVariable*> *activeUniforms;
     QList<const UniformVariable*> permUniforms;
