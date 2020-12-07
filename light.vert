@@ -1,16 +1,31 @@
 #version 330 core
 
-layout(location = 0) in vec3 ObjectSpace_position; // object-space vertex position
-layout(location = 1) in vec3 ObjectSpace_normal;   // object-space vertex normal
+layout (location = 0) in vec3 position;
+layout (location = 1) in vec3 normal;
+layout (location = 2) in vec2 aTexCoords;
+layout (location = 3) in vec3 tangent;
 
-uniform mat4 model, view, projection;
+out vec3 fragPos;
+out vec3 surfaceNormal;
+out vec2 texCoords;
+out vec3 lightPos;
+out vec3 viewPos;
 
-out vec3 normal;
-out vec3 position;
+uniform mat4 mvp;
+uniform mat4 model;
+uniform mat4 trans;
 
-void main() {
+uniform mat4 view;
+const vec3 testLightPos = vec3(2, 2, 2);
+//uniform vec3 lightPos;
 
-    gl_Position = projection * view * model * vec4(ObjectSpace_position, 1.0);
-    normal = vec3(model * vec4(ObjectSpace_normal, 0.0));
-    position = vec3(model * vec4(ObjectSpace_position, 1.0));
+void main(void) {
+    vec4 pos = mvp * vec4(position, 1);
+    gl_Position = pos;
+
+    fragPos = (model * vec4(position, 1.0)).xyz;
+    surfaceNormal = normal;
+    texCoords = aTexCoords;
+    lightPos = testLightPos;
+    viewPos = (inverse(view) * -1.0 * view * model * vec4(position, 0.0)).xyz;
 }

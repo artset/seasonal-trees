@@ -16,6 +16,8 @@
         <file>leaf.vert</file>
         <file>island.frag</file>
         <file>island.vert</file>
+        <file>light.frag</file>
+        <file>light.vert</file>
     </qresource>
     <qresource prefix="/skybox">
         <file>negx.jpg</file>
@@ -30,5 +32,6 @@
         <file>images/ostrich.jpg</file>
         <file>images/topleft.jpg</file>
         <file>images/chessboard.jpg</file>
+        <file>images/bark.png</file>
     </qresource>
 </RCC>

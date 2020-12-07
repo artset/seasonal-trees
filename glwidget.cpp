@@ -183,7 +183,7 @@ void GLWidget::initializeGL() {
     s_normalMap = new UniformVariable(this->context()->contextHandle());
     s_normalMap->setName("normalMap");
     s_normalMap->setType(UniformVariable::TYPE_TEX2D);
-    s_normalMap->parse(":/images/images/ostrich.jpg");
+    s_normalMap->parse(":/images/images/bark.jpg");
 
     s_staticVars->push_back(s_skybox);
     s_staticVars->push_back(s_model);
@@ -274,7 +274,7 @@ void GLWidget::initializeGL() {
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    QImage image(":/images/images/topleft.jpg");
+    QImage image(":/images/images/bark.png");
     if (!image.isNull()) {
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, image.width(), image.height(), 0, GL_RGBA, GL_UNSIGNED_BYTE, image.bits());
     } else {
@@ -383,13 +383,13 @@ void GLWidget::renderBranches() {
         modelChanged(model);
         modelviewProjectionChanged(camera->getProjectionMatrix() * camera->getModelviewMatrix());
         // TODO: restore as current_shader
-        bindAndUpdateShader(normal_mapping_shader); // needed before calling draw.
+        bindAndUpdateShader(phong_shader); // needed before calling draw.
         m_shape->draw();
     }
     model = original; // resets model back to the init
 
     // TODO: restore as current_shader
-    releaseShader(normal_mapping_shader);
+    releaseShader(phong_shader);
 }
 
 void GLWidget::renderLeaves() {
@@ -519,11 +519,11 @@ void GLWidget::paintGL() {
                 renderSingleLeaf();
 //                renderLeaves(); // for debugging: renders all the leaves without the branches
             } else {
-                bindAndUpdateShader(normal_mapping_shader);
+                bindAndUpdateShader(phong_shader);
                 glBindTexture(GL_TEXTURE_2D, m_textureID);
                 m_shape->draw();
                 glBindTexture(GL_TEXTURE_2D, 0);
-                releaseShader(normal_mapping_shader);
+                releaseShader(phong_shader);
             }
         }
         renderWireframe();
