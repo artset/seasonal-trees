@@ -129,7 +129,7 @@ void MainWindow::init()
         loadShader(info.absolutePath() + "/" + info.baseName() + ".vert",
                    info.absolutePath() + "/" + info.baseName() + ".frag");
     } else {
-        loadShader(":/shaders/normal_map.vert", ":/shaders/normal_map.frag");
+        loadShader(":/shaders/light.vert", ":/shaders/light.frag");
     }
 
     ui->treeOptionsComboBox->addItem("Binary Tree");
@@ -194,7 +194,7 @@ void MainWindow::closeEvent(QCloseEvent *e) {
 
 void MainWindow::on_defaultShaderButton_clicked()
 {
-    loadShader(":/shaders/normal_map.vert", ":/shaders/normal_map.frag");
+    loadShader(":/shaders/light.vert", ":/shaders/light.frag");
 }
 
 void MainWindow::on_animMoveButton_clicked()

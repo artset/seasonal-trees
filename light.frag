@@ -1,44 +1,51 @@
-#version 330 core
+#version 400 core
 
-uniform mat4 model, view, projection;
+in vec3 fragPos;
+in vec3 surfaceNormal;
+in vec2 texCoords;
+in vec3 lightPos;
+in vec3 viewPos;
 
-// Light properties
-const vec3 WorldSpace_lightPos = vec3(2, 2, 2); // world-space light position
-uniform vec3 lightColor;
-uniform float lightIntensity;
+//uniform vec4 color;
+const vec4 ambientColor = vec4(1, 1, 1, 1);
+const vec4 diffuseColor = vec4(1, 1, 1, 1);
+const vec4 specularColor = vec4(1, 1, 1, 1);
+out vec4 fragColor;
 
-// Attenuation Properties
-uniform float attQuadratic;
-uniform float attLinear;
-uniform float attConstant;
+uniform float time;
+uniform sampler2D sampler;
 
-// Material properties
-uniform vec3 color;
-uniform float ambientIntensity;
-uniform float diffuseIntensity;
-uniform float specularIntensity;
-uniform float shininess;
+const float ambientIntensity = 0.2;
+const float diffuseIntensity = 0.7;
+const float specularIntensity = 0.7;
+const float shininess = 40.0;
 
-in vec3 normal;
-in vec3 position;
+const float attConstant = 0.0;
+const float attLinear = 0.0;
+const float attQuadratic = 1.0;
 
-out vec3 fragColor;
+const vec4 lightColor = vec4(1.0,1.0,1.0,1);
+const float lightIntensity = 5.0;
 
-void main(){
+const float blend = 1;
 
-    fragColor = color*ambientIntensity;
-//    vec3 L = (view*vec4(WorldSpace_lightPos-position, 1)).xyz;
-    vec3 L  = vec3(WorldSpace_lightPos - position);
-    float d = sqrt(pow(L[0], 2) + pow(L[1],2) + pow(L[2], 2));
-    float attenuation = lightIntensity * min(1/(attConstant + attLinear*d + attQuadratic*pow(d,2)), 1);
-    fragColor += color * lightColor * diffuseIntensity * (dot(normalize(normal), normalize(L))) * attenuation;
+void main() {
+    vec4 uvColor = texture(sampler, texCoords);
+    vec4 N = vec4(normalize(surfaceNormal), 0);
+    vec4 L = vec4(normalize(lightPos - fragPos), 0);
+    vec4 V = vec4(normalize(viewPos - fragPos), 0);
+    vec4 R = normalize(reflect(L, N));
 
-    vec3 newL = vec3(position - WorldSpace_lightPos);
-    vec4 eyeVector = vec4(inverse(view)*vec4(0.0, 0.0, 0.0, 1.0) - vec4(position,1));
-    vec4 reflectionVector = vec4(reflect(normalize(newL), normalize(normal)), 1);
-    float dotProduct = dot(normalize(eyeVector), reflectionVector);
-    fragColor += color * lightColor * specularIntensity * pow(max(0, dotProduct), shininess) * attenuation;
+    float d = sqrt(
+                pow(lightPos.x - fragPos.x, 2) +
+                pow(lightPos.y - fragPos.y, 2) +
+                pow(lightPos.z - fragPos.z, 2));
 
-//    fragColor += color * lightColor * specularIntensity * pow(max(0, dot(normalize(-position), reflect(-L, normalize(normal)))), shininess) * attenuation;
+    vec4 ambient = ambientColor * ambientIntensity;
+    vec4 diffuse = diffuseColor * lightColor * diffuseIntensity * clamp(dot(N, L), 0.0, 1.0);
+    diffuse = blend * uvColor + (1 - blend) * diffuse;
+    vec4 specular = specularColor * lightColor * specularIntensity * pow(clamp(dot(V, R), 0.0, 1.0), shininess);
+    float attenuation = lightIntensity * min(1.0, 1 / (attConstant + attLinear * d + attQuadratic * pow(d, 2)));
 
+    fragColor = ambient + attenuation * (diffuse + specular);
 }
