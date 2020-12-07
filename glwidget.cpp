@@ -380,12 +380,14 @@ void GLWidget::renderBranches() {
         model = trans[i];
         modelChanged(model);
         modelviewProjectionChanged(camera->getProjectionMatrix() * camera->getModelviewMatrix());
-        bindAndUpdateShader(current_shader); // needed before calling draw.
+        // TODO: restore as current_shader
+        bindAndUpdateShader(normal_mapping_shader); // needed before calling draw.
         m_shape->draw();
     }
     model = original; // resets model back to the init
 
-    releaseShader(current_shader);
+    // TODO: restore as current_shader
+    releaseShader(normal_mapping_shader);
 }
 
 void GLWidget::renderLeaves() {
@@ -505,13 +507,9 @@ void GLWidget::paintGL() {
             if (hasSettingsChanged()) {
                 m_tree->buildTree(model, settings.leafSize);
             } else {
-                bindAndUpdateShader(normal_mapping_shader);
-                glBindTexture(GL_TEXTURE_2D, m_textureID);
                 renderBranches();
                 renderLeaves();
                 renderIsland();
-                glBindTexture(GL_TEXTURE_2D, 0);
-                releaseShader(normal_mapping_shader);
             }
 
         } else {// todo: remove this once all primitives are made :)
