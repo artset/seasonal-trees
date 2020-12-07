@@ -17,13 +17,17 @@ struct LState {
     glm::mat4 initialScale;
 };
 
+enum LeafDir { TOP, LEFT, RIGHT };
+
+
 class Tree
 {
 public:
     Tree();
     ~Tree();
-    void buildTree(const glm::mat4 &model);
+    void buildTree(const glm::mat4 &model, const float leafScale);
     std::vector<glm::mat4> getBranchData();
+    std::vector<glm::mat4> getLeafData();
     void addTreeOptionRule(int treeOption);
 private:
     static const float BRANCH_LENGTH;
@@ -32,15 +36,20 @@ private:
     static const std::vector<glm::vec3> ROTATE_AXES;
 
     std::vector<glm::mat4> processBranch(const glm::mat4 &curr, const std::string &string);
-    glm::vec3 getRotateAxis(int branchNum);
+    glm::vec3 getRotateAxis(const int branchNum);
     glm::mat4 getBranchTransform(const glm::mat4 &model, const LState &state);
+    glm::mat4 getLeafTransform(const glm::mat4 &model, const LState &state, const int branchLevel, LeafDir dir);
+    void buildLeaves(const glm::mat4 &model, const LState &state, const int branchLevel);
+
     LState getBranchInitialStateTransforms(const LState &state);
     LState createNewBranchState(const LState &state);
     bool matEq(const glm::mat4 &A, const glm::mat4 &B);
     float getRandomAngle(const int &branchNum, const float &angle);
 
     LSystem m_lsystem;
+    std::vector <glm::mat4> m_leafData;
     std::vector<glm::mat4> m_branchData;
+    float m_leafScale;
     bool m_is2D;
 
 

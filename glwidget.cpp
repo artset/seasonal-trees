@@ -2,6 +2,7 @@
 #include <QMouseEvent>
 #include <sstream>
 
+#include "shapes/Island.h"
 #include "shapes/RoundedCylinder.h"
 #include "shapes/Leaf.h"
 #include "shapes/sphere.h"
@@ -16,8 +17,6 @@
 #include "glm/glm.hpp"            // glm::vec*, mat*, and basic glm functions
 #include "glm/gtx/transform.hpp"  // glm::translate, scale, rotate
 #include "glm/gtc/type_ptr.hpp" // glm::value_ptr
-
-
 
 UniformVariable *GLWidget::s_skybox = NULL;
 UniformVariable *GLWidget::s_projection = NULL;
@@ -144,6 +143,7 @@ void GLWidget::initializeGL() {
     phong_shader = ResourceLoader::newShaderProgram(context(), ":/shaders/light.vert", ":/shaders/light.frag");
     leaf_shader = ResourceLoader::newShaderProgram(context(), ":/shaders/leaf.vert", ":/shaders/leaf.frag");
     normal_mapping_shader = ResourceLoader::newShaderProgram(context(), ":/shaders/normal_map.vert", ":/shaders/normal_map.frag");
+    island_shader = ResourceLoader::newShaderProgram(context(), ":/shaders/island.vert", ":/shaders/island.frag");
 
     s_skybox = new UniformVariable(this->context()->contextHandle());
     s_skybox->setName("skybox");
@@ -245,7 +245,7 @@ void GLWidget::initializeGL() {
     m_cylinder->buildVAO();
 
     m_cone = std::make_unique<OpenGLShape>();
-    std::unique_ptr<Shape> cone = std::make_unique<Cone>(1, 10);
+    std::unique_ptr<Shape> cone = std::make_unique<Cone>(1, 5);
     std::vector<GLfloat> coneData = cone->getData();
     m_cone = std::make_unique<OpenGLShape>();
     m_cone->setVertexData(&coneData[0], coneData.size(), VBO::GEOMETRY_LAYOUT::LAYOUT_TRIANGLES, coneData.size() / NUM_FLOATS_PER_VERTEX);
@@ -254,6 +254,15 @@ void GLWidget::initializeGL() {
     m_cone->setAttribute(ShaderAttrib::TEXCOORD, 2, (3+3)*sizeof(GLfloat), VBOAttribMarker::DATA_TYPE::FLOAT, false);
     m_cone->setAttribute(ShaderAttrib::TANGENT, 3, (2+3+3)*sizeof(GLfloat), VBOAttribMarker::DATA_TYPE::FLOAT, false);
     m_cone->buildVAO();
+
+    m_island = std::make_unique<OpenGLShape>();
+    std::unique_ptr<ShapeComponent> island = std::make_unique<Island>(4, 10, glm::mat4());
+    std::vector<GLfloat> islandData = island->getData();
+    m_island = std::make_unique<OpenGLShape>();
+    m_island->setVertexData(&islandData[0], islandData.size(), VBO::GEOMETRY_LAYOUT::LAYOUT_TRIANGLES, islandData.size() / NUM_FLOATS_PER_VERTEX);
+    m_island->setAttribute(ShaderAttrib::POSITION, 3, 0, VBOAttribMarker::DATA_TYPE::FLOAT, false);
+    m_island->setAttribute(ShaderAttrib::NORMAL, 3, 3*sizeof(GLfloat), VBOAttribMarker::DATA_TYPE::FLOAT, false);
+    m_island->buildVAO();
 
     m_shape = m_sphere.get();
 
@@ -380,6 +389,38 @@ void GLWidget::renderBranches() {
 }
 
 void GLWidget::renderLeaves() {
+    std::vector<glm::mat4> trans = m_tree->getLeafData();
+
+    glm::mat4 oldModel = model;
+    glm::mat4 original = model;
+    RenderType oldRenderType = m_renderMode;
+
+    changeRenderMode(SHAPE_LEAF);
+    for (int i = 0; i < static_cast<int>(trans.size()); i++) {
+        model = trans[i];
+        modelChanged(model);
+        modelviewProjectionChanged(camera->getProjectionMatrix() * camera->getModelviewMatrix());
+
+        //Set color based on season
+        if (settings.season == 0){
+            leaf_shader->setUniformValue("color", QVector4D(0.f, 1.f, 0.f, 0.f));
+        } else if (settings.season == 1){
+            leaf_shader->setUniformValue("color", QVector4D(0.9f, 0.6f, 0.3f, 0.f));
+        } else {
+            leaf_shader->setUniformValue("color", QVector4D(0.2f, 0.8f, 0.3f, 0.f));
+        }
+
+        bindAndUpdateShader(leaf_shader); // needed before calling draw.
+        m_shape->draw();
+    }
+    // reset states
+    changeRenderMode(oldRenderType); // honestly not sure if this should happen in for loop :0
+    model = original;
+    releaseShader(leaf_shader);
+}
+
+
+void GLWidget::renderSingleLeaf() {
     glm::mat4 oldModel = model;
     model = glm::scale(glm::mat4(), glm::vec3(settings.leafSize, .5, 1.f));
     modelChanged(model);
@@ -399,9 +440,29 @@ void GLWidget::renderLeaves() {
     releaseShader(leaf_shader);
 }
 
+void GLWidget::renderIsland() {
+    RenderType oldRenderType = m_renderMode;
+    glm::mat4 scale = glm::scale(glm::mat4(), glm::vec3(1.f, .2f, 1.f));
+    glm::mat4 translate = glm::translate(glm::mat4(), glm::vec3(0.f, -.55f, 0.f));
+
+    model = translate * scale * model;
+    modelChanged(model);
+    modelviewProjectionChanged(camera->getProjectionMatrix() * camera->getModelviewMatrix());
+    bindAndUpdateShader(current_shader);
+
+    changeRenderMode(SHAPE_ISLAND);
+    m_shape->draw();
+
+    releaseShader(current_shader);
+    changeRenderMode(oldRenderType);
+}
+
+
+
 void GLWidget::renderPhongLighting(){
 
 }
+
 // TODO: any changes to the UI component should also add to this function.
 bool GLWidget::hasSettingsChanged() {
     if (m_settings.treeOption != settings.treeOption){
@@ -416,6 +477,9 @@ bool GLWidget::hasSettingsChanged() {
             m_settings.angle != settings.angle) {
         m_settings.recursions = settings.recursions;
         m_settings.angle = settings.angle;
+        return true;
+    } if (m_settings.leafSize != settings.leafSize) {
+        m_settings.leafSize = settings.leafSize;
         return true;
     }
     return false;
@@ -439,14 +503,21 @@ void GLWidget::paintGL() {
     if (m_shape) {
         if (m_renderMode == SHAPE_CYLINDER || m_renderMode == SHAPE_CONE) {
             if (hasSettingsChanged()) {
-                m_tree->buildTree(model);
+                m_tree->buildTree(model, settings.leafSize);
             } else {
+                bindAndUpdateShader(normal_mapping_shader);
+                glBindTexture(GL_TEXTURE_2D, m_textureID);
                 renderBranches();
+                renderLeaves();
+                renderIsland();
+                glBindTexture(GL_TEXTURE_2D, 0);
+                releaseShader(normal_mapping_shader);
             }
 
         } else {// todo: remove this once all primitives are made :)
             if (m_renderMode == SHAPE_CUBE) {
-                renderLeaves();
+                renderSingleLeaf();
+//                renderLeaves(); // for debugging: renders all the leaves without the branches
             } else {
                 bindAndUpdateShader(normal_mapping_shader);
                 glBindTexture(GL_TEXTURE_2D, m_textureID);
@@ -476,7 +547,14 @@ void GLWidget::changeRenderMode(RenderType mode)
     case SHAPE_CONE:
         m_shape = m_cone.get();
         break;
+    case SHAPE_ISLAND:
+        m_shape = m_island.get();
+        break;
+    case SHAPE_LEAF:
+        m_shape = m_cube.get();
+        break;
     default:
+        m_shape = m_cylinder.get();
         break;
     }
 }
