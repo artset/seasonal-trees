@@ -75,19 +75,20 @@ void Island::setData() {
             t2.setTriangleData(v4, v2, v3);
             glm::vec3 n2 = t2.getNormal();
 
-
-            triangles.insert(triangles.end(), {v3, n1, v2, n2, v1, n1});
-            triangles.insert(triangles.end(), {v4, n2, v2, n2, v3, n2});
+            Utilities::setTriangleVertexData(m_vertexData, PrimitiveType::PRIMITIVE_CONE, m_transformation, { v3, n1 }, { v2, n2 }, { v1, n1 });
+            Utilities::setTriangleVertexData(m_vertexData, PrimitiveType::PRIMITIVE_CONE, m_transformation, { v4, n2 }, { v2, n2 }, { v3, n2 });
+//            triangles.insert(triangles.end(), {v3, n1, v2, n2, v1, n1});
+//            triangles.insert(triangles.end(), {v4, n2, v2, n2, v3, n2});
         }
     }
 
-    if (m_transformation != glm::mat4(1.f)) {
-        applyTransformation(triangles);
-    }
+//    if (m_transformation != glm::mat4(1.f)) {
+//        applyTransformation(triangles);
+//    }
 
-    for (int i = 0; i < static_cast<int>(triangles.size()); i++) {
-        Utilities::insertVec3(m_vertexData, triangles[i]);
-    }
+//    for (int i = 0; i < static_cast<int>(triangles.size()); i++) {
+//        Utilities::insertVec3(m_vertexData, triangles[i]);
+//    }
 }
 
 // Sets the inner circle of the island.
@@ -115,7 +116,9 @@ void Island::setFan(std::vector<glm::vec3> &triangles, int angleIndex) {
     Triangle t1 = Triangle();
     t1.setTriangleData(v3, v2, v1);
     glm::vec3 flatNormal = t1.getNormal();
-    triangles.insert(triangles.end(), {v3, flatNormal, v2, flatNormal,v1, flatNormal});
+//    triangles.insert(triangles.end(), {v3, flatNormal, v2, flatNormal,v1, flatNormal});
+    Utilities::setTriangleVertexData(m_vertexData, PrimitiveType::PRIMITIVE_CONE, m_transformation,
+                                        { v3, flatNormal }, { v2, flatNormal }, { v1, flatNormal });
 }
 
 

@@ -259,9 +259,11 @@ void GLWidget::initializeGL() {
     std::unique_ptr<ShapeComponent> island = std::make_unique<Island>(4, 10, glm::mat4());
     std::vector<GLfloat> islandData = island->getData();
     m_island = std::make_unique<OpenGLShape>();
-    m_island->setVertexData(&islandData[0], islandData.size(), VBO::GEOMETRY_LAYOUT::LAYOUT_TRIANGLES, islandData.size() / NUM_FLOATS_PER_VERTEX);
+    m_island->setVertexData(&islandData[0], islandData.size(), VBO::GEOMETRY_LAYOUT::LAYOUT_TRIANGLES, islandData.size()); // NUM_FLOATS_PER_VERTEX);
     m_island->setAttribute(ShaderAttrib::POSITION, 3, 0, VBOAttribMarker::DATA_TYPE::FLOAT, false);
     m_island->setAttribute(ShaderAttrib::NORMAL, 3, 3*sizeof(GLfloat), VBOAttribMarker::DATA_TYPE::FLOAT, false);
+    m_island->setAttribute(ShaderAttrib::TEXCOORD, 2, (3+3)*sizeof(GLfloat), VBOAttribMarker::DATA_TYPE::FLOAT, false);
+    m_island->setAttribute(ShaderAttrib::TANGENT, 3, (2+3+3)*sizeof(GLfloat), VBOAttribMarker::DATA_TYPE::FLOAT, false);
     m_island->buildVAO();
 
     m_shape = m_sphere.get();

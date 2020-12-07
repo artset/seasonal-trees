@@ -83,8 +83,8 @@ void Leaf::setLeafBody(std::vector<glm::vec3> &triangles, bool top, int i) {
     t2.setTriangleData(v4, v1, v3);
     glm::vec3 n1 = t1.getNormal();
     glm::vec3 n2 = t2.getNormal();
-    Utilities::setTriangleVertexData(m_vertexData, PrimitiveType::PRIMITIVE_SPHERE, m_transformation, { v1, n1 }, { v2, n1 }, { v3, n1 });
-    Utilities::setTriangleVertexData(m_vertexData, PrimitiveType::PRIMITIVE_SPHERE, m_transformation, { v4, n2 }, { v1, n2 }, { v3, n2 });
+    Utilities::setTriangleVertexData(m_vertexData, PrimitiveType::PRIMITIVE_CONE, m_transformation, { v1, n1 }, { v2, n1 }, { v3, n1 });
+    Utilities::setTriangleVertexData(m_vertexData, PrimitiveType::PRIMITIVE_CONE, m_transformation, { v4, n2 }, { v1, n2 }, { v3, n2 });
 
     // Bottom leaf, front and back.
 //    t1.setTriangleData(v3, v2, v1);
@@ -96,8 +96,8 @@ void Leaf::setLeafBody(std::vector<glm::vec3> &triangles, bool top, int i) {
     t2.setTriangleData(v1, v4, v3);
     n1 = t1.getNormal();
     n2 = t2.getNormal();
-    Utilities::setTriangleVertexData(m_vertexData, PrimitiveType::PRIMITIVE_SPHERE, m_transformation, { v3, n1 }, { v2, n1 }, { v1, n1 });
-    Utilities::setTriangleVertexData(m_vertexData, PrimitiveType::PRIMITIVE_SPHERE, m_transformation, { v1, n2 }, { v4, n2 }, { v3, n2 });
+    Utilities::setTriangleVertexData(m_vertexData, PrimitiveType::PRIMITIVE_CONE, m_transformation, { v3, n1 }, { v2, n1 }, { v1, n1 });
+    Utilities::setTriangleVertexData(m_vertexData, PrimitiveType::PRIMITIVE_CONE, m_transformation, { v1, n2 }, { v4, n2 }, { v3, n2 });
 }
 
 /**
