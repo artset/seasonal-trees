@@ -325,12 +325,12 @@ void Tree::addTreeOptionRule(int treeOption){
             break;
         //Stochastic Fuzzy Weed
         case 5:
-            m_lsystem.setAxiom("X");
-            m_lsystem.addRule("F", "FF"); // Original Rule
+
+//            m_lsystem.addRule("F", "FF"); // Original Rule
 
             // Temp Visual Patch
             m_lsystem.addRule("F", "F");
-            m_lsystem.addRule("F", "F[+X]");
+            m_lsystem.addRule("F", "F[+X][-X]");
             m_lsystem.addRule("F", "F[-X]");
             // End Visual Patch
 
