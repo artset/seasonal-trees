@@ -330,7 +330,7 @@ void GLWidget::handleAnimation() {
     modelviewProjectionChanged(camera->getProjectionMatrix() * camera->getModelviewMatrix());
 }
 
-// Refactored out of the paintGL class for flexibility
+
 void GLWidget::bindAndUpdateShader(QGLShaderProgram *shader) {
     if (shader) {
         shader->bind();
@@ -615,6 +615,7 @@ bool GLWidget::loadShader(QString vert, QString frag, QString *errors)
         if (qname.startsWith("gl_")) continue;
         emit(addUniform(uniformType, qname, true, arraySize));
     }
+
 
     delete current_shader;
     current_shader = new_shader;

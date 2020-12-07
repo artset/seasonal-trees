@@ -100,9 +100,10 @@ void Tree::buildTree(const glm::mat4 &model, const float leafScale) {
     std::vector<LState> prevStates;
 
     // Creates a random distribution on how the angles of the branches are generated.
-    std::default_random_engine generator;
-    std::uniform_int_distribution<int> distribution(0, ROTATE_AXES.size());
-    int branchNum = distribution(generator);
+//    std::default_random_engine generator;
+//    std::uniform_int_distribution<int> distribution(0, ROTATE_AXES.size());
+//    int branchNum = distribution(generator);
+    int branchNum = 0;
 
     // Parse the string
     for (size_t i = 0 ; i < string.size() ; i++) {
@@ -110,7 +111,8 @@ void Tree::buildTree(const glm::mat4 &model, const float leafScale) {
             case '-': {
                 //Rotate the current rotation matrix to the left
                 glm::vec3 axis = getRotateAxis(branchNum);
-                currState.rotate = glm::rotate(-ANGLE, axis) * currState.rotate;
+                float newAngl = getRandomAngle(branchNum, ANGLE);
+                currState.rotate = glm::rotate(-newAngl, axis) * currState.rotate;
                 if (currState.length == 0) {
                     //Need to update initial state for branch that hasn't been drawn yet
                     currState.initialRotate = currState.rotate;
@@ -120,7 +122,9 @@ void Tree::buildTree(const glm::mat4 &model, const float leafScale) {
             case '+': {
                 //Rotate the current rotation matrix to the right
                 glm::vec3 axis = getRotateAxis(branchNum);
-                currState.rotate = glm::rotate(ANGLE, axis) * currState.rotate;
+                float newAngl = getRandomAngle(branchNum, ANGLE);
+
+                currState.rotate = glm::rotate(newAngl, axis) * currState.rotate;
                 if (currState.length == 0) {
                     //Need to update initial state for branch that hasn't been drawn yet
                     currState.initialRotate = currState.rotate;
@@ -367,14 +371,13 @@ bool Tree::matEq(const glm::mat4 &A, const glm::mat4 &B) {
 // Returns some variance to the original angle by some random degree.
 // Potentially let the RANGE be decided by the UI. Not using rn.
 float Tree::getRandomAngle(const int &branchNum, const float &angle) {
-    int RANGE = 2;
+    if (branchNum < 10) {
+        return angle;
+    } // Only increase branching angle if we are deeper into the branching.
+    int RANGE = 15;
     std::default_random_engine generator;
     std::uniform_int_distribution<int> distribution(0, RANGE);
     int newAngle = glm::radians(distribution(generator) * 1.f);
 
-    if (branchNum % 2) {
-        return angle - newAngle;
-    }
     return angle + newAngle;
 };
-

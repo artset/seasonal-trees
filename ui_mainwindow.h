@@ -339,7 +339,7 @@ public:
         wireframeCheckbox = new QCheckBox(centralWidget);
         wireframeCheckbox->setObjectName(QString::fromUtf8("wireframeCheckbox"));
         wireframeCheckbox->setFocusPolicy(Qt::StrongFocus);
-        wireframeCheckbox->setChecked(true);
+        wireframeCheckbox->setChecked(false);
         wireframeCheckbox->setTristate(false);
 
         verticalLayout->addWidget(wireframeCheckbox);
