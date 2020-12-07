@@ -843,6 +843,10 @@ qrc_resources.cpp: resources.qrc \
 		glass.frag \
 		normal_map.frag \
 		color.frag \
+		images/mandril.jpg \
+		images/ostrich.jpg \
+		images/topleft.jpg \
+		images/chessboard.jpg \
 		negx.jpg \
 		posx.jpg \
 		negz.jpg \

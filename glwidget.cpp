@@ -27,12 +27,14 @@ UniformVariable *GLWidget::s_mvp = NULL;
 UniformVariable *GLWidget::s_time = NULL;
 UniformVariable *GLWidget::s_size = NULL;
 UniformVariable *GLWidget::s_mouse = NULL;
+UniformVariable *GLWidget::s_normalMap = NULL;
 
 std::vector<UniformVariable*> *GLWidget::s_staticVars = NULL;
 
 GLWidget::GLWidget(QGLFormat format, QWidget *parent)
     : QGLWidget(format, parent), m_sphere(nullptr), m_cube(nullptr), m_shape(nullptr), skybox_cube(nullptr),
-      m_tree(std::make_unique<Tree>())
+      m_tree(std::make_unique<Tree>()),
+      m_textureID(0)
 {
     camera = new OrbitingCamera();
     QObject::connect(camera, SIGNAL(viewChanged(glm::mat4)), this, SLOT(viewChanged(glm::mat4)));
@@ -71,6 +73,8 @@ GLWidget::~GLWidget() {
     foreach (const UniformVariable *v, permUniforms) {
         delete v;
     }
+
+    glDeleteTextures(1, &m_textureID);
 }
 
 bool GLWidget::saveUniforms(QString path)
@@ -176,6 +180,11 @@ void GLWidget::initializeGL() {
     s_mouse->setName("mouse");
     s_mouse->setType(UniformVariable::TYPE_FLOAT3);
 
+    s_normalMap = new UniformVariable(this->context()->contextHandle());
+    s_normalMap->setName("normalMap");
+    s_normalMap->setType(UniformVariable::TYPE_TEX2D);
+    s_normalMap->parse(":/images/images/ostrich.jpg");
+
     s_staticVars->push_back(s_skybox);
     s_staticVars->push_back(s_model);
     s_staticVars->push_back(s_projection);
@@ -184,6 +193,8 @@ void GLWidget::initializeGL() {
     s_staticVars->push_back(s_time);
     s_staticVars->push_back(s_size);
     s_staticVars->push_back(s_mouse);
+
+    s_staticVars->push_back(s_normalMap);
 
     gl = QOpenGLFunctions(context()->contextHandle());
 
@@ -202,7 +213,7 @@ void GLWidget::initializeGL() {
     std::unique_ptr<Shape> test = std::make_unique<Leaf>(6, 1);
     std::vector<GLfloat> testData = test->getData();
     m_cube = std::make_unique<OpenGLShape>();
-    m_cube->setVertexData(&testData[0], testData.size(), VBO::GEOMETRY_LAYOUT::LAYOUT_TRIANGLES, testData.size());
+    m_cube->setVertexData(&testData[0], testData.size(), VBO::GEOMETRY_LAYOUT::LAYOUT_TRIANGLES, testData.size() / NUM_FLOATS_PER_VERTEX);
     m_cube->setAttribute(ShaderAttrib::POSITION, 3, 0, VBOAttribMarker::DATA_TYPE::FLOAT, false);
     m_cube->setAttribute(ShaderAttrib::NORMAL, 3, 3*sizeof(GLfloat), VBOAttribMarker::DATA_TYPE::FLOAT, false);
     m_cube->setAttribute(ShaderAttrib::TEXCOORD, 2, (3+3)*sizeof(GLfloat), VBOAttribMarker::DATA_TYPE::FLOAT, false);
@@ -245,6 +256,20 @@ void GLWidget::initializeGL() {
     m_cone->buildVAO();
 
     m_shape = m_sphere.get();
+
+    glGenTextures(1, &m_textureID);
+    glBindTexture(GL_TEXTURE_2D, m_textureID);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    QImage image(":/images/images/topleft.jpg");
+    if (!image.isNull()) {
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, image.width(), image.height(), 0, GL_RGBA, GL_UNSIGNED_BYTE, image.bits());
+    } else {
+        std::cout << "Failed to load texture image" << std::endl;
+    }
+    glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 void GLWidget::resizeGL(int w, int h) {
@@ -423,10 +448,11 @@ void GLWidget::paintGL() {
             if (m_renderMode == SHAPE_CUBE) {
                 renderLeaves();
             } else {
-                bindAndUpdateShader(current_shader);
+                bindAndUpdateShader(normal_mapping_shader);
+                glBindTexture(GL_TEXTURE_2D, m_textureID);
                 m_shape->draw();
-                releaseShader(current_shader);
-
+                glBindTexture(GL_TEXTURE_2D, 0);
+                releaseShader(normal_mapping_shader);
             }
         }
         renderWireframe();

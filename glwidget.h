@@ -42,6 +42,8 @@ public:
     static UniformVariable* s_size;
     static UniformVariable* s_mouse;
 
+    static UniformVariable* s_normalMap;
+
     static std::vector<UniformVariable*> *s_staticVars;
 
 signals:
@@ -128,6 +130,7 @@ private:
 
     bool mouseDown;
     std::unique_ptr<Tree> m_tree;// Tree with L System
+    GLuint m_textureID;
     Settings m_settings;  // Local version of settings to keep track of changes.
 
 };
