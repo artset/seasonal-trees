@@ -105,24 +105,24 @@ void Tree::buildTree(const glm::mat4 &model, const float leafScale) {
         initScale,
     };
     std::vector<LState> prevStates;
-    std::vector<LState> bodyStates;
-
-
+    std::vector<LState> bodyStates; // These are the LStates for the branches that will be cylinders
+                                    // Later, we add a cone cap to them.
 
     // Creates a random distribution on how the angles of the branches are generated.
-    std::default_random_engine generator;
-    std::uniform_int_distribution<int> distribution(0, ROTATE_AXES.size());
-    int branchNum = distribution(generator);
+//    std::default_random_engine generator;
+//    std::uniform_int_distribution<int> distribution(0, ROTATE_AXES.size());
+//    int branchNum = distribution(generator);
+
+    int branchNum = 0;
 
     // Parse the string
     for (size_t i = 0 ; i < string.size() ; i++) {
-//        std::cout << string[i] << std::endl;
-
         switch (string[i]) {
             case '-': {
                 //Rotate the current rotation matrix to the left
                 glm::vec3 axis = getRotateAxis(branchNum);
-                currState.rotate = glm::rotate(-ANGLE, axis) * currState.rotate;
+                float newAngle = getRandomAngle(branchNum, ANGLE);
+                currState.rotate = glm::rotate(-newAngle, axis) * currState.rotate;
                 if (currState.length == 0) {
                     //Need to update initial state for branch that hasn't been drawn yet
                     currState.initialRotate = currState.rotate;
@@ -132,7 +132,8 @@ void Tree::buildTree(const glm::mat4 &model, const float leafScale) {
             case '+': {
                 //Rotate the current rotation matrix to the right
                 glm::vec3 axis = getRotateAxis(branchNum);
-                currState.rotate = glm::rotate(ANGLE, axis) * currState.rotate;
+                float newAngle = getRandomAngle(branchNum, ANGLE);
+                currState.rotate = glm::rotate(newAngle, axis) * currState.rotate;
                 if (currState.length == 0) {
                     //Need to update initial state for branch that hasn't been drawn yet
                     currState.initialRotate = currState.rotate;
@@ -148,7 +149,6 @@ void Tree::buildTree(const glm::mat4 &model, const float leafScale) {
             }
             case ']': {
                 //Resume parsing with the last saved state (the current branch is closed)
-//                std::cout << "closing a branch, add tip" << string[i] << std::endl;
                 m_branchData.tip.push_back(getBranchTransform(model, currState)); // Pushes as a tip because it's the last of the branch.
                 buildLeaves(model, currState, branchNum);
                 currState = prevStates.back();
@@ -169,14 +169,12 @@ void Tree::buildTree(const glm::mat4 &model, const float leafScale) {
                 if (isNewBranch) {
                     LState branchInitState = getBranchInitialStateTransforms(currState);
 
+                    // When we are in the middle of a branch, we want to push it as a cylinder. Potentially questionable
+                    // But it looks ok
                     std::string bracket = "]";
                     if (i < string.size() - 1 && string[i+1] != bracket[0]) {
-//                        std::cout << "is new branch: adding body " << std::endl;
-//                        std::cout << currState.length << std::endl;
-//                        m_branchData.body.push_back(getBranchTransform(model, branchInitState));
                         bodyStates.push_back(branchInitState);
-                    } else {
-//                        std::cout << "is new branch: adding tip " << std::endl;
+                    } else { // otherwise, we push as a tip.
                         m_branchData.tip.push_back(getBranchTransform(model, branchInitState));
                     }
                     currState = createNewBranchState(currState);
@@ -196,22 +194,24 @@ void Tree::buildTree(const glm::mat4 &model, const float leafScale) {
 
     }
 
+    // Going through all the ones that are cylinders, and places a cone at the top
     for (size_t i = 0; i < bodyStates.size(); i++) {
         LState savedState = bodyStates[i];
+        // Pushes cylinder to be rendered.
         m_branchData.body.push_back(getBranchTransform(model, savedState));
+
+        // Trial and error for numbers
 
         glm::mat4 newScale = glm::scale(glm::mat4(), glm::vec3(1.f, .2f, 1.f));
         glm::mat4 newTrans = glm::translate(glm::mat4(), glm::vec3(0.f, Tree::BRANCH_LENGTH * .43f, 0.f));
 
-        //This is the translation out from the current branch
         savedState.length += BRANCH_LENGTH;
-
+        //This is the translation out from the current branc
         glm::mat4 t = getBranchTransform(model, savedState)  * newTrans * newScale;
         m_branchData.tip.push_back(t);
     }
 
     if (currState.length != 0) {
-//        std::cout << "curState length " << currState.length << std::endl;
         m_branchData.tip.push_back(getBranchTransform(model, currState));
     }
     if (prevStates.size() != 0) {
@@ -403,14 +403,15 @@ bool Tree::matEq(const glm::mat4 &A, const glm::mat4 &B) {
 // Returns some variance to the original angle by some random degree.
 // Potentially let the RANGE be decided by the UI. Not using rn.
 float Tree::getRandomAngle(const int &branchNum, const float &angle) {
-    int RANGE = 2;
+    int MAX_LEVEL = 10;
+    if (branchNum < MAX_LEVEL) {
+        return angle;
+    }
+    int RANGE = 5;
     std::default_random_engine generator;
     std::uniform_int_distribution<int> distribution(0, RANGE);
     int newAngle = glm::radians(distribution(generator) * 1.f);
 
-    if (branchNum % 2) {
-        return angle - newAngle;
-    }
     return angle + newAngle;
 };
 
