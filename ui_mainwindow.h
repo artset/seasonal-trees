@@ -70,10 +70,9 @@ public:
     QPushButton *animScaleMoveButton;
     QPushButton *animRotate1Button;
     QPushButton *animRotate2Button;
-    QSpacerItem *horizontalSpacer_3;
-    QFrame *line_3;
-    QFrame *line_4;
     QSpacerItem *verticalSpacer;
+    QFrame *line_2;
+    QFrame *line_3;
     QVBoxLayout *verticalLayout_2;
     QSpacerItem *horizontalSpacer;
     QVBoxLayout *verticalLayout_3;
@@ -303,9 +302,16 @@ public:
 
         verticalLayout->addWidget(animRotate2Button);
 
-        horizontalSpacer_3 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+        verticalSpacer = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
 
-        verticalLayout->addItem(horizontalSpacer_3);
+        verticalLayout->addItem(verticalSpacer);
+
+        line_2 = new QFrame(centralWidget);
+        line_2->setObjectName(QString::fromUtf8("line_2"));
+        line_2->setFrameShape(QFrame::HLine);
+        line_2->setFrameShadow(QFrame::Sunken);
+
+        verticalLayout->addWidget(line_2);
 
         line_3 = new QFrame(centralWidget);
         line_3->setObjectName(QString::fromUtf8("line_3"));
@@ -313,17 +319,6 @@ public:
         line_3->setFrameShadow(QFrame::Sunken);
 
         verticalLayout->addWidget(line_3);
-
-        line_4 = new QFrame(centralWidget);
-        line_4->setObjectName(QString::fromUtf8("line_4"));
-        line_4->setFrameShape(QFrame::HLine);
-        line_4->setFrameShadow(QFrame::Sunken);
-
-        verticalLayout->addWidget(line_4);
-
-        verticalSpacer = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
-
-        verticalLayout->addItem(verticalSpacer);
 
 
         horizontalLayout->addLayout(verticalLayout);
