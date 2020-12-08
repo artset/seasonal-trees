@@ -25,7 +25,7 @@
    </property>
    <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,3,0">
     <item>
-     <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0">
+     <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0">
       <property name="spacing">
        <number>0</number>
       </property>
@@ -97,23 +97,9 @@
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="cubeButton">
+       <widget class="QPushButton" name="treeButton">
         <property name="text">
-         <string>Cube</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="cylinderTreeButton">
-        <property name="text">
-         <string>Cylinder</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="coneTreeButton">
-        <property name="text">
-         <string>Cone</string>
+         <string>Tree</string>
         </property>
        </widget>
       </item>

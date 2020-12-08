@@ -84,7 +84,6 @@ void MainWindow::on_sphereButton_clicked() {
 
 
 void MainWindow::on_treeButton_clicked() {
-    std::cout << "tree! "<< std::endl;
     m_glwidget->changeRenderMode(SHAPE_TREE);
 }
 

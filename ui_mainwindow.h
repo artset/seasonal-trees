@@ -40,9 +40,7 @@ public:
     QFrame *line;
     QLabel *label_2;
     QPushButton *sphereButton;
-//    QPushButton *cubeButton;
     QPushButton *treeButton;
-//    QPushButton *coneTreeButton;
     QSpacerItem *horizontalSpacer_4;
     QLabel *treeOptionsLabel;
     QComboBox *treeOptionsComboBox;
@@ -140,17 +138,10 @@ public:
 
         verticalLayout->addWidget(sphereButton);
 
-//        cubeButton = new QPushButton(centralWidget);
-//        cubeButton->setObjectName(QString::fromUtf8("cubeButton"));
-//        verticalLayout->addWidget(cubeButton);
-
         treeButton = new QPushButton(centralWidget);
         treeButton->setObjectName(QString::fromUtf8("treeButton"));
-        verticalLayout->addWidget(treeButton);
 
-//        coneTreeButton = new QPushButton(centralWidget);
-//        coneTreeButton->setObjectName(QString::fromUtf8("coneTreeButton"));
-//        verticalLayout->addWidget(coneTreeButton);
+        verticalLayout->addWidget(treeButton);
 
         horizontalSpacer_4 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
 
@@ -373,9 +364,7 @@ public:
         shader2Button->setText(QCoreApplication::translate("MainWindow", "Glass", nullptr));
         label_2->setText(QCoreApplication::translate("MainWindow", "Shapes:", nullptr));
         sphereButton->setText(QCoreApplication::translate("MainWindow", "Sphere", nullptr));
-//        cubeButton->setText(QCoreApplication::translate("MainWindow", "Cube", nullptr));
         treeButton->setText(QCoreApplication::translate("MainWindow", "Tree", nullptr));
-//        coneTreeButton->setText(QCoreApplication::translate("MainWindow", "Cone", nullptr));
         treeOptionsLabel->setText(QCoreApplication::translate("MainWindow", "Tree Options:", nullptr));
         recursionsLabel->setText(QCoreApplication::translate("MainWindow", "Number of recursions:", nullptr));
         leafSizeLabel->setText(QCoreApplication::translate("MainWindow", "Leaf Size:", nullptr));
