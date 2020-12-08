@@ -52,7 +52,7 @@ GLWidget::GLWidget(QGLFormat format, QWidget *parent)
 
     changeAnimMode(ANIM_NONE);
 
-    drawWireframe = true;
+    drawWireframe = false;
     wireframeMode = WIREFRAME_NORMAL;
     mouseDown = false;
     setMouseTracking(true);
