@@ -397,6 +397,7 @@ void GLWidget::renderBranches() {
         model = tips[i];
         modelChanged(model);
         modelviewProjectionChanged(camera->getProjectionMatrix() * camera->getModelviewMatrix());
+
         // TODO: restore as current_shader
         bindAndUpdateShader(phong_shader); // needed before calling draw.
         m_shape->draw();
@@ -468,6 +469,7 @@ void GLWidget::renderIsland() {
     model = translate * scale * model;
     modelChanged(model);
     modelviewProjectionChanged(camera->getProjectionMatrix() * camera->getModelviewMatrix());
+
     bindAndUpdateShader(glass_shader);
 
     changeRenderMode(SHAPE_ISLAND);

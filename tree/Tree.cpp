@@ -79,13 +79,9 @@ void Tree::buildTree(const glm::mat4 &model, const float leafScale) {
 
 //    string = "F[X][-F[-X]F[-X]+X]F[X][-F[-X]F[-X]+X]+F[-X]F[-X]+X";
 //    string = "F[X][-F[-X]F[-X]+X]+F[-X]F[-X]+X";
-    string = "F[+X]+F[-X]F[-X]+X";
-    string = "F[+X]+F[-X]";
+//    string = "F[+X]+F[-X]F[-X]+X";
 
-
-
-
-    std::cout << " ----- " << std::endl;
+//    std::cout << " ----- " << std::endl;
     std::cout << string << std::endl;
 
     std::vector<char> forwardSymbols;
@@ -111,6 +107,9 @@ void Tree::buildTree(const glm::mat4 &model, const float leafScale) {
         initScale,
     };
     std::vector<LState> prevStates;
+    std::vector<LState> bodyStates;
+
+
 
     // Creates a random distribution on how the angles of the branches are generated.
     std::default_random_engine generator;
@@ -119,7 +118,7 @@ void Tree::buildTree(const glm::mat4 &model, const float leafScale) {
 
     // Parse the string
     for (size_t i = 0 ; i < string.size() ; i++) {
-        std::cout << string[i] << std::endl;
+//        std::cout << string[i] << std::endl;
 
         switch (string[i]) {
             case '-': {
@@ -151,7 +150,7 @@ void Tree::buildTree(const glm::mat4 &model, const float leafScale) {
             }
             case ']': {
                 //Resume parsing with the last saved state (the current branch is closed)
-                std::cout << "closing a branch, add tip" << string[i] << std::endl;
+//                std::cout << "closing a branch, add tip" << string[i] << std::endl;
                 m_branchData.tip.push_back(getBranchTransform(model, currState)); // Pushes as a tip because it's the last of the branch.
                 buildLeaves(model, currState, branchNum);
                 currState = prevStates.back();
@@ -174,11 +173,12 @@ void Tree::buildTree(const glm::mat4 &model, const float leafScale) {
 
                     std::string bracket = "]";
                     if (i < string.size() - 1 && string[i+1] != bracket[0]) {
-                        std::cout << "is new branch: adding body " << std::endl;
-                        std::cout << currState.length << std::endl;
+//                        std::cout << "is new branch: adding body " << std::endl;
+//                        std::cout << currState.length << std::endl;
                         m_branchData.body.push_back(getBranchTransform(model, branchInitState));
+                        bodyStates.push_back(branchInitState);
                     } else {
-                        std::cout << "is new branch: adding tip " << std::endl;
+//                        std::cout << "is new branch: adding tip " << std::endl;
                         m_branchData.tip.push_back(getBranchTransform(model, branchInitState));
                     }
                     currState = createNewBranchState(currState);
@@ -198,8 +198,18 @@ void Tree::buildTree(const glm::mat4 &model, const float leafScale) {
 
     }
 
+    for (size_t i = 0; i < m_branchData.body.size(); i++) {
+        LState savedState = bodyStates[i];
+        glm::mat4 transform = savedState.translate * savedState.rotate * savedState.scale;
+        //This is the translation out from the current branch
+        glm::vec3 wscTranslate = (transform * translate - transform * origin).xyz();
+        savedState.translate = glm::translate(identity, wscTranslate) * savedState.translate;
+        savedState.length += BRANCH_LENGTH;
+        m_branchData.tip.push_back(getBranchTransform(model, savedState));
+    }
+
     if (currState.length != 0) {
-        std::cout << "curState length " << currState.length << std::endl;
+//        std::cout << "curState length " << currState.length << std::endl;
         m_branchData.tip.push_back(getBranchTransform(model, currState));
     }
     if (prevStates.size() != 0) {
@@ -349,17 +359,15 @@ void Tree::addTreeOptionRule(int treeOption){
             break;
         //Stochastic Fuzzy Weed
         case 5:
+            m_lsystem.setAxiom("X");
 
-//            m_lsystem.addRule("F", "FF"); // Original Rule
-
-            // Temp Visual Patch
+            // Temporary visual patch as the FF creates this long string
             m_lsystem.addRule("F", "F");
-            m_lsystem.addRule("F", "F[+X][-X]");
-            m_lsystem.addRule("F", "F[-X]");
-            // End Visual Patch
+            m_lsystem.addRule("F", "F[X]");
+            // End visual patch
 
-            m_lsystem.addRule("X", "F-[[X]+X]+F[+FX]-X");
-            m_lsystem.addRule("X", "F+[[X]-X]-F[-FX]+X");
+            m_lsystem.addRule("X", "F[-X]F[-X]");
+            m_is2D = false;
             m_is2D = false;
             break;
 
