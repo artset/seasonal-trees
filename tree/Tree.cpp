@@ -51,7 +51,6 @@ Tree::Tree():
     m_branchData.body.reserve(settings.recursions * 2);
     m_branchData.tip.reserve(settings.recursions);
     m_leafData.reserve(settings.recursions * 2);
-
 }
 
 Tree::~Tree() {
@@ -71,18 +70,17 @@ void Tree::buildTree(const glm::mat4 &model, const float leafScale) {
     m_lsystem.generateSequence();
     m_branchData.body.clear();
     m_branchData.tip.clear();
-
     m_leafData.clear();
-    srand(time(NULL));
+//    srand(time(NULL));
 
     std::string string = m_lsystem.getSequence();
 
 //    string = "F[X][-F[-X]F[-X]+X]F[X][-F[-X]F[-X]+X]+F[-X]F[-X]+X";
 //    string = "F[X][-F[-X]F[-X]+X]+F[-X]F[-X]+X";
-//    string = "F[+X]+F[-X]F[-X]+X";
+//    string = "F[-F[-X]F[-X]+X]F[-F[-X]F[-X]+X]+F[-X]F[-X]+X";
 
 //    std::cout << " ----- " << std::endl;
-    std::cout << string << std::endl;
+//    std::cout << string << std::endl;
 
     std::vector<char> forwardSymbols;
     forwardSymbols.reserve(m_lsystem.getRules().size());
@@ -175,7 +173,7 @@ void Tree::buildTree(const glm::mat4 &model, const float leafScale) {
                     if (i < string.size() - 1 && string[i+1] != bracket[0]) {
 //                        std::cout << "is new branch: adding body " << std::endl;
 //                        std::cout << currState.length << std::endl;
-                        m_branchData.body.push_back(getBranchTransform(model, branchInitState));
+//                        m_branchData.body.push_back(getBranchTransform(model, branchInitState));
                         bodyStates.push_back(branchInitState);
                     } else {
 //                        std::cout << "is new branch: adding tip " << std::endl;
@@ -198,14 +196,18 @@ void Tree::buildTree(const glm::mat4 &model, const float leafScale) {
 
     }
 
-    for (size_t i = 0; i < m_branchData.body.size(); i++) {
+    for (size_t i = 0; i < bodyStates.size(); i++) {
         LState savedState = bodyStates[i];
-        glm::mat4 transform = savedState.translate * savedState.rotate * savedState.scale;
+        m_branchData.body.push_back(getBranchTransform(model, savedState));
+
+        glm::mat4 newScale = glm::scale(glm::mat4(), glm::vec3(1.f, .2f, 1.f));
+        glm::mat4 newTrans = glm::translate(glm::mat4(), glm::vec3(0.f, Tree::BRANCH_LENGTH * .43f, 0.f));
+
         //This is the translation out from the current branch
-        glm::vec3 wscTranslate = (transform * translate - transform * origin).xyz();
-        savedState.translate = glm::translate(identity, wscTranslate) * savedState.translate;
         savedState.length += BRANCH_LENGTH;
-        m_branchData.tip.push_back(getBranchTransform(model, savedState));
+
+        glm::mat4 t = getBranchTransform(model, savedState)  * newTrans * newScale;
+        m_branchData.tip.push_back(t);
     }
 
     if (currState.length != 0) {
@@ -265,7 +267,7 @@ glm::mat4 Tree::getLeafTransform(const glm::mat4 &model, const LState &state, co
     glm::mat4 scale = glm::scale(glm::mat4(), glm::vec3(.01f, .01f, .01f));
     glm::mat4 rotate = state.rotate;
     glm::mat4 translate = state.translate;
-    return translate * rotate  * scale * INIT_TRANSLATE * INIT_ROTATE * INIT_SCALE * model;
+    return translate * rotate * scale * INIT_TRANSLATE * INIT_ROTATE * INIT_SCALE * model;
 }
 
 
@@ -353,7 +355,6 @@ void Tree::addTreeOptionRule(int treeOption){
             m_lsystem.addRule("F", "F");
             m_lsystem.addRule("F", "F[X]");
             // End visual patch
-
             m_lsystem.addRule("X", "F[-X]F[-X]+X");
             m_is2D = false;
             break;
@@ -367,6 +368,9 @@ void Tree::addTreeOptionRule(int treeOption){
             // End visual patch
 
             m_lsystem.addRule("X", "F[-X]F[-X]");
+            m_lsystem.addRule("X", "F[-X]F[-X]+X");
+            m_lsystem.addRule("X", "F[-X]F[-X]-X");
+
             m_is2D = false;
             m_is2D = false;
             break;
