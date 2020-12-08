@@ -76,7 +76,17 @@ void Tree::buildTree(const glm::mat4 &model, const float leafScale) {
     srand(time(NULL));
 
     std::string string = m_lsystem.getSequence();
-//    string = "F[-F[-X][+X]]";
+
+//    string = "F[X][-F[-X]F[-X]+X]F[X][-F[-X]F[-X]+X]+F[-X]F[-X]+X";
+//    string = "F[X][-F[-X]F[-X]+X]+F[-X]F[-X]+X";
+    string = "F[+X]+F[-X]F[-X]+X";
+    string = "F[+X]+F[-X]";
+
+
+
+
+    std::cout << " ----- " << std::endl;
+    std::cout << string << std::endl;
 
     std::vector<char> forwardSymbols;
     forwardSymbols.reserve(m_lsystem.getRules().size());
@@ -109,6 +119,8 @@ void Tree::buildTree(const glm::mat4 &model, const float leafScale) {
 
     // Parse the string
     for (size_t i = 0 ; i < string.size() ; i++) {
+        std::cout << string[i] << std::endl;
+
         switch (string[i]) {
             case '-': {
                 //Rotate the current rotation matrix to the left
@@ -132,7 +144,6 @@ void Tree::buildTree(const glm::mat4 &model, const float leafScale) {
             }
             case '[': {
                 //Save the current state for later (splitting off into child branches)
-
                 prevStates.push_back(currState);
                 currState.scale = scale * currState.scale; //Scale down child branches
                 currState = createNewBranchState(currState); //Initialize child branch state
@@ -140,11 +151,11 @@ void Tree::buildTree(const glm::mat4 &model, const float leafScale) {
             }
             case ']': {
                 //Resume parsing with the last saved state (the current branch is closed)
-                m_branchData.tip.push_back(getBranchTransform(model, currState));
+                std::cout << "closing a branch, add tip" << string[i] << std::endl;
+                m_branchData.tip.push_back(getBranchTransform(model, currState)); // Pushes as a tip because it's the last of the branch.
                 buildLeaves(model, currState, branchNum);
                 currState = prevStates.back();
                 prevStates.pop_back();
-
                 break;
             }
         default:
@@ -160,7 +171,16 @@ void Tree::buildTree(const glm::mat4 &model, const float leafScale) {
 
                 if (isNewBranch) {
                     LState branchInitState = getBranchInitialStateTransforms(currState);
-                    m_branchData.body.push_back(getBranchTransform(model, branchInitState));
+
+                    std::string bracket = "]";
+                    if (i < string.size() - 1 && string[i+1] != bracket[0]) {
+                        std::cout << "is new branch: adding body " << std::endl;
+                        std::cout << currState.length << std::endl;
+                        m_branchData.body.push_back(getBranchTransform(model, branchInitState));
+                    } else {
+                        std::cout << "is new branch: adding tip " << std::endl;
+                        m_branchData.tip.push_back(getBranchTransform(model, branchInitState));
+                    }
                     currState = createNewBranchState(currState);
                 }
 
@@ -179,7 +199,8 @@ void Tree::buildTree(const glm::mat4 &model, const float leafScale) {
     }
 
     if (currState.length != 0) {
-        m_branchData.body.push_back(getBranchTransform(model, currState));
+        std::cout << "curState length " << currState.length << std::endl;
+        m_branchData.tip.push_back(getBranchTransform(model, currState));
     }
     if (prevStates.size() != 0) {
         std::cout << "Missed " << prevStates.size() << " cached states" << std::endl;
