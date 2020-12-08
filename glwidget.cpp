@@ -523,7 +523,7 @@ void GLWidget::paintGL() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     if (m_shape) {
-        if (m_renderMode == SHAPE_CYLINDER || m_renderMode == SHAPE_CONE) {
+        if (m_renderMode == SHAPE_TREE) {
             if (hasSettingsChanged()) {
                 m_tree->buildTree(model, settings.leafSize);
             } else {
@@ -533,16 +533,12 @@ void GLWidget::paintGL() {
             }
 
         } else {// todo: remove this once all primitives are made :)
-            if (m_renderMode == SHAPE_CUBE) {
-                renderSingleLeaf();
-//                renderLeaves(); // for debugging: renders all the leaves without the branches
-            } else {
-                bindAndUpdateShader(phong_shader);
-                glBindTexture(GL_TEXTURE_2D, m_textureID);
-                m_shape->draw();
-                glBindTexture(GL_TEXTURE_2D, 0);
-                releaseShader(phong_shader);
-            }
+            bindAndUpdateShader(phong_shader);
+            glBindTexture(GL_TEXTURE_2D, m_textureID);
+            m_shape->draw();
+            glBindTexture(GL_TEXTURE_2D, 0);
+            releaseShader(phong_shader);
+
         }
         renderWireframe();
     }
