@@ -89,6 +89,8 @@ protected:
     void renderPhongLighting();
     bool hasSettingsChanged();
 
+    float getTime();
+
 private:
     std::unique_ptr<OpenGLShape> m_leaf;
     std::unique_ptr<OpenGLShape> m_sphere;
@@ -112,6 +114,7 @@ private:
     QGLShaderProgram *normal_mapping_shader;
     QGLShaderProgram *island_shader;
     QGLShaderProgram *glass_shader;
+    QGLShaderProgram *snow_shader;
 
 
     QList<const UniformVariable*> *activeUniforms;

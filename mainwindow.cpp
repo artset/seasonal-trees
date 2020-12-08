@@ -308,7 +308,7 @@ void MainWindow::updateSeasonParameters(int season){
     switch (season){
         //Summer
         case 0:
-            settings.leafSize = 0.8f;
+            settings.leafSize = 2.5f;
             //Update slider
             ui->leafSizeTextbox->setText("2.5");
             break;
@@ -323,6 +323,8 @@ void MainWindow::updateSeasonParameters(int season){
             //Get rid of leaves
             settings.leafSize = 0.f;
             ui->leafSizeTextbox->setText("0");
+            loadShader(":/shaders/snow.vert", ":/shaders/snow.frag");
+            std::cout << "load snow" << std::endl;
             break;
         //Spring
         case 3:

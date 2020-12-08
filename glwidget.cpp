@@ -17,6 +17,7 @@
 #include "glm/glm.hpp"            // glm::vec*, mat*, and basic glm functions
 #include "glm/gtx/transform.hpp"  // glm::translate, scale, rotate
 #include "glm/gtc/type_ptr.hpp" // glm::value_ptr
+#include <time.h>
 
 UniformVariable *GLWidget::s_skybox = NULL;
 UniformVariable *GLWidget::s_projection = NULL;
@@ -145,6 +146,7 @@ void GLWidget::initializeGL() {
     normal_mapping_shader = ResourceLoader::newShaderProgram(context(), ":/shaders/normal_map.vert", ":/shaders/normal_map.frag");
     island_shader = ResourceLoader::newShaderProgram(context(), ":/shaders/island.vert", ":/shaders/island.frag");
     glass_shader = ResourceLoader::newShaderProgram(context(), ":/shaders/glass.vert", ":/shaders/glass.frag");
+    snow_shader = ResourceLoader::newShaderProgram(context(), ":/shaders/snow.vert", ":/shaders/snow.frag");
 
     s_skybox = new UniformVariable(this->context()->contextHandle());
     s_skybox->setName("skybox");
@@ -408,7 +410,7 @@ void GLWidget::renderLeaves() {
 
         //Set color based on season
         if (settings.season == 0){
-            leaf_shader->setUniformValue("color", QVector4D(0.f, 1.f, 0.f, 0.f));
+            leaf_shader->setUniformValue("color", QVector4D(0.13f, 0.54f, 0.12f, 0.f));
         } else if (settings.season == 1){
             leaf_shader->setUniformValue("color", QVector4D(0.9f, 0.6f, 0.3f, 0.f));
         } else {
@@ -423,7 +425,6 @@ void GLWidget::renderLeaves() {
     model = original;
     releaseShader(leaf_shader);
 }
-
 
 void GLWidget::renderSingleLeaf() {
     glm::mat4 oldModel = model;
