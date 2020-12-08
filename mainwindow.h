@@ -35,7 +35,7 @@ private slots:
 
     void on_sphereButton_clicked();
 
-    void on_cubeButton_clicked();
+//    void on_cubeButton_clicked();
 
     void on_treeButton_clicked();
 
