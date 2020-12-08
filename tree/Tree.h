@@ -19,6 +19,10 @@ struct LState {
 
 enum LeafDir { TOP, LEFT, RIGHT };
 
+struct Branch {
+    std::vector<glm::mat4> body;
+    std::vector<glm::mat4> tip;
+};
 
 class Tree
 {
@@ -26,7 +30,7 @@ public:
     Tree();
     ~Tree();
     void buildTree(const glm::mat4 &model, const float leafScale);
-    std::vector<glm::mat4> getBranchData();
+    Branch getBranchData();
     std::vector<glm::mat4> getLeafData();
     void addTreeOptionRule(int treeOption);
 private:
@@ -48,7 +52,9 @@ private:
 
     LSystem m_lsystem;
     std::vector <glm::mat4> m_leafData;
-    std::vector<glm::mat4> m_branchData;
+
+    Branch m_branchData;
+//    std::vector<glm::mat4> m_branchData;
     float m_leafScale;
     bool m_is2D;
 

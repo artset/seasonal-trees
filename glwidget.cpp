@@ -376,19 +376,34 @@ void GLWidget::renderBranches() {
     //  Note: the wireframes won't work because it's not connected to that,
     // must choose a shader to get it working.
 
-    std::vector<glm::mat4> trans = m_tree->getBranchData();
+    std::vector<glm::mat4> body = m_tree->getBranchData().body;
     glm::mat4 original = model;
+    RenderType oldRenderType = m_renderMode;
 
-    for (int i = 0; i < static_cast<int>(trans.size()); i++) {
-        model = trans[i];
+    changeRenderMode(SHAPE_CYLINDER);
+    for (int i = 0; i < static_cast<int>(body.size()); i++) {
+        model = body[i];
         modelChanged(model);
         modelviewProjectionChanged(camera->getProjectionMatrix() * camera->getModelviewMatrix());
         // TODO: restore as current_shader
         bindAndUpdateShader(phong_shader); // needed before calling draw.
         m_shape->draw();
     }
-    model = original; // resets model back to the init
 
+    changeRenderMode(SHAPE_CONE);
+    std::vector<glm::mat4> tips = m_tree->getBranchData().tip;
+
+    for (int i = 0; i < static_cast<int>(tips.size()); i++) {
+        model = tips[i];
+        modelChanged(model);
+        modelviewProjectionChanged(camera->getProjectionMatrix() * camera->getModelviewMatrix());
+        // TODO: restore as current_shader
+        bindAndUpdateShader(phong_shader); // needed before calling draw.
+        m_shape->draw();
+    }
+
+    changeRenderMode(oldRenderType);
+    model = original; // resets model back to the init
     // TODO: restore as current_shader
     releaseShader(phong_shader);
 }

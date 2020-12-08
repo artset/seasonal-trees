@@ -48,7 +48,8 @@ std::vector<std::string> strings = {
 Tree::Tree():
     m_lsystem()
 {
-    m_branchData.reserve(settings.recursions * 2);
+    m_branchData.body.reserve(settings.recursions * 2);
+    m_branchData.tip.reserve(settings.recursions);
     m_leafData.reserve(settings.recursions * 2);
 
 }
@@ -68,7 +69,9 @@ void Tree::buildTree(const glm::mat4 &model, const float leafScale) {
     float ANGLE = glm::radians(settings.angle);
     m_lsystem.setRecursion(settings.recursions);
     m_lsystem.generateSequence();
-    m_branchData.clear();
+    m_branchData.body.clear();
+    m_branchData.tip.clear();
+
     m_leafData.clear();
     srand(time(NULL));
 
@@ -137,7 +140,7 @@ void Tree::buildTree(const glm::mat4 &model, const float leafScale) {
             }
             case ']': {
                 //Resume parsing with the last saved state (the current branch is closed)
-                m_branchData.push_back(getBranchTransform(model, currState));
+                m_branchData.tip.push_back(getBranchTransform(model, currState));
                 buildLeaves(model, currState, branchNum);
                 currState = prevStates.back();
                 prevStates.pop_back();
@@ -157,7 +160,7 @@ void Tree::buildTree(const glm::mat4 &model, const float leafScale) {
 
                 if (isNewBranch) {
                     LState branchInitState = getBranchInitialStateTransforms(currState);
-                    m_branchData.push_back(getBranchTransform(model, branchInitState));
+                    m_branchData.body.push_back(getBranchTransform(model, branchInitState));
                     currState = createNewBranchState(currState);
                 }
 
@@ -176,7 +179,7 @@ void Tree::buildTree(const glm::mat4 &model, const float leafScale) {
     }
 
     if (currState.length != 0) {
-        m_branchData.push_back(getBranchTransform(model, currState));
+        m_branchData.body.push_back(getBranchTransform(model, currState));
     }
     if (prevStates.size() != 0) {
         std::cout << "Missed " << prevStates.size() << " cached states" << std::endl;
@@ -264,7 +267,7 @@ LState Tree::createNewBranchState(const LState &state) {
 };
 
 
-std::vector<glm::mat4> Tree::getBranchData() {
+Branch Tree::getBranchData() {
     return m_branchData;
 }
 
