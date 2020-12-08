@@ -55,7 +55,7 @@ private slots:
 
     void on_animRotate2Button_clicked();
 
-    void on_tipsButton_clicked();
+//    void on_tipsButton_clicked();
 
     void on_shader1Button_clicked();
 

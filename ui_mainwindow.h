@@ -74,9 +74,6 @@ public:
     QVBoxLayout *verticalLayout_2;
     QSpacerItem *horizontalSpacer;
     QVBoxLayout *verticalLayout_3;
-    QPushButton *tipsButton;
-    QVBoxLayout *uniformContainerUI;
-    QSpacerItem *verticalSpacer_2;
 
     void setupUi(QMainWindow *MainWindow)
     {
@@ -326,21 +323,6 @@ public:
         verticalLayout_3 = new QVBoxLayout();
         verticalLayout_3->setSpacing(6);
         verticalLayout_3->setObjectName(QString::fromUtf8("verticalLayout_3"));
-        tipsButton = new QPushButton(centralWidget);
-        tipsButton->setObjectName(QString::fromUtf8("tipsButton"));
-
-        verticalLayout_3->addWidget(tipsButton);
-
-        uniformContainerUI = new QVBoxLayout();
-        uniformContainerUI->setSpacing(6);
-        uniformContainerUI->setObjectName(QString::fromUtf8("uniformContainerUI"));
-
-        verticalLayout_3->addLayout(uniformContainerUI);
-
-        verticalSpacer_2 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
-
-        verticalLayout_3->addItem(verticalSpacer_2);
-
 
         horizontalLayout->addLayout(verticalLayout_3);
 
@@ -381,7 +363,6 @@ public:
         animScaleMoveButton->setText(QCoreApplication::translate("MainWindow", "Move + Scale", nullptr));
         animRotate1Button->setText(QCoreApplication::translate("MainWindow", "Rotate1", nullptr));
         animRotate2Button->setText(QCoreApplication::translate("MainWindow", "Rotate2", nullptr));
-        tipsButton->setText(QCoreApplication::translate("MainWindow", "Tips", nullptr));
     } // retranslateUi
 
 };
