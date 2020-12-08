@@ -46,6 +46,7 @@ MainWindow::MainWindow(QWidget *parent) :
     QTimer::singleShot(0, this, SLOT(init()));
     m_hasError = false;
 
+
 #ifdef SHADER_1
     ui->editShaderButton->hide();
     ui->defaultShaderButton->hide();
@@ -100,6 +101,7 @@ void MainWindow::loadShader(QString vert, QString frag) {
     if (m_oldFrag != "" && !m_hasError)
         m_glwidget->saveUniforms(m_oldFrag);
 
+    std::cout << "loading shader... " << vert.toStdString() << std::endl;
     emit removeUniforms();
 
     if (!m_glwidget->loadShader(vert, frag, &error)) {
@@ -129,7 +131,9 @@ void MainWindow::init()
         loadShader(info.absolutePath() + "/" + info.baseName() + ".vert",
                    info.absolutePath() + "/" + info.baseName() + ".frag");
     } else {
+        std::cout << "on init, loads all shaders..." << std::endl;
         loadShader(":/shaders/light.vert", ":/shaders/light.frag");
+        loadShader(":/shaders/glass.vert", ":/shaders/glass.frag");
     }
 
     ui->treeOptionsComboBox->addItem("Binary Tree");
@@ -138,6 +142,9 @@ void MainWindow::init()
     ui->treeOptionsComboBox->addItem("Wavy Seaweed");
     ui->treeOptionsComboBox->addItem("Twiggy Weed");
     ui->treeOptionsComboBox->addItem("Stochastic Fuzzy Weed");
+
+
+
 }
 
 void MainWindow::handleUniformDeleted(UniformWidget *deleted)
@@ -194,7 +201,9 @@ void MainWindow::closeEvent(QCloseEvent *e) {
 
 void MainWindow::on_defaultShaderButton_clicked()
 {
+    std::cout << "on_defaultShaderButton_clicked()" << std::endl;
     loadShader(":/shaders/light.vert", ":/shaders/light.frag");
+
 }
 
 void MainWindow::on_animMoveButton_clicked()
