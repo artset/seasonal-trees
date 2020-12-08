@@ -109,6 +109,7 @@ void Tree::buildTree(const glm::mat4 &model, const float leafScale) {
                                     // Later, we add a cone cap to them.
 
     // Creates a random distribution on how the angles of the branches are generated.
+    // Not necessary though for the randomnization, but leaving here for reference.
 //    std::default_random_engine generator;
 //    std::uniform_int_distribution<int> distribution(0, ROTATE_AXES.size());
 //    int branchNum = distribution(generator);
@@ -201,12 +202,11 @@ void Tree::buildTree(const glm::mat4 &model, const float leafScale) {
         m_branchData.body.push_back(getBranchTransform(model, savedState));
 
         // Trial and error for numbers
-
         glm::mat4 newScale = glm::scale(glm::mat4(), glm::vec3(1.f, .2f, 1.f));
         glm::mat4 newTrans = glm::translate(glm::mat4(), glm::vec3(0.f, Tree::BRANCH_LENGTH * .43f, 0.f));
 
         savedState.length += BRANCH_LENGTH;
-        //This is the translation out from the current branc
+        //This is the translation out from the current branch
         glm::mat4 t = getBranchTransform(model, savedState)  * newTrans * newScale;
         m_branchData.tip.push_back(t);
     }
@@ -231,6 +231,7 @@ void Tree::buildTree(const glm::mat4 &model, const float leafScale) {
 void Tree::buildLeaves(const glm::mat4 &model, const LState &state, const int branchLevel) {
     m_leafData.push_back(getLeafTransform(model, state, branchLevel, TOP));
 
+    // In the 2D case (binary tree) we do not render all the leaves for the sake of space.
     if (!m_is2D) {
         m_leafData.push_back(getLeafTransform(model, state, branchLevel, LEFT));
         m_leafData.push_back(getLeafTransform(model, state, branchLevel, RIGHT));
@@ -250,16 +251,16 @@ glm::mat4 Tree::getLeafTransform(const glm::mat4 &model, const LState &state, co
         return glm::mat4(0);
     }
 
-    // Top positioning
+    // Positioning a leaf to be at the end of the branch.
     glm::mat4 INIT_ROTATE = glm::rotate(glm::radians(90.f), Tree::ROTATE_AXES[2]);
     glm::mat4 INIT_TRANSLATE = glm::translate(glm::mat4(), glm::vec3(0.f, 7.5f + 1.f * Tree::BRANCH_LENGTH, 0.f));
     glm::mat4 INIT_SCALE = glm::scale(glm::mat4(), glm::vec3(m_leafScale, .8, 1.f)); // Scales to size of branches.
 
-    if (dir == LEFT) {
+    if (dir == LEFT) { // A leaf for the left side
         INIT_ROTATE = glm::rotate(glm::radians(50.f), getRotateAxis(branchLevel - 1));
         INIT_TRANSLATE = glm::translate(glm::mat4(), glm::vec3(1.f,  Tree::BRANCH_LENGTH, 0.f));
         INIT_SCALE = glm::scale(glm::mat4(), glm::vec3(m_leafScale, .8, 1.f)); // Scales to size of branches.
-    } else if (dir == RIGHT) {
+    } else if (dir == RIGHT) { // A leaf for right side
         INIT_ROTATE = glm::rotate(glm::radians(-50.f), getRotateAxis(branchLevel - 1));
         INIT_TRANSLATE = glm::translate(glm::mat4(), glm::vec3(-1.f,  Tree::BRANCH_LENGTH, 0.f));
         INIT_SCALE = glm::scale(glm::mat4(), glm::vec3(m_leafScale, .8, 1.f)); // Scales to size of branches.
@@ -299,11 +300,10 @@ LState Tree::createNewBranchState(const LState &state) {
     return newState;
 };
 
-
+// Returns a struct of all the branch data.
 Branch Tree::getBranchData() {
     return m_branchData;
 }
-
 
 /**
  * Adds the L-system rules and sets the axiom depending on the tree chosen in the dropdown of the ui.
@@ -378,9 +378,13 @@ void Tree::addTreeOptionRule(int treeOption){
     }
 }
 
+// Returns a list of transformations for the leaves.
 std::vector<glm::mat4> Tree::getLeafData() {
     return m_leafData;
 }
+
+// Returns the access to rotate the branch upon. In the 2 dimensional space
+// it is always along the same axis.
 glm::vec3 Tree::getRotateAxis(const int branchNum) {
     if (m_is2D) {
        return Tree::ROTATE_AXES[2];
@@ -403,15 +407,14 @@ bool Tree::matEq(const glm::mat4 &A, const glm::mat4 &B) {
 // Returns some variance to the original angle by some random degree.
 // Potentially let the RANGE be decided by the UI. Not using rn.
 float Tree::getRandomAngle(const int &branchNum, const float &angle) {
-    int MAX_LEVEL = 10;
-    if (branchNum < MAX_LEVEL) {
+    int MAX_LEVEL = 10; // Value was determined by trial and error
+    if (branchNum < MAX_LEVEL) { // Only creates a wider angle if we are deeper in tree.
         return angle;
     }
     int RANGE = 5;
     std::default_random_engine generator;
     std::uniform_int_distribution<int> distribution(0, RANGE);
     int newAngle = glm::radians(distribution(generator) * 1.f);
-
     return angle + newAngle;
 };
 

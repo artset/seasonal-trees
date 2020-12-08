@@ -531,20 +531,19 @@ void GLWidget::paintGL() {
                 renderLeaves();
                 renderIsland();
             }
-
-        } else {// todo: remove this once all primitives are made :)
+        } else {// todo: remove this once texture mapping is done, along with the corresponding button.
             bindAndUpdateShader(phong_shader);
             glBindTexture(GL_TEXTURE_2D, m_textureID);
             m_shape->draw();
             glBindTexture(GL_TEXTURE_2D, 0);
             releaseShader(phong_shader);
-
         }
         renderWireframe();
     }
     renderSkybox();
 }
 
+// Determines the render mode to determine which primitive to draw.
 void GLWidget::changeRenderMode(RenderType mode)
 {
     m_renderMode = mode;
