@@ -55,15 +55,11 @@ private slots:
 
     void on_animRotate2Button_clicked();
 
-    void on_wireframeCheckbox_toggled(bool checked);
-
     void on_tipsButton_clicked();
 
     void on_shader1Button_clicked();
 
     void on_shader2Button_clicked();
-
-    void on_checkBox_toggled(bool checked);
 
     void on_summerRadioButton_clicked();
 

@@ -11,7 +11,6 @@
 
 #include <QtCore/QVariant>
 #include <QtWidgets/QApplication>
-#include <QtWidgets/QCheckBox>
 #include <QtWidgets/QComboBox>
 #include <QtWidgets/QFrame>
 #include <QtWidgets/QGridLayout>
@@ -73,11 +72,7 @@ public:
     QPushButton *animRotate2Button;
     QSpacerItem *horizontalSpacer_3;
     QFrame *line_3;
-    QLabel *label_4;
     QFrame *line_4;
-    QLabel *label_5;
-    QCheckBox *wireframeCheckbox;
-    QCheckBox *checkBox;
     QSpacerItem *verticalSpacer;
     QVBoxLayout *verticalLayout_2;
     QSpacerItem *horizontalSpacer;
@@ -90,7 +85,7 @@ public:
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QString::fromUtf8("MainWindow"));
-        MainWindow->resize(978, 784);
+        MainWindow->resize(978, 849);
         MainWindow->setAutoFillBackground(false);
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QString::fromUtf8("centralWidget"));
@@ -319,35 +314,12 @@ public:
 
         verticalLayout->addWidget(line_3);
 
-        label_4 = new QLabel(centralWidget);
-        label_4->setObjectName(QString::fromUtf8("label_4"));
-
-        verticalLayout->addWidget(label_4);
-
         line_4 = new QFrame(centralWidget);
         line_4->setObjectName(QString::fromUtf8("line_4"));
         line_4->setFrameShape(QFrame::HLine);
         line_4->setFrameShadow(QFrame::Sunken);
 
         verticalLayout->addWidget(line_4);
-
-        label_5 = new QLabel(centralWidget);
-        label_5->setObjectName(QString::fromUtf8("label_5"));
-
-        verticalLayout->addWidget(label_5);
-
-        wireframeCheckbox = new QCheckBox(centralWidget);
-        wireframeCheckbox->setObjectName(QString::fromUtf8("wireframeCheckbox"));
-        wireframeCheckbox->setFocusPolicy(Qt::StrongFocus);
-        wireframeCheckbox->setChecked(true);
-        wireframeCheckbox->setTristate(false);
-
-        verticalLayout->addWidget(wireframeCheckbox);
-
-        checkBox = new QCheckBox(centralWidget);
-        checkBox->setObjectName(QString::fromUtf8("checkBox"));
-
-        verticalLayout->addWidget(checkBox);
 
         verticalSpacer = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
 
@@ -428,10 +400,6 @@ public:
         animScaleMoveButton->setText(QCoreApplication::translate("MainWindow", "Move + Scale", nullptr));
         animRotate1Button->setText(QCoreApplication::translate("MainWindow", "Rotate1", nullptr));
         animRotate2Button->setText(QCoreApplication::translate("MainWindow", "Rotate2", nullptr));
-        label_4->setText(QCoreApplication::translate("MainWindow", "Options:", nullptr));
-        label_5->setText(QCoreApplication::translate("MainWindow", "Wireframe:", nullptr));
-        wireframeCheckbox->setText(QCoreApplication::translate("MainWindow", "Enabled", nullptr));
-        checkBox->setText(QCoreApplication::translate("MainWindow", "Use Vertex Shader", nullptr));
         tipsButton->setText(QCoreApplication::translate("MainWindow", "Tips", nullptr));
     } // retranslateUi
 

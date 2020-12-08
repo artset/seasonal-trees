@@ -227,11 +227,6 @@ void MainWindow::on_animRotate2Button_clicked()
     m_glwidget->changeAnimMode(ANIM_ROTATE_2);
 }
 
-void MainWindow::on_wireframeCheckbox_toggled(bool checked)
-{
-    m_glwidget->toggleDrawWireframe(checked);
-}
-
 QString tipsText = "<h2>Attributes</h2>\n"
         "The following attributes (<b>in</b> variables) are available for use:\n"
         "<ul><li><b>vec3 position</b>: The position of the vertex in object space</li>"
@@ -268,11 +263,6 @@ void MainWindow::on_shader1Button_clicked()
 void MainWindow::on_shader2Button_clicked()
 {
     loadShader(":/shaders/glass.vert", ":/shaders/glass.frag");
-}
-
-void MainWindow::on_checkBox_toggled(bool checked)
-{
-    m_glwidget->setWireframeMode(checked ? WIREFRAME_VERT : WIREFRAME_NORMAL);
 }
 
 void MainWindow::on_summerRadioButton_clicked(){
