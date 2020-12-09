@@ -13,7 +13,7 @@ private:
     virtual glm::vec3 getNormal(glm::vec3 vert) override;
     static const float RADIUS;
     static const float OFFSET;
-    void setFanData(std::vector<glm::vec3> &data, int angleIndex, float rad, float angle);
+    void setFanData(int angleIndex, float rad, float angle);
 };
 
 #endif // CIRCLECOMPONENT_H

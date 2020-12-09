@@ -83,17 +83,17 @@ void MainWindow::on_sphereButton_clicked() {
 }
 
 
-void MainWindow::on_cylinderTreeButton_clicked() {
-    m_glwidget->changeRenderMode(SHAPE_CYLINDER);
+void MainWindow::on_treeButton_clicked() {
+    m_glwidget->changeRenderMode(SHAPE_TREE);
 }
 
-void MainWindow::on_coneTreeButton_clicked() {
-    m_glwidget->changeRenderMode(SHAPE_CONE);
-}
+//void MainWindow::on_coneTreeButton_clicked() {
+//    m_glwidget->changeRenderMode(SHAPE_CONE);
+//}
 
-void MainWindow::on_cubeButton_clicked() {
-    m_glwidget->changeRenderMode(SHAPE_CUBE);
-}
+//void MainWindow::on_cubeButton_clicked() {
+//    m_glwidget->changeRenderMode(SHAPE_CUBE);
+//}
 
 void MainWindow::loadShader(QString vert, QString frag) {
     QString error;
@@ -129,7 +129,7 @@ void MainWindow::init()
         loadShader(info.absolutePath() + "/" + info.baseName() + ".vert",
                    info.absolutePath() + "/" + info.baseName() + ".frag");
     } else {
-        loadShader(":/shaders/default.vert", ":/shaders/default.frag");
+        loadShader(":/shaders/light.vert", ":/shaders/light.frag");
     }
 
     ui->treeOptionsComboBox->addItem("Binary Tree");
@@ -143,7 +143,7 @@ void MainWindow::init()
 void MainWindow::handleUniformDeleted(UniformWidget *deleted)
 {
     m_glwidget->uniformDeleted(deleted->getUniform());
-    deleted->removeFrom(ui->uniformContainerUI/*uniformLayout*/);
+//    deleted->removeFrom(ui->uniformContainerUI/*uniformLayout*/);
     m_uniforms.removeAll(deleted);
 }
 
@@ -168,7 +168,7 @@ void MainWindow::changeUniform(const QString &name, const QString &newVal)
 void MainWindow::addUniform(UniformVariable::Type type, const QString &name, bool editable, int size)
 {
     UniformWidget *newWidget = new UniformWidget(m_glwidget->context()->contextHandle(), m_glwidget, type, name, editable, size);
-    newWidget->addTo(ui->uniformContainerUI/*uniformLayout*/);
+//    newWidget->addTo(ui->uniformContainerUI/*uniformLayout*/);
     QObject::connect(newWidget, SIGNAL(deleted(UniformWidget*)), this, SLOT(handleUniformDeleted(UniformWidget*)));
     QObject::connect(this, SIGNAL(removeUniforms()), newWidget, SLOT(deleteUniform()));
     m_glwidget->uniformAdded(newWidget->getUniform());
@@ -179,7 +179,7 @@ void MainWindow::addUniform(UniformVariable::Type type, const QString &name, boo
 void MainWindow::addUniform(UniformVariable *uniform, bool editable)
 {
     UniformWidget *newWidget = new UniformWidget(uniform, m_glwidget, editable);
-    newWidget->addTo(ui->uniformContainerUI/*uniformLayout*/);
+//    newWidget->addTo(ui->uniformContainerUI/*uniformLayout*/);
     QObject::connect(newWidget, SIGNAL(deleted(UniformWidget*)), this, SLOT(handleUniformDeleted(UniformWidget*)));
     QObject::connect(this, SIGNAL(removeUniforms()), newWidget, SLOT(deleteUniform()));
     QObject::connect(newWidget, SIGNAL(changed(const UniformVariable*)), m_glwidget, SLOT(uniformChanged(const UniformVariable*)));
@@ -194,7 +194,7 @@ void MainWindow::closeEvent(QCloseEvent *e) {
 
 void MainWindow::on_defaultShaderButton_clicked()
 {
-    loadShader(":/shaders/default.vert", ":/shaders/default.frag");
+    loadShader(":/shaders/light.vert", ":/shaders/light.frag");
 }
 
 void MainWindow::on_animMoveButton_clicked()
@@ -227,11 +227,6 @@ void MainWindow::on_animRotate2Button_clicked()
     m_glwidget->changeAnimMode(ANIM_ROTATE_2);
 }
 
-void MainWindow::on_wireframeCheckbox_toggled(bool checked)
-{
-    m_glwidget->toggleDrawWireframe(checked);
-}
-
 QString tipsText = "<h2>Attributes</h2>\n"
         "The following attributes (<b>in</b> variables) are available for use:\n"
         "<ul><li><b>vec3 position</b>: The position of the vertex in object space</li>"
@@ -255,10 +250,10 @@ QString tipsText = "<h2>Attributes</h2>\n"
         "<ul><li><b>&lt;mouse&gt;</b>: The location of the mouse (0,0 is upper left). z=1 if mouse is pressed, 0 if not.</li></ul>"
         "</li></ul>"
         "<p>Any questions or bugs can be emailed to the cs123 tas (cs123tas@cs.brown.edu).</p>";
-void MainWindow::on_tipsButton_clicked()
-{
-    QMessageBox::information(this, "Tips", tipsText);
-}
+//void MainWindow::on_tipsButton_clicked()
+//{
+//    QMessageBox::information(this, "Tips", tipsText);
+//}
 
 void MainWindow::on_shader1Button_clicked()
 {
@@ -268,11 +263,6 @@ void MainWindow::on_shader1Button_clicked()
 void MainWindow::on_shader2Button_clicked()
 {
     loadShader(":/shaders/glass.vert", ":/shaders/glass.frag");
-}
-
-void MainWindow::on_checkBox_toggled(bool checked)
-{
-    m_glwidget->setWireframeMode(checked ? WIREFRAME_VERT : WIREFRAME_NORMAL);
 }
 
 void MainWindow::on_summerRadioButton_clicked(){
@@ -301,7 +291,7 @@ void MainWindow::updateSeasonParameters(int season){
         case 0:
             settings.leafSize = 0.8f;
             //Update slider
-            ui->leafSizeTextbox->setText("0.8");
+            ui->leafSizeTextbox->setText("2.5");
             break;
         //Fall
         case 1:
@@ -339,7 +329,7 @@ void MainWindow::dataBind(){
         ui->angleSlider, ui->angleTextbox, settings.angle, 10, 90));
 
     BIND(FloatBinding::bindSliderAndTextbox(
-        ui->leafSizeSlider, ui->leafSizeTextbox, settings.leafSize, 0, 5));
+        ui->leafSizeSlider, ui->leafSizeTextbox, settings.leafSize, 0, 7));
 
     BIND(ChoiceBinding::bindRadioButtons(seasonButtonGroup, 4, settings.season, ui->summerRadioButton, ui->fallRadioButton, ui->winterRadioButton, ui->springRadioButton));
 }

@@ -13,7 +13,7 @@ protected:
     virtual glm::vec3 getNormal(glm::vec3 vert) override;
 
     void setData() override;
-    void setFan(int i, int j, float phi, float theta, std::vector<glm::vec3> &triangles);
+    void setFan(int i, int j, float phi, float theta);
 private:
     static const float RADIUS;
 };

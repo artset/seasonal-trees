@@ -27,7 +27,8 @@ ShapeComponent::~ShapeComponent() {
 
 }
 
-const int ShapeComponent::COORDINATES_PER_TRIANGLE = 6;
+// 3(vert) + 3(norm) + 2(uv) + 3(tangent)
+const int ShapeComponent::COORDINATES_PER_TRIANGLE = 11;
 
 void ShapeComponent::draw() {
     if (m_VAO) {
@@ -67,4 +68,57 @@ void ShapeComponent::applyTransformation(std::vector<glm::vec3> &triangles) {
         glm::vec4 transformed = (m_transformation * glm::vec4(point, 1.f));
         triangles[i] = transformed.xyz();
     }
+}
+
+/**
+ * @brief ShapeComponent::setTriangleVertexData - Sets the vertex data for an individual triangle given its vertices
+ * and corresponding normals in counter-clockwise order.
+ * @param v0
+ * @param v1
+ * @param v2
+ * @param n0
+ * @param n1
+ * @param n2
+ */
+void ShapeComponent::setTriangleVertexData(PrimitiveType shape, const glm::mat4 &transformation,
+                                           const Vertex &vert0, const Vertex &vert1, const Vertex &vert2) {
+    glm::vec3 v0 = vert0.pos;
+    glm::vec3 v1 = vert1.pos;
+    glm::vec3 v2 = vert2.pos;
+
+    glm::vec3 n0 = vert0.normal;
+    glm::vec3 n1 = vert1.normal;
+    glm::vec3 n2 = vert2.normal;
+
+    glm::vec2 uv0 = Utilities::computeUV(shape, v0, n0);
+    glm::vec2 uv1 = Utilities::computeUV(shape, v1, n1);
+    glm::vec2 uv2 = Utilities::computeUV(shape, v2, n2);
+
+    // I don't believe the order of these matters, but I could totally be wrong
+    glm::vec3 edge0 = v1 - v0;
+    glm::vec3 edge1 = v2 - v0;
+    glm::vec2 deltaUV0 = glm::abs(uv0 - uv1);
+    glm::vec2 deltaUV1 = glm::abs(uv0 - uv2);
+
+    glm::vec3 tangent = Utilities::getTriangleTangentVec(edge0, edge1, deltaUV0, deltaUV1);
+
+    if (transformation != glm::mat4(1.f)) {
+        v0 = (transformation * glm::vec4(v0, 1)).xyz();
+        v1 = (transformation * glm::vec4(v1, 1)).xyz();
+        v2 = (transformation * glm::vec4(v2, 1)).xyz();
+
+        n0 = (transformation * glm::vec4(n0, 1)).xyz();
+        n1 = (transformation * glm::vec4(n1, 1)).xyz();
+        n2 = (transformation * glm::vec4(n2, 1)).xyz();
+
+//        uv0 = (transformation * glm::vec4(uv0, 0, 1)).xy();
+//        uv1 = (transformation * glm::vec4(uv1, 0, 1)).xy();
+//        uv2 = (transformation * glm::vec4(uv2, 0, 1)).xy();
+
+        tangent = (transformation * glm::vec4(tangent, 1)).xyz();
+    }
+
+    Utilities::insertVertexData(m_vertexData, {v0, n0, uv0, tangent});
+    Utilities::insertVertexData(m_vertexData, {v1, n1, uv1, tangent});
+    Utilities::insertVertexData(m_vertexData, {v2, n2, uv2, tangent});
 }

@@ -2,3 +2,4 @@
 final.pro.user
 *.o
 .qmake.stash
+final.app/Contents/MacOS/final

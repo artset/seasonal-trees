@@ -2,6 +2,7 @@
 #include <QMouseEvent>
 #include <sstream>
 
+#include "shapes/Island.h"
 #include "shapes/RoundedCylinder.h"
 #include "shapes/Leaf.h"
 #include "shapes/sphere.h"
@@ -17,8 +18,6 @@
 #include "glm/gtx/transform.hpp"  // glm::translate, scale, rotate
 #include "glm/gtc/type_ptr.hpp" // glm::value_ptr
 
-
-
 UniformVariable *GLWidget::s_skybox = NULL;
 UniformVariable *GLWidget::s_projection = NULL;
 UniformVariable *GLWidget::s_model = NULL;
@@ -27,12 +26,14 @@ UniformVariable *GLWidget::s_mvp = NULL;
 UniformVariable *GLWidget::s_time = NULL;
 UniformVariable *GLWidget::s_size = NULL;
 UniformVariable *GLWidget::s_mouse = NULL;
+UniformVariable *GLWidget::s_normalMap = NULL;
 
 std::vector<UniformVariable*> *GLWidget::s_staticVars = NULL;
 
 GLWidget::GLWidget(QGLFormat format, QWidget *parent)
     : QGLWidget(format, parent), m_sphere(nullptr), m_cube(nullptr), m_shape(nullptr), skybox_cube(nullptr),
-      m_tree(std::make_unique<Tree>())
+      m_tree(std::make_unique<Tree>()),
+      m_textureID(0)
 {
     camera = new OrbitingCamera();
     QObject::connect(camera, SIGNAL(viewChanged(glm::mat4)), this, SLOT(viewChanged(glm::mat4)));
@@ -51,7 +52,7 @@ GLWidget::GLWidget(QGLFormat format, QWidget *parent)
 
     changeAnimMode(ANIM_NONE);
 
-    drawWireframe = true;
+    drawWireframe = false;
     wireframeMode = WIREFRAME_NORMAL;
     mouseDown = false;
     setMouseTracking(true);
@@ -71,6 +72,8 @@ GLWidget::~GLWidget() {
     foreach (const UniformVariable *v, permUniforms) {
         delete v;
     }
+
+    glDeleteTextures(1, &m_textureID);
 }
 
 bool GLWidget::saveUniforms(QString path)
@@ -135,11 +138,13 @@ void GLWidget::initializeGL() {
     glDisable(GL_BLEND);
     glEnable(GL_TEXTURE_CUBE_MAP_SEAMLESS);
 
-    default_shader = ResourceLoader::newShaderProgram(context(), ":/shaders/default.vert", ":/shaders/default.frag");
     skybox_shader = ResourceLoader::newShaderProgram(context(), ":/shaders/skybox.vert", ":/shaders/skybox.frag");
     wireframe_shader = ResourceLoader::newShaderProgram(context(), ":/shaders/standard.vert", ":/shaders/color.frag");
     phong_shader = ResourceLoader::newShaderProgram(context(), ":/shaders/light.vert", ":/shaders/light.frag");
     leaf_shader = ResourceLoader::newShaderProgram(context(), ":/shaders/leaf.vert", ":/shaders/leaf.frag");
+    normal_mapping_shader = ResourceLoader::newShaderProgram(context(), ":/shaders/normal_map.vert", ":/shaders/normal_map.frag");
+    island_shader = ResourceLoader::newShaderProgram(context(), ":/shaders/island.vert", ":/shaders/island.frag");
+    glass_shader = ResourceLoader::newShaderProgram(context(), ":/shaders/glass.vert", ":/shaders/glass.frag");
 
     s_skybox = new UniformVariable(this->context()->contextHandle());
     s_skybox->setName("skybox");
@@ -176,6 +181,11 @@ void GLWidget::initializeGL() {
     s_mouse->setName("mouse");
     s_mouse->setType(UniformVariable::TYPE_FLOAT3);
 
+    s_normalMap = new UniformVariable(this->context()->contextHandle());
+    s_normalMap->setName("normalMap");
+    s_normalMap->setType(UniformVariable::TYPE_TEX2D);
+    s_normalMap->parse(":/images/images/bark.jpg");
+
     s_staticVars->push_back(s_skybox);
     s_staticVars->push_back(s_model);
     s_staticVars->push_back(s_projection);
@@ -185,24 +195,30 @@ void GLWidget::initializeGL() {
     s_staticVars->push_back(s_size);
     s_staticVars->push_back(s_mouse);
 
+    s_staticVars->push_back(s_normalMap);
+
     gl = QOpenGLFunctions(context()->contextHandle());
 
-    const int NUM_FLOATS_PER_VERTEX = 3;
+    const int NUM_FLOATS_PER_VERTEX = 11; // 3(vert) + 3(norm) + 2(uv) + 3(tangent)
 
-    std::unique_ptr<Shape> sphere = std::make_unique<RoundedCylinder>(7, 7);
+    std::unique_ptr<Shape> sphere = std::make_unique<Cylinder>(1, 7);
     std::vector<GLfloat> sphereData = sphere->getData();
     m_sphere = std::make_unique<OpenGLShape>();
-    m_sphere->setVertexData(&sphereData[0], sphereData.size(), VBO::GEOMETRY_LAYOUT::LAYOUT_TRIANGLES, sphereData.size());
+    m_sphere->setVertexData(&sphereData[0], sphereData.size(), VBO::GEOMETRY_LAYOUT::LAYOUT_TRIANGLES, sphereData.size() / NUM_FLOATS_PER_VERTEX);
     m_sphere->setAttribute(ShaderAttrib::POSITION, 3, 0, VBOAttribMarker::DATA_TYPE::FLOAT, false);
     m_sphere->setAttribute(ShaderAttrib::NORMAL, 3, 3*sizeof(GLfloat), VBOAttribMarker::DATA_TYPE::FLOAT, false);
+    m_sphere->setAttribute(ShaderAttrib::TEXCOORD, 2, (3+3)*sizeof(GLfloat), VBOAttribMarker::DATA_TYPE::FLOAT, false);
+    m_sphere->setAttribute(ShaderAttrib::TANGENT, 3, (2+3+3)*sizeof(GLfloat), VBOAttribMarker::DATA_TYPE::FLOAT, false);
     m_sphere->buildVAO();
 
     std::unique_ptr<Shape> test = std::make_unique<Leaf>(6, 1);
     std::vector<GLfloat> testData = test->getData();
     m_cube = std::make_unique<OpenGLShape>();
-    m_cube->setVertexData(&testData[0], testData.size(), VBO::GEOMETRY_LAYOUT::LAYOUT_TRIANGLES, testData.size());
+    m_cube->setVertexData(&testData[0], testData.size(), VBO::GEOMETRY_LAYOUT::LAYOUT_TRIANGLES, testData.size() / NUM_FLOATS_PER_VERTEX);
     m_cube->setAttribute(ShaderAttrib::POSITION, 3, 0, VBOAttribMarker::DATA_TYPE::FLOAT, false);
     m_cube->setAttribute(ShaderAttrib::NORMAL, 3, 3*sizeof(GLfloat), VBOAttribMarker::DATA_TYPE::FLOAT, false);
+    m_cube->setAttribute(ShaderAttrib::TEXCOORD, 2, (3+3)*sizeof(GLfloat), VBOAttribMarker::DATA_TYPE::FLOAT, false);
+    m_cube->setAttribute(ShaderAttrib::TANGENT, 3, (2+3+3)*sizeof(GLfloat), VBOAttribMarker::DATA_TYPE::FLOAT, false);
     m_cube->buildVAO();
 
     std::vector<GLfloat> cubeData = CUBE_DATA_POSITIONS;
@@ -219,24 +235,53 @@ void GLWidget::initializeGL() {
     skybox_cube->buildVAO();
 
     m_cylinder = std::make_unique<OpenGLShape>();
-    std::unique_ptr<Shape> cyl = std::make_unique<RoundedCylinder>(10, 10);
+    std::unique_ptr<Shape> cyl = std::make_unique<Cylinder>(1, 7);
     std::vector<GLfloat> cylinderData = cyl->getData();
     m_cylinder = std::make_unique<OpenGLShape>();
     m_cylinder->setVertexData(&cylinderData[0], cylinderData.size(), VBO::GEOMETRY_LAYOUT::LAYOUT_TRIANGLES, cylinderData.size() / NUM_FLOATS_PER_VERTEX);
     m_cylinder->setAttribute(ShaderAttrib::POSITION, 3, 0, VBOAttribMarker::DATA_TYPE::FLOAT, false);
     m_cylinder->setAttribute(ShaderAttrib::NORMAL, 3, 3*sizeof(GLfloat), VBOAttribMarker::DATA_TYPE::FLOAT, false);
+    m_cylinder->setAttribute(ShaderAttrib::TEXCOORD, 2, (3+3)*sizeof(GLfloat), VBOAttribMarker::DATA_TYPE::FLOAT, false);
+    m_cylinder->setAttribute(ShaderAttrib::TANGENT, 3, (2+3+3)*sizeof(GLfloat), VBOAttribMarker::DATA_TYPE::FLOAT, false);
     m_cylinder->buildVAO();
 
     m_cone = std::make_unique<OpenGLShape>();
-    std::unique_ptr<Shape> cone = std::make_unique<Cone>(1, 10);
+    std::unique_ptr<Shape> cone = std::make_unique<Cone>(1, 7);
     std::vector<GLfloat> coneData = cone->getData();
     m_cone = std::make_unique<OpenGLShape>();
     m_cone->setVertexData(&coneData[0], coneData.size(), VBO::GEOMETRY_LAYOUT::LAYOUT_TRIANGLES, coneData.size() / NUM_FLOATS_PER_VERTEX);
     m_cone->setAttribute(ShaderAttrib::POSITION, 3, 0, VBOAttribMarker::DATA_TYPE::FLOAT, false);
     m_cone->setAttribute(ShaderAttrib::NORMAL, 3, 3*sizeof(GLfloat), VBOAttribMarker::DATA_TYPE::FLOAT, false);
+    m_cone->setAttribute(ShaderAttrib::TEXCOORD, 2, (3+3)*sizeof(GLfloat), VBOAttribMarker::DATA_TYPE::FLOAT, false);
+    m_cone->setAttribute(ShaderAttrib::TANGENT, 3, (2+3+3)*sizeof(GLfloat), VBOAttribMarker::DATA_TYPE::FLOAT, false);
     m_cone->buildVAO();
 
+    m_island = std::make_unique<OpenGLShape>();
+    std::unique_ptr<ShapeComponent> island = std::make_unique<Island>(4, 10, glm::mat4());
+    std::vector<GLfloat> islandData = island->getData();
+    m_island = std::make_unique<OpenGLShape>();
+    m_island->setVertexData(&islandData[0], islandData.size(), VBO::GEOMETRY_LAYOUT::LAYOUT_TRIANGLES, islandData.size()); // NUM_FLOATS_PER_VERTEX);
+    m_island->setAttribute(ShaderAttrib::POSITION, 3, 0, VBOAttribMarker::DATA_TYPE::FLOAT, false);
+    m_island->setAttribute(ShaderAttrib::NORMAL, 3, 3*sizeof(GLfloat), VBOAttribMarker::DATA_TYPE::FLOAT, false);
+    m_island->setAttribute(ShaderAttrib::TEXCOORD, 2, (3+3)*sizeof(GLfloat), VBOAttribMarker::DATA_TYPE::FLOAT, false);
+    m_island->setAttribute(ShaderAttrib::TANGENT, 3, (2+3+3)*sizeof(GLfloat), VBOAttribMarker::DATA_TYPE::FLOAT, false);
+    m_island->buildVAO();
+
     m_shape = m_sphere.get();
+
+    glGenTextures(1, &m_textureID);
+    glBindTexture(GL_TEXTURE_2D, m_textureID);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    QImage image(":/images/images/bark.png");
+    if (!image.isNull()) {
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, image.width(), image.height(), 0, GL_RGBA, GL_UNSIGNED_BYTE, image.bits());
+    } else {
+        std::cout << "Failed to load texture image" << std::endl;
+    }
+    glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 void GLWidget::resizeGL(int w, int h) {
@@ -331,22 +376,72 @@ void GLWidget::renderBranches() {
     //  Note: the wireframes won't work because it's not connected to that,
     // must choose a shader to get it working.
 
-    std::vector<glm::mat4> trans = m_tree->getBranchData();
+    std::vector<glm::mat4> body = m_tree->getBranchData().body;
     glm::mat4 original = model;
+    RenderType oldRenderType = m_renderMode;
 
+    changeRenderMode(SHAPE_CYLINDER);
+    for (int i = 0; i < static_cast<int>(body.size()); i++) {
+        model = body[i];
+        modelChanged(model);
+        modelviewProjectionChanged(camera->getProjectionMatrix() * camera->getModelviewMatrix());
+        // TODO: restore as current_shader
+        bindAndUpdateShader(phong_shader); // needed before calling draw.
+        m_shape->draw();
+    }
+
+    changeRenderMode(SHAPE_CONE);
+    std::vector<glm::mat4> tips = m_tree->getBranchData().tip;
+
+    for (int i = 0; i < static_cast<int>(tips.size()); i++) {
+        model = tips[i];
+        modelChanged(model);
+        modelviewProjectionChanged(camera->getProjectionMatrix() * camera->getModelviewMatrix());
+
+        // TODO: restore as current_shader
+        bindAndUpdateShader(phong_shader); // needed before calling draw.
+        m_shape->draw();
+    }
+
+    changeRenderMode(oldRenderType);
+    model = original; // resets model back to the init
+    // TODO: restore as current_shader
+    releaseShader(phong_shader);
+}
+
+void GLWidget::renderLeaves() {
+    std::vector<glm::mat4> trans = m_tree->getLeafData();
+
+    glm::mat4 oldModel = model;
+    glm::mat4 original = model;
+    RenderType oldRenderType = m_renderMode;
+
+    changeRenderMode(SHAPE_LEAF);
     for (int i = 0; i < static_cast<int>(trans.size()); i++) {
         model = trans[i];
         modelChanged(model);
         modelviewProjectionChanged(camera->getProjectionMatrix() * camera->getModelviewMatrix());
-        bindAndUpdateShader(current_shader); // needed before calling draw.
+
+        //Set color based on season
+        if (settings.season == 0){
+            leaf_shader->setUniformValue("color", QVector4D(0.13f, 0.54f, 0.12f, 0.f));
+        } else if (settings.season == 1){
+            leaf_shader->setUniformValue("color", QVector4D(0.9f, 0.6f, 0.3f, 0.f));
+        } else {
+            leaf_shader->setUniformValue("color", QVector4D(0.2f, 0.8f, 0.3f, 0.f));
+        }
+
+        bindAndUpdateShader(leaf_shader); // needed before calling draw.
         m_shape->draw();
     }
-    model = original; // resets model back to the init
-
-    releaseShader(current_shader);
+    // reset states
+    changeRenderMode(oldRenderType); // honestly not sure if this should happen in for loop :0
+    model = original;
+    releaseShader(leaf_shader);
 }
 
-void GLWidget::renderLeaves() {
+
+void GLWidget::renderSingleLeaf() {
     glm::mat4 oldModel = model;
     model = glm::scale(glm::mat4(), glm::vec3(settings.leafSize, .5, 1.f));
     modelChanged(model);
@@ -355,7 +450,7 @@ void GLWidget::renderLeaves() {
 
     //Set color based on season
     if (settings.season == 0){
-        leaf_shader->setUniformValue("color", QVector4D(0.f, 1.f, 0.f, 0.f));
+        leaf_shader->setUniformValue("color", QVector4D(0.2f, .8f, 0.3f, 0.f));
     } else if (settings.season == 1){
         leaf_shader->setUniformValue("color", QVector4D(0.9f, 0.6f, 0.3f, 0.f));
     } else {
@@ -366,9 +461,30 @@ void GLWidget::renderLeaves() {
     releaseShader(leaf_shader);
 }
 
+void GLWidget::renderIsland() {
+    RenderType oldRenderType = m_renderMode;
+    glm::mat4 scale = glm::scale(glm::mat4(), glm::vec3(1.f, .2f, 1.f));
+    glm::mat4 translate = glm::translate(glm::mat4(), glm::vec3(0.f, -.55f, 0.f));
+
+    model = translate * scale * model;
+    modelChanged(model);
+    modelviewProjectionChanged(camera->getProjectionMatrix() * camera->getModelviewMatrix());
+
+    bindAndUpdateShader(glass_shader);
+
+    changeRenderMode(SHAPE_ISLAND);
+    m_shape->draw();
+
+    releaseShader(glass_shader);
+    changeRenderMode(oldRenderType);
+}
+
+
+
 void GLWidget::renderPhongLighting(){
 
 }
+
 // TODO: any changes to the UI component should also add to this function.
 bool GLWidget::hasSettingsChanged() {
     if (m_settings.treeOption != settings.treeOption){
@@ -383,6 +499,9 @@ bool GLWidget::hasSettingsChanged() {
             m_settings.angle != settings.angle) {
         m_settings.recursions = settings.recursions;
         m_settings.angle = settings.angle;
+        return true;
+    } if (m_settings.leafSize != settings.leafSize) {
+        m_settings.leafSize = settings.leafSize;
         return true;
     }
     return false;
@@ -404,28 +523,27 @@ void GLWidget::paintGL() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     if (m_shape) {
-        if (m_renderMode == SHAPE_CYLINDER || m_renderMode == SHAPE_CONE) {
+        if (m_renderMode == SHAPE_TREE) {
             if (hasSettingsChanged()) {
-                m_tree->buildTree(model);
+                m_tree->buildTree(model, settings.leafSize);
             } else {
                 renderBranches();
-            }
-
-        } else {// todo: remove this once all primitives are made :)
-            if (m_renderMode == SHAPE_CUBE) {
                 renderLeaves();
-            } else {
-                bindAndUpdateShader(current_shader);
-                m_shape->draw();
-                releaseShader(current_shader);
-
+                renderIsland();
             }
+        } else {// todo: remove this once texture mapping is done, along with the corresponding button.
+            bindAndUpdateShader(phong_shader);
+            glBindTexture(GL_TEXTURE_2D, m_textureID);
+            m_shape->draw();
+            glBindTexture(GL_TEXTURE_2D, 0);
+            releaseShader(phong_shader);
         }
         renderWireframe();
     }
     renderSkybox();
 }
 
+// Determines the render mode to determine which primitive to draw.
 void GLWidget::changeRenderMode(RenderType mode)
 {
     m_renderMode = mode;
@@ -442,7 +560,14 @@ void GLWidget::changeRenderMode(RenderType mode)
     case SHAPE_CONE:
         m_shape = m_cone.get();
         break;
+    case SHAPE_ISLAND:
+        m_shape = m_island.get();
+        break;
+    case SHAPE_LEAF:
+        m_shape = m_cube.get();
+        break;
     default:
+        m_shape = m_cylinder.get();
         break;
     }
 }

@@ -2,8 +2,8 @@
     <qresource prefix="/shaders">
         <file>skybox.frag</file>
         <file>standard.vert</file>
-        <file>default.frag</file>
-        <file>default.vert</file>
+        <file>normal_map.frag</file>
+        <file>normal_map.vert</file>
         <file>skybox.vert</file>
         <file>color.frag</file>
         <file>glass.frag</file>
@@ -14,6 +14,10 @@
         <file>glass.vars</file>
         <file>leaf.frag</file>
         <file>leaf.vert</file>
+        <file>island.frag</file>
+        <file>island.vert</file>
+        <file>light.frag</file>
+        <file>light.vert</file>
     </qresource>
     <qresource prefix="/skybox">
         <file>negx.jpg</file>
@@ -22,5 +26,12 @@
         <file>posx.jpg</file>
         <file>posy.jpg</file>
         <file>posz.jpg</file>
+    </qresource>
+    <qresource prefix="/images">
+        <file>images/mandril.jpg</file>
+        <file>images/ostrich.jpg</file>
+        <file>images/topleft.jpg</file>
+        <file>images/chessboard.jpg</file>
+        <file>images/bark.png</file>
     </qresource>
 </RCC>

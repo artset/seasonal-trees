@@ -8,8 +8,7 @@
 
 const float Tree::BRANCH_LENGTH = 1.f;
 const glm::vec3 Tree::SCALE_FACTOR = glm::vec3(.6f, .8f, .6f);
-//const glm::vec3 Tree::INIT_SCALE_FACTOR = glm::vec3(.05f, .2f, .05f);
-// the .6f below is totally arbitrary, I'm not sure why it works
+// the .5f below is totally arbitrary, I'm not sure why it works
 const glm::vec3 Tree::TRANSLATE = glm::vec3(0, Tree::BRANCH_LENGTH * .5f, 0);
 const std::vector<glm::vec3> Tree::ROTATE_AXES = {
     glm::vec3(1.f,0,0),
@@ -49,7 +48,9 @@ std::vector<std::string> strings = {
 Tree::Tree():
     m_lsystem()
 {
-    m_branchData.reserve(settings.recursions * 2);
+    m_branchData.body.reserve(settings.recursions * 2);
+    m_branchData.tip.reserve(settings.recursions);
+    m_leafData.reserve(settings.recursions * 2);
 }
 
 Tree::~Tree() {
@@ -61,15 +62,25 @@ Tree::~Tree() {
  * @param model: The initial model matrix.
  * @return
  */
-void Tree::buildTree(const glm::mat4 &model) {
+void Tree::buildTree(const glm::mat4 &model, const float leafScale) {
+    m_leafScale = leafScale;
     addTreeOptionRule(settings.treeOption);
     float ANGLE = glm::radians(settings.angle);
     m_lsystem.setRecursion(settings.recursions);
     m_lsystem.generateSequence();
-    m_branchData.clear();
-    srand(time(NULL));
+    m_branchData.body.clear();
+    m_branchData.tip.clear();
+    m_leafData.clear();
+//    srand(time(NULL));
 
     std::string string = m_lsystem.getSequence();
+
+//    string = "F[X][-F[-X]F[-X]+X]F[X][-F[-X]F[-X]+X]+F[-X]F[-X]+X";
+//    string = "F[X][-F[-X]F[-X]+X]+F[-X]F[-X]+X";
+//    string = "F[-F[-X]F[-X]+X]F[-F[-X]F[-X]+X]+F[-X]F[-X]+X";
+
+//    std::cout << " ----- " << std::endl;
+//    std::cout << string << std::endl;
 
     std::vector<char> forwardSymbols;
     forwardSymbols.reserve(m_lsystem.getRules().size());
@@ -78,6 +89,7 @@ void Tree::buildTree(const glm::mat4 &model) {
     }
 
     const glm::vec3 INIT_SCALE_FACTOR = glm::vec3(0.05f, 0.2f, 0.05f);
+
     glm::vec4 origin = glm::vec4(0, 0, 0, 1.f);
     glm::mat4 identity = glm::mat4();
     glm::mat4 initScale = glm::scale(identity, INIT_SCALE_FACTOR);
@@ -93,18 +105,25 @@ void Tree::buildTree(const glm::mat4 &model) {
         initScale,
     };
     std::vector<LState> prevStates;
+    std::vector<LState> bodyStates; // These are the LStates for the branches that will be cylinders
+                                    // Later, we add a cone cap to them.
 
-    //Parse the string
-    std::default_random_engine generator;
-    std::uniform_int_distribution<int> distribution(0, ROTATE_AXES.size());
-    int branchNum = distribution(generator);
+    // Creates a random distribution on how the angles of the branches are generated.
+    // Not necessary though for the randomnization, but leaving here for reference.
+//    std::default_random_engine generator;
+//    std::uniform_int_distribution<int> distribution(0, ROTATE_AXES.size());
+//    int branchNum = distribution(generator);
 
+    int branchNum = 0;
+
+    // Parse the string
     for (size_t i = 0 ; i < string.size() ; i++) {
         switch (string[i]) {
             case '-': {
                 //Rotate the current rotation matrix to the left
                 glm::vec3 axis = getRotateAxis(branchNum);
-                currState.rotate = glm::rotate(-ANGLE, axis) * currState.rotate;
+                float newAngle = getRandomAngle(branchNum, ANGLE);
+                currState.rotate = glm::rotate(-newAngle, axis) * currState.rotate;
                 if (currState.length == 0) {
                     //Need to update initial state for branch that hasn't been drawn yet
                     currState.initialRotate = currState.rotate;
@@ -114,7 +133,8 @@ void Tree::buildTree(const glm::mat4 &model) {
             case '+': {
                 //Rotate the current rotation matrix to the right
                 glm::vec3 axis = getRotateAxis(branchNum);
-                currState.rotate = glm::rotate(ANGLE, axis) * currState.rotate;
+                float newAngle = getRandomAngle(branchNum, ANGLE);
+                currState.rotate = glm::rotate(newAngle, axis) * currState.rotate;
                 if (currState.length == 0) {
                     //Need to update initial state for branch that hasn't been drawn yet
                     currState.initialRotate = currState.rotate;
@@ -130,7 +150,8 @@ void Tree::buildTree(const glm::mat4 &model) {
             }
             case ']': {
                 //Resume parsing with the last saved state (the current branch is closed)
-                m_branchData.push_back(getBranchTransform(model, currState));
+                m_branchData.tip.push_back(getBranchTransform(model, currState)); // Pushes as a tip because it's the last of the branch.
+                buildLeaves(model, currState, branchNum);
                 currState = prevStates.back();
                 prevStates.pop_back();
                 break;
@@ -148,7 +169,15 @@ void Tree::buildTree(const glm::mat4 &model) {
 
                 if (isNewBranch) {
                     LState branchInitState = getBranchInitialStateTransforms(currState);
-                    m_branchData.push_back(getBranchTransform(model, branchInitState));
+
+                    // When we are in the middle of a branch, we want to push it as a cylinder. Potentially questionable
+                    // But it looks ok
+                    std::string bracket = "]";
+                    if (i < string.size() - 1 && string[i+1] != bracket[0]) {
+                        bodyStates.push_back(branchInitState);
+                    } else { // otherwise, we push as a tip.
+                        m_branchData.tip.push_back(getBranchTransform(model, branchInitState));
+                    }
                     currState = createNewBranchState(currState);
                 }
 
@@ -166,12 +195,114 @@ void Tree::buildTree(const glm::mat4 &model) {
 
     }
 
+    // Going through all the ones that are cylinders, and places a cone at the top
+    for (size_t i = 0; i < bodyStates.size(); i++) {
+        LState savedState = bodyStates[i];
+        // Pushes cylinder to be rendered.
+        m_branchData.body.push_back(getBranchTransform(model, savedState));
+
+        // Trial and error for numbers
+        glm::mat4 newScale = glm::scale(glm::mat4(), glm::vec3(1.f, .2f, 1.f));
+        glm::mat4 newTrans = glm::translate(glm::mat4(), glm::vec3(0.f, Tree::BRANCH_LENGTH * .43f, 0.f));
+
+        savedState.length += BRANCH_LENGTH;
+        //This is the translation out from the current branch
+        glm::mat4 t = getBranchTransform(model, savedState)  * newTrans * newScale;
+        m_branchData.tip.push_back(t);
+    }
+
     if (currState.length != 0) {
-        m_branchData.push_back(getBranchTransform(model, currState));
+        m_branchData.tip.push_back(getBranchTransform(model, currState));
     }
     if (prevStates.size() != 0) {
         std::cout << "Missed " << prevStates.size() << " cached states" << std::endl;
     }
+}
+
+
+/**
+ * Adds the leaf data to the member variable. If it's not a 2D array, will add
+ * 3 leaves per branch.
+ * @brief Tree::buildLeaves
+ * @param model
+ * @param state
+ * @param branchLevel
+ */
+void Tree::buildLeaves(const glm::mat4 &model, const LState &state, const int branchLevel) {
+    m_leafData.push_back(getLeafTransform(model, state, branchLevel, TOP));
+
+    // In the 2D case (binary tree) we do not render all the leaves for the sake of space.
+    if (!m_is2D) {
+        m_leafData.push_back(getLeafTransform(model, state, branchLevel, LEFT));
+        m_leafData.push_back(getLeafTransform(model, state, branchLevel, RIGHT));
+    }
+}
+
+/**
+ * Gets the transformation of the leaf, given the branch state.
+ * @brief Tree::getLeafTransform
+ * @param model
+ * @param state
+ * @param branchNum
+ * @return
+ */
+glm::mat4 Tree::getLeafTransform(const glm::mat4 &model, const LState &state, const int branchLevel, LeafDir dir) {
+    if (state.length == 0) {
+        return glm::mat4(0);
+    }
+
+    // Positioning a leaf to be at the end of the branch.
+    glm::mat4 INIT_ROTATE = glm::rotate(glm::radians(90.f), Tree::ROTATE_AXES[2]);
+    glm::mat4 INIT_TRANSLATE = glm::translate(glm::mat4(), glm::vec3(0.f, 7.5f + 1.f * Tree::BRANCH_LENGTH, 0.f));
+    glm::mat4 INIT_SCALE = glm::scale(glm::mat4(), glm::vec3(m_leafScale, .8, 1.f)); // Scales to size of branches.
+
+    if (dir == LEFT) { // A leaf for the left side
+        INIT_ROTATE = glm::rotate(glm::radians(50.f), getRotateAxis(branchLevel - 1));
+        INIT_TRANSLATE = glm::translate(glm::mat4(), glm::vec3(1.f,  Tree::BRANCH_LENGTH, 0.f));
+        INIT_SCALE = glm::scale(glm::mat4(), glm::vec3(m_leafScale, .8, 1.f)); // Scales to size of branches.
+    } else if (dir == RIGHT) { // A leaf for right side
+        INIT_ROTATE = glm::rotate(glm::radians(-50.f), getRotateAxis(branchLevel - 1));
+        INIT_TRANSLATE = glm::translate(glm::mat4(), glm::vec3(-1.f,  Tree::BRANCH_LENGTH, 0.f));
+        INIT_SCALE = glm::scale(glm::mat4(), glm::vec3(m_leafScale, .8, 1.f)); // Scales to size of branches.
+    }
+    glm::mat4 scale = glm::scale(glm::mat4(), glm::vec3(.01f, .01f, .01f));
+    glm::mat4 rotate = state.rotate;
+    glm::mat4 translate = state.translate;
+    return translate * rotate * scale * INIT_TRANSLATE * INIT_ROTATE * INIT_SCALE * model;
+}
+
+
+//Calculates the overall transformation matrix of a branch given its current state
+glm::mat4 Tree::getBranchTransform (const glm::mat4 &model, const LState &state) {
+    if (state.length == 0) {
+        return glm::mat4(0);
+    }
+    glm::mat4 selfScale = glm::scale(glm::mat4(), { 1.f, BRANCH_LENGTH * state.length, 1.f });
+    return state.translate * state.rotate * state.scale * (selfScale) * model;
+};
+
+//Produces an LState with all of the initial values of the given state
+//except for the length
+LState Tree::getBranchInitialStateTransforms(const LState &state) {
+    LState initState = state;
+    initState.rotate = initState.initialRotate;
+    initState.scale = initState.initialScale;
+    return initState;
+};
+
+
+//Initializes the state of a child branching off from the given state
+LState Tree::createNewBranchState(const LState &state) {
+    LState newState = state;
+    newState.initialRotate = newState.rotate;
+    newState.initialScale = newState.scale;
+    newState.length = 0;
+    return newState;
+};
+
+// Returns a struct of all the branch data.
+Branch Tree::getBranchData() {
+    return m_branchData;
 }
 
 /**
@@ -224,70 +355,42 @@ void Tree::addTreeOptionRule(int treeOption){
             m_lsystem.addRule("F", "F");
             m_lsystem.addRule("F", "F[X]");
             // End visual patch
-
             m_lsystem.addRule("X", "F[-X]F[-X]+X");
             m_is2D = false;
             break;
         //Stochastic Fuzzy Weed
         case 5:
             m_lsystem.setAxiom("X");
-            m_lsystem.addRule("F", "FF"); // Original Rule
 
-            // Temp Visual Patch
+            // Temporary visual patch as the FF creates this long string
             m_lsystem.addRule("F", "F");
-            m_lsystem.addRule("F", "F[+X]");
-            m_lsystem.addRule("F", "F[-X]");
-            // End Visual Patch
+            m_lsystem.addRule("F", "F[X]");
+            // End visual patch
 
-            m_lsystem.addRule("X", "F-[[X]+X]+F[+FX]-X");
-            m_lsystem.addRule("X", "F+[[X]-X]-F[-FX]+X");
+            m_lsystem.addRule("X", "F[-X]F[-X]");
+            m_lsystem.addRule("X", "F[-X]F[-X]+X");
+            m_lsystem.addRule("X", "F[-X]F[-X]-X");
+
+            m_is2D = false;
             m_is2D = false;
             break;
 
     }
 }
 
-// Using setter and getters instead to avoid having to rebuild the tree
-// when setting toggles don't change.
-std::vector<glm::mat4> Tree::getBranchData() {
-    return m_branchData;
+// Returns a list of transformations for the leaves.
+std::vector<glm::mat4> Tree::getLeafData() {
+    return m_leafData;
 }
 
-glm::vec3 Tree::getRotateAxis(int branchNum) {
+// Returns the access to rotate the branch upon. In the 2 dimensional space
+// it is always along the same axis.
+glm::vec3 Tree::getRotateAxis(const int branchNum) {
     if (m_is2D) {
        return Tree::ROTATE_AXES[2];
     }
     return Tree::ROTATE_AXES[branchNum % (ROTATE_AXES.size() - 1)];
 }
-
-//Calculates the overall transformation matrix of a branch given its current state
-glm::mat4 Tree::getBranchTransform (const glm::mat4 &model, const LState &state) {
-    if (state.length == 0) {
-        return glm::mat4(0);
-    }
-    glm::mat4 selfScale = glm::scale(glm::mat4(), { 1.f, BRANCH_LENGTH * state.length, 1.f });
-    return state.translate * state.rotate * state.scale * (selfScale) * model;
-};
-
-//Produces an LState with all of the initial values of the given state
-//except for the length
-LState Tree::getBranchInitialStateTransforms(const LState &state) {
-    LState initState = state;
-    initState.rotate = initState.initialRotate;
-    initState.scale = initState.initialScale;
-    return initState;
-};
-
-
-//Initializes the state of a child branching off from the given state
-LState Tree::createNewBranchState(const LState &state) {
-    LState newState = state;
-    newState.initialRotate = newState.rotate;
-    newState.initialScale = newState.scale;
-    newState.length = 0;
-    return newState;
-};
-
 
 //Determines if two matrices are equal within epsilon
 bool Tree::matEq(const glm::mat4 &A, const glm::mat4 &B) {
@@ -302,16 +405,16 @@ bool Tree::matEq(const glm::mat4 &A, const glm::mat4 &B) {
 };
 
 // Returns some variance to the original angle by some random degree.
-// Potentially let the RANGE be decided by the UI?
+// Potentially let the RANGE be decided by the UI. Not using rn.
 float Tree::getRandomAngle(const int &branchNum, const float &angle) {
-    int RANGE = 2;
+    int MAX_LEVEL = 10; // Value was determined by trial and error
+    if (branchNum < MAX_LEVEL) { // Only creates a wider angle if we are deeper in tree.
+        return angle;
+    }
+    int RANGE = 5;
     std::default_random_engine generator;
     std::uniform_int_distribution<int> distribution(0, RANGE);
     int newAngle = glm::radians(distribution(generator) * 1.f);
-
-    if (branchNum % 2) {
-        return angle - newAngle;
-    }
     return angle + newAngle;
 };
 

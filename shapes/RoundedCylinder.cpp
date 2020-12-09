@@ -16,7 +16,7 @@ RoundedCylinder::~RoundedCylinder()
 {
 }
 
-const int RoundedCylinder::COMPONENT_COUNT = 3;
+const int RoundedCylinder::COMPONENT_COUNT = 2;
 
 
 std::vector<GLfloat> RoundedCylinder::getData() {
@@ -30,6 +30,7 @@ std::vector<GLfloat> RoundedCylinder::getData() {
     glm::mat4 sphereScale = glm::scale(glm::mat4(), glm::vec3(1.f, .2f, 1.f));
     glm::mat4 sphereTrans = glm::translate(glm::mat4(), glm::vec3(0.f, .5f, 0.f));
 
+    // what's the reason for this?
     std::unique_ptr<ShapeComponent> s =
         std::make_unique<CircleComponent>(
             m_param1, m_param2, m_transformation * rotate

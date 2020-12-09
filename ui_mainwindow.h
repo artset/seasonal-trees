@@ -11,7 +11,6 @@
 
 #include <QtCore/QVariant>
 #include <QtWidgets/QApplication>
-#include <QtWidgets/QCheckBox>
 #include <QtWidgets/QComboBox>
 #include <QtWidgets/QFrame>
 #include <QtWidgets/QGridLayout>
@@ -41,9 +40,7 @@ public:
     QFrame *line;
     QLabel *label_2;
     QPushButton *sphereButton;
-    QPushButton *cubeButton;
-    QPushButton *cylinderTreeButton;
-    QPushButton *coneTreeButton;
+    QPushButton *treeButton;
     QSpacerItem *horizontalSpacer_4;
     QLabel *treeOptionsLabel;
     QComboBox *treeOptionsComboBox;
@@ -71,26 +68,18 @@ public:
     QPushButton *animScaleMoveButton;
     QPushButton *animRotate1Button;
     QPushButton *animRotate2Button;
-    QSpacerItem *horizontalSpacer_3;
-    QFrame *line_3;
-    QLabel *label_4;
-    QFrame *line_4;
-    QLabel *label_5;
-    QCheckBox *wireframeCheckbox;
-    QCheckBox *checkBox;
     QSpacerItem *verticalSpacer;
+    QFrame *line_2;
+    QFrame *line_3;
     QVBoxLayout *verticalLayout_2;
     QSpacerItem *horizontalSpacer;
     QVBoxLayout *verticalLayout_3;
-    QPushButton *tipsButton;
-    QVBoxLayout *uniformContainerUI;
-    QSpacerItem *verticalSpacer_2;
 
     void setupUi(QMainWindow *MainWindow)
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QString::fromUtf8("MainWindow"));
-        MainWindow->resize(978, 784);
+        MainWindow->resize(978, 849);
         MainWindow->setAutoFillBackground(false);
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QString::fromUtf8("centralWidget"));
@@ -146,20 +135,10 @@ public:
 
         verticalLayout->addWidget(sphereButton);
 
-        cubeButton = new QPushButton(centralWidget);
-        cubeButton->setObjectName(QString::fromUtf8("cubeButton"));
+        treeButton = new QPushButton(centralWidget);
+        treeButton->setObjectName(QString::fromUtf8("treeButton"));
 
-        verticalLayout->addWidget(cubeButton);
-
-        cylinderTreeButton = new QPushButton(centralWidget);
-        cylinderTreeButton->setObjectName(QString::fromUtf8("cylinderTreeButton"));
-
-        verticalLayout->addWidget(cylinderTreeButton);
-
-        coneTreeButton = new QPushButton(centralWidget);
-        coneTreeButton->setObjectName(QString::fromUtf8("coneTreeButton"));
-
-        verticalLayout->addWidget(coneTreeButton);
+        verticalLayout->addWidget(treeButton);
 
         horizontalSpacer_4 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
 
@@ -308,9 +287,16 @@ public:
 
         verticalLayout->addWidget(animRotate2Button);
 
-        horizontalSpacer_3 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+        verticalSpacer = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
 
-        verticalLayout->addItem(horizontalSpacer_3);
+        verticalLayout->addItem(verticalSpacer);
+
+        line_2 = new QFrame(centralWidget);
+        line_2->setObjectName(QString::fromUtf8("line_2"));
+        line_2->setFrameShape(QFrame::HLine);
+        line_2->setFrameShadow(QFrame::Sunken);
+
+        verticalLayout->addWidget(line_2);
 
         line_3 = new QFrame(centralWidget);
         line_3->setObjectName(QString::fromUtf8("line_3"));
@@ -318,40 +304,6 @@ public:
         line_3->setFrameShadow(QFrame::Sunken);
 
         verticalLayout->addWidget(line_3);
-
-        label_4 = new QLabel(centralWidget);
-        label_4->setObjectName(QString::fromUtf8("label_4"));
-
-        verticalLayout->addWidget(label_4);
-
-        line_4 = new QFrame(centralWidget);
-        line_4->setObjectName(QString::fromUtf8("line_4"));
-        line_4->setFrameShape(QFrame::HLine);
-        line_4->setFrameShadow(QFrame::Sunken);
-
-        verticalLayout->addWidget(line_4);
-
-        label_5 = new QLabel(centralWidget);
-        label_5->setObjectName(QString::fromUtf8("label_5"));
-
-        verticalLayout->addWidget(label_5);
-
-        wireframeCheckbox = new QCheckBox(centralWidget);
-        wireframeCheckbox->setObjectName(QString::fromUtf8("wireframeCheckbox"));
-        wireframeCheckbox->setFocusPolicy(Qt::StrongFocus);
-        wireframeCheckbox->setChecked(true);
-        wireframeCheckbox->setTristate(false);
-
-        verticalLayout->addWidget(wireframeCheckbox);
-
-        checkBox = new QCheckBox(centralWidget);
-        checkBox->setObjectName(QString::fromUtf8("checkBox"));
-
-        verticalLayout->addWidget(checkBox);
-
-        verticalSpacer = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
-
-        verticalLayout->addItem(verticalSpacer);
 
 
         horizontalLayout->addLayout(verticalLayout);
@@ -371,21 +323,6 @@ public:
         verticalLayout_3 = new QVBoxLayout();
         verticalLayout_3->setSpacing(6);
         verticalLayout_3->setObjectName(QString::fromUtf8("verticalLayout_3"));
-        tipsButton = new QPushButton(centralWidget);
-        tipsButton->setObjectName(QString::fromUtf8("tipsButton"));
-
-        verticalLayout_3->addWidget(tipsButton);
-
-        uniformContainerUI = new QVBoxLayout();
-        uniformContainerUI->setSpacing(6);
-        uniformContainerUI->setObjectName(QString::fromUtf8("uniformContainerUI"));
-
-        verticalLayout_3->addLayout(uniformContainerUI);
-
-        verticalSpacer_2 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
-
-        verticalLayout_3->addItem(verticalSpacer_2);
-
 
         horizontalLayout->addLayout(verticalLayout_3);
 
@@ -409,9 +346,7 @@ public:
         shader2Button->setText(QCoreApplication::translate("MainWindow", "Glass", nullptr));
         label_2->setText(QCoreApplication::translate("MainWindow", "Shapes:", nullptr));
         sphereButton->setText(QCoreApplication::translate("MainWindow", "Sphere", nullptr));
-        cubeButton->setText(QCoreApplication::translate("MainWindow", "Cube", nullptr));
-        cylinderTreeButton->setText(QCoreApplication::translate("MainWindow", "Cylinder", nullptr));
-        coneTreeButton->setText(QCoreApplication::translate("MainWindow", "Cone", nullptr));
+        treeButton->setText(QCoreApplication::translate("MainWindow", "Tree", nullptr));
         treeOptionsLabel->setText(QCoreApplication::translate("MainWindow", "Tree Options:", nullptr));
         recursionsLabel->setText(QCoreApplication::translate("MainWindow", "Number of recursions:", nullptr));
         leafSizeLabel->setText(QCoreApplication::translate("MainWindow", "Leaf Size:", nullptr));
@@ -428,11 +363,6 @@ public:
         animScaleMoveButton->setText(QCoreApplication::translate("MainWindow", "Move + Scale", nullptr));
         animRotate1Button->setText(QCoreApplication::translate("MainWindow", "Rotate1", nullptr));
         animRotate2Button->setText(QCoreApplication::translate("MainWindow", "Rotate2", nullptr));
-        label_4->setText(QCoreApplication::translate("MainWindow", "Options:", nullptr));
-        label_5->setText(QCoreApplication::translate("MainWindow", "Wireframe:", nullptr));
-        wireframeCheckbox->setText(QCoreApplication::translate("MainWindow", "Enabled", nullptr));
-        checkBox->setText(QCoreApplication::translate("MainWindow", "Use Vertex Shader", nullptr));
-        tipsButton->setText(QCoreApplication::translate("MainWindow", "Tips", nullptr));
     } // retranslateUi
 
 };

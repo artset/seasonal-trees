@@ -12,7 +12,7 @@ protected:
     void setData() override;
     virtual glm::vec3 getNormal(glm::vec3 vert) override;
 private:
-    void setFan(std::vector<glm::vec3> &triangles, int angleIndex);
+    void setFan(int angleIndex);
     static const float HEIGHT;
     static const float TIP;
     static const float RADIUS;

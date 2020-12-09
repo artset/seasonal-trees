@@ -16,7 +16,7 @@ class QGLShaderProgram;
 
 #define colorToArgs(floatArray) floatArray[0], floatArray[1], floatArray[2], floatArray[3]
 
-enum RenderType { SHAPE_SPHERE, SHAPE_CUBE, SHAPE_CYLINDER, SHAPE_CONE };
+enum RenderType { SHAPE_TREE, SHAPE_SPHERE, SHAPE_CUBE, SHAPE_CYLINDER, SHAPE_CONE, SHAPE_ISLAND, SHAPE_LEAF};
 
 enum AnimType { ANIM_NONE, ANIM_MOVE, ANIM_SCALE, ANIM_MOVE_AND_SCALE, ANIM_ROTATE, ANIM_ROTATE_2};
 
@@ -41,6 +41,8 @@ public:
     static UniformVariable* s_time;
     static UniformVariable* s_size;
     static UniformVariable* s_mouse;
+
+    static UniformVariable* s_normalMap;
 
     static std::vector<UniformVariable*> *s_staticVars;
 
@@ -82,6 +84,8 @@ protected:
     void renderBranches();
     void renderLeaves();
     void renderSkybox();
+    void renderIsland();
+    void renderSingleLeaf();
     void renderPhongLighting();
     bool hasSettingsChanged();
 
@@ -92,6 +96,8 @@ private:
     std::unique_ptr<OpenGLShape> m_cube;
     std::unique_ptr<OpenGLShape> m_cone;
     std::unique_ptr<OpenGLShape> m_roundedCylinder;
+    std::unique_ptr<OpenGLShape> m_island;
+
 
     OpenGLShape *m_shape;
     Camera *camera;
@@ -101,9 +107,12 @@ private:
     QGLShaderProgram *wireframe_shader2;
     QGLShaderProgram *current_shader;
     QGLShaderProgram *phong_shader;
-    QGLShaderProgram *default_shader;
 
     QGLShaderProgram *leaf_shader;
+    QGLShaderProgram *normal_mapping_shader;
+    QGLShaderProgram *island_shader;
+    QGLShaderProgram *glass_shader;
+
 
     QList<const UniformVariable*> *activeUniforms;
     QList<const UniformVariable*> permUniforms;
@@ -128,6 +137,7 @@ private:
 
     bool mouseDown;
     std::unique_ptr<Tree> m_tree;// Tree with L System
+    GLuint m_textureID;
     Settings m_settings;  // Local version of settings to keep track of changes.
 
 };
