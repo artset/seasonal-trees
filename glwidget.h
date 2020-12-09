@@ -86,7 +86,6 @@ protected:
     void renderSkybox();
     void renderIsland();
     void renderSingleLeaf();
-    void renderPhongLighting();
     bool hasSettingsChanged();
 
 private:

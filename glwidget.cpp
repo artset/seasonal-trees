@@ -222,11 +222,6 @@ void GLWidget::initializeGL() {
     m_cube->buildVAO();
 
     std::vector<GLfloat> cubeData = CUBE_DATA_POSITIONS;
-//    m_cube = std::make_unique<OpenGLShape>();
-//    m_cube->setVertexData(&cubeData[0], cubeData.size(), VBO::GEOMETRY_LAYOUT::LAYOUT_TRIANGLES, NUM_CUBE_VERTICES);
-//    m_cube->setAttribute(ShaderAttrib::POSITION, 3, 0, VBOAttribMarker::DATA_TYPE::FLOAT, false);
-//    m_cube->setAttribute(ShaderAttrib::NORMAL, 3, 3*sizeof(GLfloat), VBOAttribMarker::DATA_TYPE::FLOAT, false);
-//    m_cube->buildVAO();
 
     skybox_cube = std::make_unique<OpenGLShape>();
     skybox_cube->setVertexData(&cubeData[0], cubeData.size(), VBO::GEOMETRY_LAYOUT::LAYOUT_TRIANGLES, NUM_CUBE_VERTICES);
@@ -477,12 +472,6 @@ void GLWidget::renderIsland() {
 
     releaseShader(glass_shader);
     changeRenderMode(oldRenderType);
-}
-
-
-
-void GLWidget::renderPhongLighting(){
-
 }
 
 // TODO: any changes to the UI component should also add to this function.

@@ -87,14 +87,6 @@ void MainWindow::on_treeButton_clicked() {
     m_glwidget->changeRenderMode(SHAPE_TREE);
 }
 
-//void MainWindow::on_coneTreeButton_clicked() {
-//    m_glwidget->changeRenderMode(SHAPE_CONE);
-//}
-
-//void MainWindow::on_cubeButton_clicked() {
-//    m_glwidget->changeRenderMode(SHAPE_CUBE);
-//}
-
 void MainWindow::loadShader(QString vert, QString frag) {
     QString error;
     if (m_oldFrag != "" && !m_hasError)
@@ -143,7 +135,6 @@ void MainWindow::init()
 void MainWindow::handleUniformDeleted(UniformWidget *deleted)
 {
     m_glwidget->uniformDeleted(deleted->getUniform());
-//    deleted->removeFrom(ui->uniformContainerUI/*uniformLayout*/);
     m_uniforms.removeAll(deleted);
 }
 
@@ -168,7 +159,6 @@ void MainWindow::changeUniform(const QString &name, const QString &newVal)
 void MainWindow::addUniform(UniformVariable::Type type, const QString &name, bool editable, int size)
 {
     UniformWidget *newWidget = new UniformWidget(m_glwidget->context()->contextHandle(), m_glwidget, type, name, editable, size);
-//    newWidget->addTo(ui->uniformContainerUI/*uniformLayout*/);
     QObject::connect(newWidget, SIGNAL(deleted(UniformWidget*)), this, SLOT(handleUniformDeleted(UniformWidget*)));
     QObject::connect(this, SIGNAL(removeUniforms()), newWidget, SLOT(deleteUniform()));
     m_glwidget->uniformAdded(newWidget->getUniform());
@@ -179,7 +169,6 @@ void MainWindow::addUniform(UniformVariable::Type type, const QString &name, boo
 void MainWindow::addUniform(UniformVariable *uniform, bool editable)
 {
     UniformWidget *newWidget = new UniformWidget(uniform, m_glwidget, editable);
-//    newWidget->addTo(ui->uniformContainerUI/*uniformLayout*/);
     QObject::connect(newWidget, SIGNAL(deleted(UniformWidget*)), this, SLOT(handleUniformDeleted(UniformWidget*)));
     QObject::connect(this, SIGNAL(removeUniforms()), newWidget, SLOT(deleteUniform()));
     QObject::connect(newWidget, SIGNAL(changed(const UniformVariable*)), m_glwidget, SLOT(uniformChanged(const UniformVariable*)));
@@ -250,10 +239,6 @@ QString tipsText = "<h2>Attributes</h2>\n"
         "<ul><li><b>&lt;mouse&gt;</b>: The location of the mouse (0,0 is upper left). z=1 if mouse is pressed, 0 if not.</li></ul>"
         "</li></ul>"
         "<p>Any questions or bugs can be emailed to the cs123 tas (cs123tas@cs.brown.edu).</p>";
-//void MainWindow::on_tipsButton_clicked()
-//{
-//    QMessageBox::information(this, "Tips", tipsText);
-//}
 
 void MainWindow::on_shader1Button_clicked()
 {
