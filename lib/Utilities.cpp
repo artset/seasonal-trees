@@ -61,12 +61,44 @@ namespace Utilities{
         glm::vec2 uv2 = computeUV(shape, v2, n2);
 
         // I don't believe the order of these matters, but I could totally be wrong
-        glm::vec3 edge0 = v1 - v0;
-        glm::vec3 edge1 = v2 - v0;
-        glm::vec2 deltaUV0 = glm::abs(uv0 - uv1);
-        glm::vec2 deltaUV1 = glm::abs(uv0 - uv2);
+        glm::vec3 edge0, edge1;
+        glm::vec2 deltaUV0, deltaUV1;
+        // it doesn't matter, this is totally unnecessary
+        if (equals(glm::dot(v1 - v0, v2 - v0), 0, 1e-4)) {
+            edge0 = glm::abs(v1 - v0);
+            edge1 = glm::abs(v2 - v0);
+            deltaUV0 = glm::abs(uv1 - uv0);
+            deltaUV1 = glm::abs(uv2 - uv0);
+            std::cout<<"1"<<std::endl;
+        }
+        else if (equals(glm::dot(v1 - v2, v0 - v2), 0, 1e-4)) {
+            edge0 = glm::abs(v1 - v2);
+            edge1 = glm::abs(v0 - v2);
+            deltaUV0 = glm::abs(uv1 - uv2);
+            deltaUV1 = glm::abs(uv0- uv2);
+            std::cout<<"2"<<std::endl;
+        }
+        else if (equals(glm::dot(v0 - v1, v2 - v1), 0, 1e-4)) {
+            edge0 = glm::abs(v0 - v1);
+            edge1 = glm::abs(v2 - v1);
+            deltaUV0 = glm::abs(uv0 - uv1);
+            deltaUV1 = glm::abs(uv2- uv1);
+            std::cout<<"3"<<std::endl;
+        }
 
         glm::vec3 tangent = getTriangleTangentVec(edge0, edge1, deltaUV0, deltaUV1);
+
+//        if (shape == PrimitiveType::PRIMITIVE_CUBE) {
+//            std::cout << glm::to_string(tangent) <<std::endl;
+//            std::cout << glm::to_string(deltaUV0) <<std::endl;
+//            std::cout << glm::to_string(deltaUV1) <<std::endl;
+            std::cout << glm::to_string(uv0) <<std::endl;
+            std::cout << glm::to_string(uv1) <<std::endl;
+            std::cout << glm::to_string(uv2) <<std::endl;
+            std::cout << glm::to_string(deltaUV0) <<std::endl;
+            std::cout << glm::to_string(deltaUV1) <<std::endl<<std::endl;
+
+//        }
 
         if (transformation != glm::mat4(1.f)) {
             v0 = (transformation * glm::vec4(v0, 1)).xyz();
@@ -81,7 +113,7 @@ namespace Utilities{
     //        uv1 = (transformation * glm::vec4(uv1, 0, 1)).xy();
     //        uv2 = (transformation * glm::vec4(uv2, 0, 1)).xy();
 
-            tangent = (transformation * glm::vec4(tangent, 1)).xyz();
+//            tangent = (transformation * glm::vec4(tangent, 1)).xyz();
         }
 
         insertVertexData(data, {v0, n0, uv0, tangent});

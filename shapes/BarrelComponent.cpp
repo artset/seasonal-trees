@@ -24,6 +24,11 @@ void BarrelComponent::setData() {
     int numTriangles = m_param2 * m_param1 * 2;
     triangles.reserve(numTriangles * COORDINATES_PER_TRIANGLE);
 
+    Utilities::setTriangleVertexData(m_vertexData, PrimitiveType::PRIMITIVE_CUBE, glm::mat4(),
+    { {1,-1,0}, {0,0,1} }, { {-1,1,0}, {0,0,1} }, { {-1,-1,0}, {0,0,1} });
+    Utilities::setTriangleVertexData(m_vertexData, PrimitiveType::PRIMITIVE_CUBE, glm::mat4(),
+    { {1,-1,0}, {0,0,1} }, { {1,1,0}, {0,0,1} }, { {-1,1,0}, {0,0,1} });
+
     for (int j = 0; j < m_param1; j++) {
         for (int i = 0; i < m_param2; i++) {
             // bottom left
@@ -49,9 +54,9 @@ void BarrelComponent::setData() {
             glm::vec3 n3 = getNormal(v3);
 
             // "bottom left" triangle
-            setTriangleVertexData(PrimitiveType::PRIMITIVE_CYLINDER, m_transformation, { v0, n0 }, { v1, n1 }, { v2, n2 });
+            Utilities::setTriangleVertexData(m_vertexData, PrimitiveType::PRIMITIVE_CYLINDER, m_transformation, { v0, n0 }, { v1, n1 }, { v2, n2 });
             // "upper right" triangle
-            setTriangleVertexData(PrimitiveType::PRIMITIVE_CYLINDER, m_transformation, { v1, n1 }, { v3, n3 }, { v2, n2 });
+            Utilities::setTriangleVertexData(m_vertexData, PrimitiveType::PRIMITIVE_CYLINDER, m_transformation, { v1, n1 }, { v3, n3 }, { v2, n2 });
        }
     }
 

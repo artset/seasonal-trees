@@ -262,7 +262,7 @@ void GLWidget::initializeGL() {
     m_island->setAttribute(ShaderAttrib::TANGENT, 3, (2+3+3)*sizeof(GLfloat), VBOAttribMarker::DATA_TYPE::FLOAT, false);
     m_island->buildVAO();
 
-    m_shape = m_sphere.get();
+    m_shape = m_cone.get();
 
     glGenTextures(1, &m_textureID);
     glBindTexture(GL_TEXTURE_2D, m_textureID);
@@ -270,7 +270,7 @@ void GLWidget::initializeGL() {
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    QImage image(":/images/images/bark.png");
+    QImage image(":/images/images/brickwall_normal.jpg");
     if (!image.isNull()) {
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, image.width(), image.height(), 0, GL_RGBA, GL_UNSIGNED_BYTE, image.bits());
     } else {
@@ -381,7 +381,7 @@ void GLWidget::renderBranches() {
         modelChanged(model);
         modelviewProjectionChanged(camera->getProjectionMatrix() * camera->getModelviewMatrix());
         // TODO: restore as current_shader
-        bindAndUpdateShader(phong_shader); // needed before calling draw.
+        bindAndUpdateShader(normal_mapping_shader); // needed before calling draw.
         m_shape->draw();
     }
 
@@ -394,14 +394,14 @@ void GLWidget::renderBranches() {
         modelviewProjectionChanged(camera->getProjectionMatrix() * camera->getModelviewMatrix());
 
         // TODO: restore as current_shader
-        bindAndUpdateShader(phong_shader); // needed before calling draw.
+        bindAndUpdateShader(normal_mapping_shader); // needed before calling draw.
         m_shape->draw();
     }
 
     changeRenderMode(oldRenderType);
     model = original; // resets model back to the init
     // TODO: restore as current_shader
-    releaseShader(phong_shader);
+    releaseShader(normal_mapping_shader);
 }
 
 void GLWidget::renderLeaves() {
@@ -521,11 +521,11 @@ void GLWidget::paintGL() {
                 renderIsland();
             }
         } else {// todo: remove this once texture mapping is done, along with the corresponding button.
-            bindAndUpdateShader(phong_shader);
+            bindAndUpdateShader(normal_mapping_shader);
             glBindTexture(GL_TEXTURE_2D, m_textureID);
             m_shape->draw();
             glBindTexture(GL_TEXTURE_2D, 0);
-            releaseShader(phong_shader);
+            releaseShader(normal_mapping_shader);
         }
         renderWireframe();
     }
