@@ -40,5 +40,5 @@ void main(void) {
     tangentViewPos = TBN_inv * viewPos;
 
 //    surfaceNormal = N;
-//    test = tangent;
+    test = tangent;
 }
