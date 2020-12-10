@@ -18,13 +18,11 @@ uniform mat4 model;
 uniform mat4 trans;
 
 uniform mat4 view;
-const vec3 lightPos = vec3(0, 2, 0);
-//uniform vec3 lightPos;
-//uniform vec3 viewPos;
+const vec3 lightPos = vec3(0, 0, 3);
 
 void main(void) {
     vec4 pos = mvp * vec4(position, 1);
-    gl_Position = pos; // wtf is this??
+    gl_Position = pos;
 
     vec3 N = normalize(vec3(model * vec4(normal, 0.0)));
     vec3 T = normalize(vec3(model * vec4(tangent, 0.0)));
@@ -37,11 +35,10 @@ void main(void) {
     vec3 viewPos = (inverse(view) * -1.0 * view * model * vec4(position, 0.0)).xyz;
 
     tangentFragPos = TBN_inv * (model * vec4(position, 1.0)).xyz;
-    surfaceNormal = normal;
     texCoords = aTexCoords;
     tangentLightPos = TBN_inv * lightPos;
     tangentViewPos = TBN_inv * viewPos;
 
-
-    test = T;
+//    surfaceNormal = N;
+//    test = T;
 }

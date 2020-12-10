@@ -10,13 +10,12 @@ in vec3 test;
 
 //uniform vec4 color;
 const vec4 ambientColor = vec4(1, 1, 1, 1);
-const vec4 diffuseColor = vec4(1, 1, 1, 1);
+const vec4 diffuseColor = vec4(.32,.19,.09, 1);
 const vec4 specularColor = vec4(1, 1, 1, 1);
 out vec4 fragColor;
 
 uniform float time;
 uniform sampler2D normalMap;
-uniform sampler2D textureMap;
 
 const float ambientIntensity = 0.2;
 const float diffuseIntensity = 0.7;
@@ -30,7 +29,9 @@ const float attQuadratic = 1.0;
 const vec4 lightColor = vec4(1.0,1.0,1.0,1);
 const float lightIntensity = 5.0;
 
-const float blend = 1;
+const float blend = 0;
+
+const vec4 uvColor = vec4(1,1,1,1);
 
 void main() {
     fragColor = texture(normalMap, texCoords);
@@ -38,8 +39,6 @@ void main() {
 
     vec3 tangentNormal = texture(normalMap, texCoords).rgb;
     tangentNormal = normalize(tangentNormal * 2.0 - 1.0);
-
-    vec4 uvColor = texture(textureMap, texCoords);
 
     vec4 N = vec4(tangentNormal, 0);
     vec4 L = vec4(normalize(tangentLightPos - tangentFragPos), 0);
@@ -54,11 +53,11 @@ void main() {
 
     vec4 ambient = ambientColor * ambientIntensity;
     vec4 diffuse = diffuseColor * lightColor * diffuseIntensity * clamp(dot(N, L), 0.0, 1.0);
-//    diffuse = blend * uvColor + (1 - blend) * diffuse;
+    diffuse = blend * uvColor + (1 - blend) * diffuse;
     vec4 specular = specularColor * lightColor * specularIntensity * pow(clamp(dot(V, R), 0.0, 1.0), shininess);
     float attenuation = lightIntensity * min(1.0, 1 / (attConstant + attLinear * d + attQuadratic * pow(d, 2)));
 
     fragColor = ambient + attenuation * (diffuse + specular);
-    fragColor = vec4((test + 1) / 2, 1);
+//    fragColor = vec4((test + 1) / 2, 1);
 //    fragColor = uvColor;
 }

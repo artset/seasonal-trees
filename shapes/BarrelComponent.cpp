@@ -24,6 +24,11 @@ void BarrelComponent::setData() {
     int numTriangles = m_param2 * m_param1 * 2;
     triangles.reserve(numTriangles * COORDINATES_PER_TRIANGLE);
 
+    Utilities::setTriangleVertexData(m_vertexData, PrimitiveType::PRIMITIVE_CUBE, glm::mat4(),
+    { {1,-1,0}, {0,0,1} }, { {-1,1,0}, {0,0,1} }, { {-1,-1,0}, {0,0,1} });
+    Utilities::setTriangleVertexData(m_vertexData, PrimitiveType::PRIMITIVE_CUBE, glm::mat4(),
+    { {1,1,0}, {0,0,1} }, { {-1,1,0}, {0,0,1} }, { {1,-1,0}, {0,0,1} });
+
     for (int j = 0; j < m_param1; j++) {
         for (int i = 0; i < m_param2; i++) {
             // bottom left

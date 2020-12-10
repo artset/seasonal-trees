@@ -78,7 +78,7 @@ GLWidget::~GLWidget() {
     }
 
     glDeleteTextures(1, &m_diffuseTexID);
-    glDeleteTextures(1, &m_normalTexID);
+//    glDeleteTextures(1, &m_normalTexID);
 }
 
 bool GLWidget::saveUniforms(QString path)
@@ -191,10 +191,10 @@ void GLWidget::initializeGL() {
     s_normalMap->setType(UniformVariable::TYPE_TEX2D);
     s_normalMap->parse(":/images/images/brickwall_normal.jpg");
 
-    s_textureMap = new UniformVariable(this->context()->contextHandle());
-    s_textureMap->setName("textureMap");
-    s_textureMap->setType(UniformVariable::TYPE_TEX2D);
-    s_textureMap->parse(":/images/images/brickwall.jpg");
+//    s_textureMap = new UniformVariable(this->context()->contextHandle());
+//    s_textureMap->setName("textureMap");
+//    s_textureMap->setType(UniformVariable::TYPE_TEX2D);
+//    s_textureMap->parse(":/images/images/brickwall.jpg");
 
     s_staticVars->push_back(s_skybox);
     s_staticVars->push_back(s_model);
@@ -212,7 +212,7 @@ void GLWidget::initializeGL() {
 
     const int NUM_FLOATS_PER_VERTEX = 11; // 3(vert) + 3(norm) + 2(uv) + 3(tangent)
 
-    std::unique_ptr<Shape> sphere = std::make_unique<Cone>(10, 20);
+    std::unique_ptr<Shape> sphere = std::make_unique<Cylinder>(10, 20);
     std::vector<GLfloat> sphereData = sphere->getData();
     m_sphere = std::make_unique<OpenGLShape>();
     m_sphere->setVertexData(&sphereData[0], sphereData.size(), VBO::GEOMETRY_LAYOUT::LAYOUT_TRIANGLES, sphereData.size() / NUM_FLOATS_PER_VERTEX);
@@ -281,7 +281,7 @@ void GLWidget::initializeGL() {
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
-    QImage image(":/images/images/brickwall.jpg");
+    QImage image(":/images/images/brickwall_normal.jpg");
     if (!image.isNull()) {
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, image.width(), image.height(), 0, GL_RGBA, GL_UNSIGNED_BYTE, image.bits());
     } else {
@@ -289,19 +289,19 @@ void GLWidget::initializeGL() {
     }
     glBindTexture(GL_TEXTURE_2D, 0);
 
-    glGenTextures(1, &m_normalTexID);
-    glBindTexture(GL_TEXTURE_2D, m_normalTexID);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
-    QImage image2(":/images/images/brickwall.jpg");
-    if (!image2.isNull()) {
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, image2.width(), image2.height(), 0, GL_RGBA, GL_UNSIGNED_BYTE, image2.bits());
-    } else {
-        std::cout << "Failed to load texture image" << std::endl;
-    }
-    glBindTexture(GL_TEXTURE_2D, 0);
+//    glGenTextures(1, &m_normalTexID);
+//    glBindTexture(GL_TEXTURE_2D, m_normalTexID);
+//    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+//    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+//    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+//    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+//    QImage image2(":/images/images/brickwall.jpg");
+//    if (!image2.isNull()) {
+//        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, image2.width(), image2.height(), 0, GL_RGBA, GL_UNSIGNED_BYTE, image2.bits());
+//    } else {
+//        std::cout << "Failed to load texture image" << std::endl;
+//    }
+//    glBindTexture(GL_TEXTURE_2D, 0);
 
     const_shader = normal_mapping_shader;
 }
@@ -524,6 +524,7 @@ bool GLWidget::hasSettingsChanged() {
         m_settings.ifBumpMap = settings.ifBumpMap;
         return true;
     }
+
     return false;
 }
 
@@ -542,6 +543,9 @@ void GLWidget::paintGL() {
     handleAnimation();
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+
+    const_shader = settings.ifBumpMap ? normal_mapping_shader : phong_shader;
+
     if (m_shape) {
         if (m_renderMode == SHAPE_TREE) {
             if (hasSettingsChanged()) {
@@ -555,7 +559,7 @@ void GLWidget::paintGL() {
             bindAndUpdateShader(const_shader);
 //            glActiveTexture(GL_TEXTURE0);
             glBindTexture(GL_TEXTURE_2D, m_diffuseTexID);
-            glBindTexture(GL_TEXTURE_2D, m_normalTexID);
+//            glBindTexture(GL_TEXTURE_2D, m_normalTexID);
             m_shape->draw();
             glBindTexture(GL_TEXTURE_2D, 0);
             releaseShader(const_shader);

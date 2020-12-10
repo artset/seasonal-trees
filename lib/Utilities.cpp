@@ -82,11 +82,11 @@ namespace Utilities{
 
 //        }
 
-        glm::vec2 deltaUV0 = uv1 - uv0;
-        glm::vec2 deltaUV1 = uv2 - uv0;
+//        glm::vec2 deltaUV0 = uv1 - uv0;
+//        glm::vec2 deltaUV1 = uv2 - uv0;
 
-//        glm::vec2 deltaUV0 = {0,-1};
-//        glm::vec2 deltaUV1 = {1,-1};
+        glm::vec2 deltaUV0 = {0,-1};
+        glm::vec2 deltaUV1 = {1,-1};
 
         glm::vec3 tangent = getTriangleTangentVec(edge0, edge1, deltaUV0, deltaUV1);
 
@@ -103,7 +103,7 @@ namespace Utilities{
     //        uv1 = (transformation * glm::vec4(uv1, 0, 1)).xy();
     //        uv2 = (transformation * glm::vec4(uv2, 0, 1)).xy();
 
-//            tangent = (transformation * glm::vec4(tangent, 1)).xyz();
+            tangent = (transformation * glm::vec4(tangent, 1)).xyz();
         }
 
         insertVertexData(data, {v0, n0, uv0, reorthogonalize(tangent, n0)});
