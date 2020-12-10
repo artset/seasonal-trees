@@ -74,19 +74,6 @@ namespace Utilities{
 
         glm::vec3 tangent = getTriangleTangentVec(edge0, edge1, deltaUV0, deltaUV1);
 
-//        if (shape == PrimitiveType::PRIMITIVE_CUBE) {
-//            std::cout << glm::to_string(tangent) <<std::endl;
-//            std::cout << glm::to_string(deltaUV0) <<std::endl;
-//            std::cout << glm::to_string(deltaUV1) <<std::endl;
-
-//            std::cout << glm::to_string(uv0) <<std::endl;
-//            std::cout << glm::to_string(uv1) <<std::endl;
-//            std::cout << glm::to_string(uv2) <<std::endl;
-//            std::cout << glm::to_string(deltaUV0) <<std::endl;
-//            std::cout << glm::to_string(deltaUV1) <<std::endl<<std::endl;
-
-//        }
-
         if (transformation != glm::mat4(1.f)) {
             v0 = (transformation * glm::vec4(v0, 1)).xyz();
             v1 = (transformation * glm::vec4(v1, 1)).xyz();
@@ -108,34 +95,11 @@ namespace Utilities{
         insertVertexData(data, {v2, n2, uv2, tangent});
     }
 
-//     NormalMappingUtils
-
-//    /**
-//     * @brief getTriangleTangentVec
-//     * @param triangle1Verts: bottom left triangle, 0=>topLeft, 1=>bottomLeft, 2=>bottomRight
-//     * @return
-//     */
-//    glm::vec3 getTriangleTangentVec(const std::vector<glm::vec3> &triangleVerts) {
-//        glm::vec2 uv0 = { 1, 0 };
-//        glm::vec2 uv1 = { 0, 0 };
-//        glm::vec2 uv2 = { 0, 1 };
-//        glm::vec2 uv3 = { 1, 1 };
-
-//        glm::vec3 v0 = triangleVerts[0];
-//        glm::vec3 v1 = triangleVerts[1];
-//        glm::vec3 v2 = triangleVerts[2];
-
-//        return calculateTriangleTangentVec(
-//                    v1 - v0,
-//                    v2 - v0,
-//                    uv1 - uv0,
-//                    uv2 - uv0);
-//    }
+    // NormalMappingUtils
 
     glm::vec3 getTriangleTangentVec(const glm::vec3 &edge0, const glm::vec3 &edge1,
                                                               const glm::vec2 &deltaUV0, const glm::vec2 &deltaUV1) {
         float f = 1.0f / (deltaUV0.x * deltaUV1.y - deltaUV1.x * deltaUV0.y);
-
         return f * (edge0 * deltaUV1.y - edge1 * deltaUV1.y);
     }
 
@@ -151,26 +115,22 @@ namespace Utilities{
             }
             case PrimitiveType::PRIMITIVE_CONE:
             case PrimitiveType::PRIMITIVE_CYLINDER: {
-                if (fabs(oscNormal.y - 1.f) < UTIL_EPSILON) {
+                if (equals(fabs(oscNormal.y), 1.f, UTIL_EPSILON)) {
                     // case for cap
                     uv = computeUVPlane(oscPoint, oscNormal);
                 }
                 else {
                     // case for body
-                    float height = 1.f;
-                    float v = lerp(oscPoint.y, -height/2, height/2, 1, 0);
+                    float r = 0.5f;
+                    float v = lerp(oscPoint.y, -r, r, 1, 0);
                     uv = glm::vec2(computeUTrunk(oscPoint), v);
-
-                    if (oscPoint.x > 0 && fabs(oscPoint.z) > UTIL_EPSILON && fabs(uv.x) < UTIL_EPSILON && shape == PrimitiveType::PRIMITIVE_CYLINDER) {
-                        std::cout << "point: " << glm::to_string(oscPoint) << std::endl;
-                        std::cout << "u: " << uv.x << std::endl<< std::endl;
-                    }
                 }
                 break;
             }
             case PrimitiveType::PRIMITIVE_SPHERE: {
                 float u = computeUTrunk(oscPoint);
-                float inverseY = lerp(oscPoint.y, -1, 1, 1, -1);
+                float r = 0.5f;
+                float inverseY = lerp(oscPoint.y, -r, r, r, -r);
                 float v = computeVTrunk(inverseY);
                 uv = glm::vec2(u, v);
                 break;
@@ -211,7 +171,6 @@ namespace Utilities{
         else if (equals(oscNormal.y, -1.f, UTIL_EPSILON)) {
             u = x;
             v = inverseZ;
-            std::cout << glm::to_string(glm::vec2(u,v)) << std::endl;
         }
         else if (equals(oscNormal.z, 1.f, UTIL_EPSILON)) {
             u = x;

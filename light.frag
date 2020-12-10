@@ -49,11 +49,4 @@ void main() {
 
     fragColor = ambient + attenuation * (diffuse + specular);
 //    fragColor = mix(uvColor, vec4(surfaceNormal, 1.0), 0.8);
-    fragColor = vec4(texCoords.x);
-
-//    if (texCoords.x > 1 || texCoords.x < 0) {
-//        fragColor = vec4(1,0,0,1);
-//    } else {
-//        fragColor = vec4(1,1,1,1);
-//    }
 }

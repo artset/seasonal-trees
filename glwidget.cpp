@@ -186,7 +186,7 @@ void GLWidget::initializeGL() {
     s_normalMap = new UniformVariable(this->context()->contextHandle());
     s_normalMap->setName("normalMap");
     s_normalMap->setType(UniformVariable::TYPE_TEX2D);
-    s_normalMap->parse(":/images/images/ostrich.jpg");
+    s_normalMap->parse(":/images/images/brick_wall.jpg");
 
     s_staticVars->push_back(s_skybox);
     s_staticVars->push_back(s_model);
@@ -203,7 +203,7 @@ void GLWidget::initializeGL() {
 
     const int NUM_FLOATS_PER_VERTEX = 11; // 3(vert) + 3(norm) + 2(uv) + 3(tangent)
 
-    std::unique_ptr<Shape> sphere = std::make_unique<Cylinder>(10, 20);
+    std::unique_ptr<Shape> sphere = std::make_unique<Cone>(2, 20);
     std::vector<GLfloat> sphereData = sphere->getData();
     m_sphere = std::make_unique<OpenGLShape>();
     m_sphere->setVertexData(&sphereData[0], sphereData.size(), VBO::GEOMETRY_LAYOUT::LAYOUT_TRIANGLES, sphereData.size() / NUM_FLOATS_PER_VERTEX);
@@ -264,7 +264,7 @@ void GLWidget::initializeGL() {
     m_island->setAttribute(ShaderAttrib::TANGENT, 3, (2+3+3)*sizeof(GLfloat), VBOAttribMarker::DATA_TYPE::FLOAT, false);
     m_island->buildVAO();
 
-    m_shape = m_cone.get();
+    m_shape = m_sphere.get();
 
     glGenTextures(1, &m_textureID);
     glBindTexture(GL_TEXTURE_2D, m_textureID);
@@ -272,7 +272,7 @@ void GLWidget::initializeGL() {
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
-    QImage image(":/images/images/ostrich.jpg");
+    QImage image(":/images/images/brick_wall.jpg");
     if (!image.isNull()) {
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, image.width(), image.height(), 0, GL_RGBA, GL_UNSIGNED_BYTE, image.bits());
     } else {
@@ -280,7 +280,7 @@ void GLWidget::initializeGL() {
     }
     glBindTexture(GL_TEXTURE_2D, 0);
 
-    const_shader = phong_shader;
+    const_shader = normal_mapping_shader;
 }
 
 void GLWidget::resizeGL(int w, int h) {
