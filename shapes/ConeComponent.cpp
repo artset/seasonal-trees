@@ -25,10 +25,11 @@ void ConeComponent::setData() {
     float y = (1.0/ m_param1);
     float r = (RADIUS / m_param1);
 
-    Utilities::setTriangleVertexData(m_vertexData, PrimitiveType::PRIMITIVE_CUBE, glm::mat4(),
-    { {1,-1,0}, {0,0,1} }, { {-1,1,0}, {0,0,1} }, { {-1,-1,0}, {0,0,1} });
-    Utilities::setTriangleVertexData(m_vertexData, PrimitiveType::PRIMITIVE_CUBE, glm::mat4(),
-    { {1,1,0}, {0,0,1} }, { {-1,1,0}, {0,0,1} }, { {1,-1,0}, {0,0,1} });
+    // Plane for testing
+//    Utilities::setTriangleVertexData(m_vertexData, PrimitiveType::PRIMITIVE_CUBE, glm::mat4(),
+//    { {1,-1,0}, {0,0,1} }, { {-1,1,0}, {0,0,1} }, { {-1,-1,0}, {0,0,1} });
+//    Utilities::setTriangleVertexData(m_vertexData, PrimitiveType::PRIMITIVE_CUBE, glm::mat4(),
+//    { {1,1,0}, {0,0,1} }, { {-1,1,0}, {0,0,1} }, { {1,-1,0}, {0,0,1} });
 
     for (int i = 0; i < m_param2; i++) {
         this->setFan(i);

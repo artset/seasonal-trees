@@ -24,6 +24,7 @@ void BarrelComponent::setData() {
     int numTriangles = m_param2 * m_param1 * 2;
     triangles.reserve(numTriangles * COORDINATES_PER_TRIANGLE);
 
+    // Plane for testing
     Utilities::setTriangleVertexData(m_vertexData, PrimitiveType::PRIMITIVE_CUBE, glm::mat4(),
     { {1,-1,0}, {0,0,1} }, { {-1,1,0}, {0,0,1} }, { {-1,-1,0}, {0,0,1} });
     Utilities::setTriangleVertexData(m_vertexData, PrimitiveType::PRIMITIVE_CUBE, glm::mat4(),

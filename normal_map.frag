@@ -34,11 +34,13 @@ const float blend = 0;
 const vec4 uvColor = vec4(1,1,1,1);
 
 void main() {
-    fragColor = texture(normalMap, texCoords);
-    fragColor = vec4(1,1,1,1);
-
     vec3 tangentNormal = texture(normalMap, texCoords).rgb;
     tangentNormal = normalize(tangentNormal * 2.0 - 1.0);
+
+    // total hack, but r and b vals are swapped for some reason in the sampler2D
+    float temp = tangentNormal.x;
+    tangentNormal.x = tangentNormal.z;
+    tangentNormal.z = temp;
 
     vec4 N = vec4(tangentNormal, 0);
     vec4 L = vec4(normalize(tangentLightPos - tangentFragPos), 0);
@@ -58,6 +60,5 @@ void main() {
     float attenuation = lightIntensity * min(1.0, 1 / (attConstant + attLinear * d + attQuadratic * pow(d, 2)));
 
     fragColor = ambient + attenuation * (diffuse + specular);
-//    fragColor = vec4((test + 1) / 2, 1);
-//    fragColor = uvColor;
+    fragColor = vec4(test,1);
 }

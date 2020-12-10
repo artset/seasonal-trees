@@ -8,7 +8,7 @@ in vec3 viewPos;
 
 //uniform vec4 color;
 const vec4 ambientColor = vec4(1, 1, 1, 1);
-const vec4 diffuseColor = vec4(1, 1, 1, 1);
+const vec4 diffuseColor = vec4(.32,.19,.09, 1);
 const vec4 specularColor = vec4(1, 1, 1, 1);
 out vec4 fragColor;
 
@@ -27,7 +27,7 @@ const float attQuadratic = 1.0;
 const vec4 lightColor = vec4(1.0,1.0,1.0,1);
 const float lightIntensity = 5.0;
 
-const float blend = 1;
+const float blend = .2;
 
 void main() {
     vec4 uvColor = texture(sampler, texCoords);

@@ -35,5 +35,6 @@
         <file>images/bark.png</file>
         <file>images/brickwall_normal.jpg</file>
         <file>images/brickwall.jpg</file>
+        <file>images/bark_normal.jpg</file>
     </qresource>
 </RCC>
