@@ -67,10 +67,26 @@ namespace Utilities{
 
         glm::vec3 edge0 = v1 - v0;
         glm::vec3 edge1 = v2 - v0;
-//        glm::vec2 deltaUV0 = uv1 - uv0;
-//        glm::vec2 deltaUV1 = uv2 - uv0;
-        glm::vec2 deltaUV0 = {0,-1};
-        glm::vec2 deltaUV1 = {1,-1};
+        glm::vec3 edge2 = v2 - v1;
+
+        glm::vec3 finalEdge0, finalEdge1;
+        glm::vec2 finalDeltaUV0, finalDeltaUV1;
+
+//        if (equals(glm::dot(edge0, edge1), 0, UTIL_EPSILON)) {
+
+//        } else if (equals(glm::dot(edge0, edge1), 0, UTIL_EPSILON)) {
+
+//        } else if (equals(glm::dot(edge0, edge1), 0, UTIL_EPSILON)) {
+
+//        } else {
+
+//        }
+
+        glm::vec2 deltaUV0 = uv1 - uv0;
+        glm::vec2 deltaUV1 = uv2 - uv0;
+
+//        glm::vec2 deltaUV0 = {0,-1};
+//        glm::vec2 deltaUV1 = {1,-1};
 
         glm::vec3 tangent = getTriangleTangentVec(edge0, edge1, deltaUV0, deltaUV1);
 
@@ -90,9 +106,9 @@ namespace Utilities{
 //            tangent = (transformation * glm::vec4(tangent, 1)).xyz();
         }
 
-        insertVertexData(data, {v0, n0, uv0, tangent});
-        insertVertexData(data, {v1, n1, uv1, tangent});
-        insertVertexData(data, {v2, n2, uv2, tangent});
+        insertVertexData(data, {v0, n0, uv0, reorthogonalize(tangent, n0)});
+        insertVertexData(data, {v1, n1, uv1, reorthogonalize(tangent, n1)});
+        insertVertexData(data, {v2, n2, uv2, reorthogonalize(tangent, n2)});
     }
 
     // NormalMappingUtils
@@ -100,7 +116,13 @@ namespace Utilities{
     glm::vec3 getTriangleTangentVec(const glm::vec3 &edge0, const glm::vec3 &edge1,
                                                               const glm::vec2 &deltaUV0, const glm::vec2 &deltaUV1) {
         float f = 1.0f / (deltaUV0.x * deltaUV1.y - deltaUV1.x * deltaUV0.y);
-        return f * (edge0 * deltaUV1.y - edge1 * deltaUV1.y);
+        glm::vec3 tangent = f * (edge0 * deltaUV1.y - edge1 * deltaUV1.y);
+        return tangent;
+    }
+
+    // Gram-Schmidt re-orthogonalization for tangent with respect to surface normal (gives slightly nicer results)
+    glm::vec3 reorthogonalize(const glm::vec3 &v, const glm::vec3 &wrt) {
+        return glm::normalize(v - glm::dot(v, wrt) * wrt);
     }
 
     // TextureMappingUtils

@@ -10,7 +10,7 @@ out vec2 texCoords;
 out vec3 tangentLightPos;
 out vec3 tangentViewPos;
 
-out vec3 T;
+out vec3 test;
 out vec3 surfaceNormal;
 
 uniform mat4 mvp;
@@ -27,13 +27,9 @@ void main(void) {
     gl_Position = pos; // wtf is this??
 
     vec3 N = normalize(vec3(model * vec4(normal, 0.0)));
-//    vec3
-            T = normalize(vec3(model * vec4(tangent, 0.0)));
-    T = normalize(T - dot(T, N) * N); // Gram-Schmidt re-orthogonalization of T w.r.t. N (gives slightly nicer results)
+    vec3 T = normalize(vec3(model * vec4(tangent, 0.0)));
 
-    T=tangent;
-
-    vec3 B = cross(N, T);
+    vec3 B = normalize(cross(N, T));
     mat3 TBN = mat3(T, B, N);
     // We can transpose here instead of inversing because TBN is orthogonal => TBN^T == TBN^(-1)
     mat3 TBN_inv = transpose(TBN);
@@ -45,4 +41,7 @@ void main(void) {
     texCoords = aTexCoords;
     tangentLightPos = TBN_inv * lightPos;
     tangentViewPos = TBN_inv * viewPos;
+
+
+    test = T;
 }

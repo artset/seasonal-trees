@@ -186,7 +186,7 @@ void GLWidget::initializeGL() {
     s_normalMap = new UniformVariable(this->context()->contextHandle());
     s_normalMap->setName("normalMap");
     s_normalMap->setType(UniformVariable::TYPE_TEX2D);
-    s_normalMap->parse(":/images/images/brick_wall.jpg");
+    s_normalMap->parse(":/images/images/brickwall_normal.jpg");
 
     s_staticVars->push_back(s_skybox);
     s_staticVars->push_back(s_model);
@@ -203,7 +203,7 @@ void GLWidget::initializeGL() {
 
     const int NUM_FLOATS_PER_VERTEX = 11; // 3(vert) + 3(norm) + 2(uv) + 3(tangent)
 
-    std::unique_ptr<Shape> sphere = std::make_unique<Cone>(2, 20);
+    std::unique_ptr<Shape> sphere = std::make_unique<Sphere>(10, 20);
     std::vector<GLfloat> sphereData = sphere->getData();
     m_sphere = std::make_unique<OpenGLShape>();
     m_sphere->setVertexData(&sphereData[0], sphereData.size(), VBO::GEOMETRY_LAYOUT::LAYOUT_TRIANGLES, sphereData.size() / NUM_FLOATS_PER_VERTEX);
@@ -272,7 +272,7 @@ void GLWidget::initializeGL() {
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
-    QImage image(":/images/images/brick_wall.jpg");
+    QImage image(":/images/images/brickwall_normal.jpg");
     if (!image.isNull()) {
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, image.width(), image.height(), 0, GL_RGBA, GL_UNSIGNED_BYTE, image.bits());
     } else {

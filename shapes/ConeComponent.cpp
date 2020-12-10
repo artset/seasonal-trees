@@ -28,7 +28,7 @@ void ConeComponent::setData() {
     Utilities::setTriangleVertexData(m_vertexData, PrimitiveType::PRIMITIVE_CUBE, glm::mat4(),
     { {1,-1,0}, {0,0,1} }, { {-1,1,0}, {0,0,1} }, { {-1,-1,0}, {0,0,1} });
     Utilities::setTriangleVertexData(m_vertexData, PrimitiveType::PRIMITIVE_CUBE, glm::mat4(),
-    { {1,-1,0}, {0,0,1} }, { {1,1,0}, {0,0,1} }, { {-1,1,0}, {0,0,1} });
+    { {1,1,0}, {0,0,1} }, { {-1,1,0}, {0,0,1} }, { {1,-1,0}, {0,0,1} });
 
     for (int i = 0; i < m_param2; i++) {
         this->setFan(i);
@@ -56,7 +56,7 @@ void ConeComponent::setData() {
             glm::vec3 n3 = getNormal(v3);
 
             // "bottom left" triangle
-            Utilities::setTriangleVertexData(m_vertexData, PrimitiveType::PRIMITIVE_CONE, m_transformation, { v0, n0 }, { v1, n1 }, { v2, n2 });
+            Utilities::setTriangleVertexData(m_vertexData, PrimitiveType::PRIMITIVE_CONE, m_transformation, { v2, n2 }, { v0, n0 }, { v1, n1 });
             // "upper right" triangle
             Utilities::setTriangleVertexData(m_vertexData, PrimitiveType::PRIMITIVE_CONE, m_transformation, { v1, n1 }, { v3, n3 }, { v2, n2 });
         }
@@ -84,7 +84,7 @@ void ConeComponent::setFan(int angleIndex) {
     glm::vec3 n2 = getNormal(v2);
     glm::vec3 n1 = getNormal(v1);
 
-    Utilities::setTriangleVertexData(m_vertexData, PrimitiveType::PRIMITIVE_CONE, m_transformation, { v2, n2 }, { v1, n1 }, { v0, n0 });
+    Utilities::setTriangleVertexData(m_vertexData, PrimitiveType::PRIMITIVE_CONE, m_transformation,  {v0, n0 }, { v2, n2 }, { v1, n1 });
 }
 
 /**

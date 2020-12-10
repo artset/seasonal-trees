@@ -55,7 +55,7 @@ void SphereComponent::setData(){
                 glm::vec3 n3 = glm::normalize(v3);
 
                 // "bottom left" triangle
-                Utilities::setTriangleVertexData(m_vertexData, PrimitiveType::PRIMITIVE_SPHERE, m_transformation, { v0, n0 }, { v1, n1 }, { v2, n2 });
+                Utilities::setTriangleVertexData(m_vertexData, PrimitiveType::PRIMITIVE_SPHERE, m_transformation, { v2, n2 }, { v0, n0 }, { v1, n1 });
                 // "upper right" triangle
                 Utilities::setTriangleVertexData(m_vertexData, PrimitiveType::PRIMITIVE_SPHERE, m_transformation, { v1, n1 }, { v3, n3 }, { v2, n2 });
             }
@@ -90,9 +90,9 @@ void SphereComponent::setFan(int i, int j, float phi, float theta) {
     glm::vec3 n3 = getNormal(v3);
 
     if (i > 0) { // bottom fan
-        Utilities::setTriangleVertexData(m_vertexData, PrimitiveType::PRIMITIVE_SPHERE, m_transformation, { v2, n2 }, { v3, n3 }, { v1, n1 });
+        Utilities::setTriangleVertexData(m_vertexData, PrimitiveType::PRIMITIVE_SPHERE, m_transformation, { v1, n1 }, { v2, n2 }, { v3, n3 });
     } else { // top fan
-        Utilities::setTriangleVertexData(m_vertexData, PrimitiveType::PRIMITIVE_SPHERE, m_transformation, { v3, n3 }, { v2, n2 }, { v1, n1 });
+        Utilities::setTriangleVertexData(m_vertexData, PrimitiveType::PRIMITIVE_SPHERE, m_transformation, { v1, n1 }, { v3, n3 }, { v2, n2 });
     }
 }
 

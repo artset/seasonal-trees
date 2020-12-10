@@ -6,7 +6,7 @@ in vec2 texCoords;
 in vec3 tangentLightPos;
 in vec3 tangentViewPos;
 
-in vec3 T;
+in vec3 test;
 
 //uniform vec4 color;
 const vec4 ambientColor = vec4(1, 1, 1, 1);
@@ -56,5 +56,5 @@ void main() {
     float attenuation = lightIntensity * min(1.0, 1 / (attConstant + attLinear * d + attQuadratic * pow(d, 2)));
 
     fragColor = ambient + attenuation * (diffuse + specular);
-    fragColor = L;
+    fragColor = vec4(test, 1);
 }
