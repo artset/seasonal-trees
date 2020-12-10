@@ -239,7 +239,7 @@ void GLWidget::initializeGL() {
     skybox_cube->buildVAO();
 
     m_cylinder = std::make_unique<OpenGLShape>();
-    std::unique_ptr<Shape> cyl = std::make_unique<Cylinder>(4, 7);
+    std::unique_ptr<Shape> cyl = std::make_unique<Cylinder>(10, 7);
     std::vector<GLfloat> cylinderData = cyl->getData();
     m_cylinder = std::make_unique<OpenGLShape>();
     m_cylinder->setVertexData(&cylinderData[0], cylinderData.size(), VBO::GEOMETRY_LAYOUT::LAYOUT_TRIANGLES, cylinderData.size() / NUM_FLOATS_PER_VERTEX);
@@ -546,6 +546,7 @@ void GLWidget::paintGL() {
                 renderIsland();
             }
         } else {// todo: remove this once texture mapping is done, along with the corresponding button.
+
             bindAndUpdateShader(selected_shader);
             glBindTexture(GL_TEXTURE_2D, m_textureID);
             m_shape->draw();
