@@ -56,5 +56,5 @@ void main() {
     float attenuation = lightIntensity * min(1.0, 1 / (attConstant + attLinear * d + attQuadratic * pow(d, 2)));
 
     fragColor = ambient + attenuation * (diffuse + specular);
-//    fragColor = vec4(T, 1);
+    fragColor = L;
 }

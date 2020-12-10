@@ -59,32 +59,12 @@ namespace Utilities{
         glm::vec2 uv0 = computeUV(shape, v0, n0);
         glm::vec2 uv1 = computeUV(shape, v1, n1);
         glm::vec2 uv2 = computeUV(shape, v2, n2);
-
-        // I don't believe the order of these matters, but I could totally be wrong
-        glm::vec3 edge0, edge1;
-        glm::vec2 deltaUV0, deltaUV1;
-        // it doesn't matter, this is totally unnecessary
-        if (equals(glm::dot(v1 - v0, v2 - v0), 0, 1e-4)) {
-            edge0 = glm::abs(v1 - v0);
-            edge1 = glm::abs(v2 - v0);
-            deltaUV0 = glm::abs(uv1 - uv0);
-            deltaUV1 = glm::abs(uv2 - uv0);
-            std::cout<<"1"<<std::endl;
-        }
-        else if (equals(glm::dot(v1 - v2, v0 - v2), 0, 1e-4)) {
-            edge0 = glm::abs(v1 - v2);
-            edge1 = glm::abs(v0 - v2);
-            deltaUV0 = glm::abs(uv1 - uv2);
-            deltaUV1 = glm::abs(uv0- uv2);
-            std::cout<<"2"<<std::endl;
-        }
-        else if (equals(glm::dot(v0 - v1, v2 - v1), 0, 1e-4)) {
-            edge0 = glm::abs(v0 - v1);
-            edge1 = glm::abs(v2 - v1);
-            deltaUV0 = glm::abs(uv0 - uv1);
-            deltaUV1 = glm::abs(uv2- uv1);
-            std::cout<<"3"<<std::endl;
-        }
+        glm::vec3 edge0 = v1 - v0;
+        glm::vec3 edge1 = v2 - v0;
+//        glm::vec2 deltaUV0 = uv1 - uv0;
+//        glm::vec2 deltaUV1 = uv2 - uv0;
+        glm::vec2 deltaUV0 = {0,-1};
+        glm::vec2 deltaUV1 = {1,-1};
 
         glm::vec3 tangent = getTriangleTangentVec(edge0, edge1, deltaUV0, deltaUV1);
 
@@ -92,11 +72,12 @@ namespace Utilities{
 //            std::cout << glm::to_string(tangent) <<std::endl;
 //            std::cout << glm::to_string(deltaUV0) <<std::endl;
 //            std::cout << glm::to_string(deltaUV1) <<std::endl;
-            std::cout << glm::to_string(uv0) <<std::endl;
-            std::cout << glm::to_string(uv1) <<std::endl;
-            std::cout << glm::to_string(uv2) <<std::endl;
-            std::cout << glm::to_string(deltaUV0) <<std::endl;
-            std::cout << glm::to_string(deltaUV1) <<std::endl<<std::endl;
+
+//            std::cout << glm::to_string(uv0) <<std::endl;
+//            std::cout << glm::to_string(uv1) <<std::endl;
+//            std::cout << glm::to_string(uv2) <<std::endl;
+//            std::cout << glm::to_string(deltaUV0) <<std::endl;
+//            std::cout << glm::to_string(deltaUV1) <<std::endl<<std::endl;
 
 //        }
 
@@ -148,13 +129,8 @@ namespace Utilities{
     glm::vec3 getTriangleTangentVec(const glm::vec3 &edge0, const glm::vec3 &edge1,
                                                               const glm::vec2 &deltaUV0, const glm::vec2 &deltaUV1) {
         float f = 1.0f / (deltaUV0.x * deltaUV1.y - deltaUV1.x * deltaUV0.y);
-        glm::vec3 tangent;
 
-        tangent.x = f * (deltaUV1.y * edge0.x - deltaUV0.y * edge1.x);
-        tangent.y = f * (deltaUV1.y * edge0.y - deltaUV0.y * edge1.y);
-        tangent.z = f * (deltaUV1.y * edge0.z - deltaUV0.y * edge1.z);
-
-        return tangent;
+        return f * (edge0 * deltaUV1.y - edge1 * deltaUV1.y);
     }
 
     // TextureMappingUtils
@@ -169,9 +145,10 @@ namespace Utilities{
             }
             case PrimitiveType::PRIMITIVE_CONE:
             case PrimitiveType::PRIMITIVE_CYLINDER: {
-                if (fabs(oscNormal.y) == 1.f) {
+                if (fabs(oscNormal.y - 1.f) < 1e-5) {
                     // case for cap
                     uv = computeUVPlane(oscPoint, oscNormal);
+                    std::cout << "cap" << std::endl;
                 }
                 else {
                     // case for body

@@ -18,7 +18,7 @@ uniform mat4 model;
 uniform mat4 trans;
 
 uniform mat4 view;
-const vec3 lightPos = vec3(0, 0, 4);
+const vec3 lightPos = vec3(0, 0, 0);
 //uniform vec3 lightPos;
 //uniform vec3 viewPos;
 
@@ -27,9 +27,12 @@ void main(void) {
     gl_Position = pos; // wtf is this??
 
     vec3 N = normalize(vec3(model * vec4(normal, 0.0)));
-    //vec3
+//    vec3
             T = normalize(vec3(model * vec4(tangent, 0.0)));
     T = normalize(T - dot(T, N) * N); // Gram-Schmidt re-orthogonalization of T w.r.t. N (gives slightly nicer results)
+
+    T=tangent;
+
     vec3 B = cross(N, T);
     mat3 TBN = mat3(T, B, N);
     // We can transpose here instead of inversing because TBN is orthogonal => TBN^T == TBN^(-1)
