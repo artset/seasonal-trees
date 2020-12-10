@@ -336,9 +336,12 @@ void Tree::addTreeOptionRule(int treeOption){
         //Fuzzy Weed
         case 2:
             m_lsystem.setAxiom("X");
-//            m_lsystem.addRule("F", "FF"); // Original rule
-            m_lsystem.addRule("F", "F"); // Temp rule
-            m_lsystem.addRule("X", "F-[[X]+X]+F[+FX]-X");
+            m_lsystem.addRule("X", "F[+X][-X]");
+            m_lsystem.addRule("F", "F[+X]");
+            m_lsystem.addRule("F", "F[-X]F");
+
+
+
             m_is2D = false;
             break;
         //Wavy Seaweed
