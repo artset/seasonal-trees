@@ -21,6 +21,8 @@ void main(void) {
     vec4 pos = mvp * vec4(position, 1);
     gl_Position = pos;
 
+//    model = model.
+
     vec3 N = normalize(vec3(model * vec4(normal, 0.0)));
     vec3 T = normalize(vec3(model * vec4(tangent, 0.0)));
 

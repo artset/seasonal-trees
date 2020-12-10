@@ -88,7 +88,7 @@ void Tree::buildTree(const glm::mat4 &model, const float leafScale) {
         forwardSymbols.push_back(key_val.first[0]);
     }
 
-    const glm::vec3 INIT_SCALE_FACTOR = glm::vec3(0.1f, 0.2f, 0.1f);
+    const glm::vec3 INIT_SCALE_FACTOR = glm::vec3(0.05f, 0.2f, 0.05f);
 
     glm::vec4 origin = glm::vec4(0, 0, 0, 1.f);
     glm::mat4 identity = glm::mat4();
