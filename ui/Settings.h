@@ -34,6 +34,7 @@ struct Settings {
     float leafSize;
     int season;
     int treeOption;
+    bool ifBumpMap;
 
 };
 

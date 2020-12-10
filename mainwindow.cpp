@@ -186,35 +186,6 @@ void MainWindow::on_defaultShaderButton_clicked()
     loadShader(":/shaders/light.vert", ":/shaders/light.frag");
 }
 
-void MainWindow::on_animMoveButton_clicked()
-{
-    m_glwidget->changeAnimMode(ANIM_MOVE);
-}
-
-void MainWindow::on_animNoneButton_clicked()
-{
-    m_glwidget->changeAnimMode(ANIM_NONE);
-}
-
-void MainWindow::on_animScaleButton_clicked()
-{
-    m_glwidget->changeAnimMode(ANIM_SCALE);
-}
-
-void MainWindow::on_animScaleMoveButton_clicked()
-{
-    m_glwidget->changeAnimMode(ANIM_MOVE_AND_SCALE);
-}
-
-void MainWindow::on_animRotate1Button_clicked()
-{
-    m_glwidget->changeAnimMode(ANIM_ROTATE);
-}
-
-void MainWindow::on_animRotate2Button_clicked()
-{
-    m_glwidget->changeAnimMode(ANIM_ROTATE_2);
-}
 
 QString tipsText = "<h2>Attributes</h2>\n"
         "The following attributes (<b>in</b> variables) are available for use:\n"
@@ -240,10 +211,10 @@ QString tipsText = "<h2>Attributes</h2>\n"
         "</li></ul>"
         "<p>Any questions or bugs can be emailed to the cs123 tas (cs123tas@cs.brown.edu).</p>";
 
-void MainWindow::on_shader1Button_clicked()
-{
-    loadShader(":/shaders/metal.vert", ":/shaders/metal.frag");
-}
+//void MainWindow::on_shader1Button_clicked()
+//{
+//    loadShader(":/shaders/metal.vert", ":/shaders/metal.frag");
+//}
 
 void MainWindow::on_shader2Button_clicked()
 {
@@ -268,6 +239,11 @@ void MainWindow::on_winterRadioButton_clicked(){
 void MainWindow::on_springRadioButton_clicked(){
     settings.season = 3;
     updateSeasonParameters(settings.season);
+}
+
+void MainWindow::on_bumpMapCheckbox_clicked()
+{
+   settings.ifBumpMap = !settings.ifBumpMap;
 }
 
 void MainWindow::updateSeasonParameters(int season){

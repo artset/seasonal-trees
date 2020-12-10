@@ -22,8 +22,8 @@ QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_MainWindow_t {
-    QByteArrayData data[38];
-    char stringdata0[714];
+    QByteArrayData data[32];
+    char stringdata0[548];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -39,49 +39,36 @@ QT_MOC_LITERAL(3, 27, 4), // "init"
 QT_MOC_LITERAL(4, 32, 23), // "on_sphereButton_clicked"
 QT_MOC_LITERAL(5, 56, 21), // "on_treeButton_clicked"
 QT_MOC_LITERAL(6, 78, 30), // "on_defaultShaderButton_clicked"
-QT_MOC_LITERAL(7, 109, 25), // "on_animMoveButton_clicked"
-QT_MOC_LITERAL(8, 135, 25), // "on_animNoneButton_clicked"
-QT_MOC_LITERAL(9, 161, 26), // "on_animScaleButton_clicked"
-QT_MOC_LITERAL(10, 188, 30), // "on_animScaleMoveButton_clicked"
-QT_MOC_LITERAL(11, 219, 28), // "on_animRotate1Button_clicked"
-QT_MOC_LITERAL(12, 248, 28), // "on_animRotate2Button_clicked"
-QT_MOC_LITERAL(13, 277, 24), // "on_shader1Button_clicked"
-QT_MOC_LITERAL(14, 302, 24), // "on_shader2Button_clicked"
-QT_MOC_LITERAL(15, 327, 28), // "on_summerRadioButton_clicked"
-QT_MOC_LITERAL(16, 356, 26), // "on_fallRadioButton_clicked"
-QT_MOC_LITERAL(17, 383, 28), // "on_winterRadioButton_clicked"
-QT_MOC_LITERAL(18, 412, 28), // "on_springRadioButton_clicked"
-QT_MOC_LITERAL(19, 441, 32), // "on_treeOptionsComboBox_activated"
-QT_MOC_LITERAL(20, 474, 4), // "arg1"
-QT_MOC_LITERAL(21, 479, 42), // "on_treeOptionsComboBox_curren..."
-QT_MOC_LITERAL(22, 522, 5), // "index"
-QT_MOC_LITERAL(23, 528, 20), // "handleUniformDeleted"
-QT_MOC_LITERAL(24, 549, 14), // "UniformWidget*"
-QT_MOC_LITERAL(25, 564, 7), // "deleted"
-QT_MOC_LITERAL(26, 572, 13), // "changeUniform"
-QT_MOC_LITERAL(27, 586, 22), // "const UniformVariable*"
-QT_MOC_LITERAL(28, 609, 7), // "uniform"
-QT_MOC_LITERAL(29, 617, 6), // "newVal"
-QT_MOC_LITERAL(30, 624, 4), // "name"
-QT_MOC_LITERAL(31, 629, 10), // "addUniform"
-QT_MOC_LITERAL(32, 640, 21), // "UniformVariable::Type"
-QT_MOC_LITERAL(33, 662, 4), // "type"
-QT_MOC_LITERAL(34, 667, 8), // "editable"
-QT_MOC_LITERAL(35, 676, 4), // "size"
-QT_MOC_LITERAL(36, 681, 16), // "UniformVariable*"
-QT_MOC_LITERAL(37, 698, 15) // "settingsChanged"
+QT_MOC_LITERAL(7, 109, 24), // "on_shader2Button_clicked"
+QT_MOC_LITERAL(8, 134, 28), // "on_summerRadioButton_clicked"
+QT_MOC_LITERAL(9, 163, 26), // "on_fallRadioButton_clicked"
+QT_MOC_LITERAL(10, 190, 28), // "on_winterRadioButton_clicked"
+QT_MOC_LITERAL(11, 219, 28), // "on_springRadioButton_clicked"
+QT_MOC_LITERAL(12, 248, 32), // "on_treeOptionsComboBox_activated"
+QT_MOC_LITERAL(13, 281, 4), // "arg1"
+QT_MOC_LITERAL(14, 286, 42), // "on_treeOptionsComboBox_curren..."
+QT_MOC_LITERAL(15, 329, 5), // "index"
+QT_MOC_LITERAL(16, 335, 26), // "on_bumpMapCheckbox_clicked"
+QT_MOC_LITERAL(17, 362, 20), // "handleUniformDeleted"
+QT_MOC_LITERAL(18, 383, 14), // "UniformWidget*"
+QT_MOC_LITERAL(19, 398, 7), // "deleted"
+QT_MOC_LITERAL(20, 406, 13), // "changeUniform"
+QT_MOC_LITERAL(21, 420, 22), // "const UniformVariable*"
+QT_MOC_LITERAL(22, 443, 7), // "uniform"
+QT_MOC_LITERAL(23, 451, 6), // "newVal"
+QT_MOC_LITERAL(24, 458, 4), // "name"
+QT_MOC_LITERAL(25, 463, 10), // "addUniform"
+QT_MOC_LITERAL(26, 474, 21), // "UniformVariable::Type"
+QT_MOC_LITERAL(27, 496, 4), // "type"
+QT_MOC_LITERAL(28, 501, 8), // "editable"
+QT_MOC_LITERAL(29, 510, 4), // "size"
+QT_MOC_LITERAL(30, 515, 16), // "UniformVariable*"
+QT_MOC_LITERAL(31, 532, 15) // "settingsChanged"
 
     },
     "MainWindow\0removeUniforms\0\0init\0"
     "on_sphereButton_clicked\0on_treeButton_clicked\0"
     "on_defaultShaderButton_clicked\0"
-    "on_animMoveButton_clicked\0"
-    "on_animNoneButton_clicked\0"
-    "on_animScaleButton_clicked\0"
-    "on_animScaleMoveButton_clicked\0"
-    "on_animRotate1Button_clicked\0"
-    "on_animRotate2Button_clicked\0"
-    "on_shader1Button_clicked\0"
     "on_shader2Button_clicked\0"
     "on_summerRadioButton_clicked\0"
     "on_fallRadioButton_clicked\0"
@@ -89,7 +76,8 @@ QT_MOC_LITERAL(37, 698, 15) // "settingsChanged"
     "on_springRadioButton_clicked\0"
     "on_treeOptionsComboBox_activated\0arg1\0"
     "on_treeOptionsComboBox_currentIndexChanged\0"
-    "index\0handleUniformDeleted\0UniformWidget*\0"
+    "index\0on_bumpMapCheckbox_clicked\0"
+    "handleUniformDeleted\0UniformWidget*\0"
     "deleted\0changeUniform\0const UniformVariable*\0"
     "uniform\0newVal\0name\0addUniform\0"
     "UniformVariable::Type\0type\0editable\0"
@@ -103,7 +91,7 @@ static const uint qt_meta_data_MainWindow[] = {
        8,       // revision
        0,       // classname
        0,    0, // classinfo
-      28,   14, // methods
+      22,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -111,36 +99,30 @@ static const uint qt_meta_data_MainWindow[] = {
        1,       // signalCount
 
  // signals: name, argc, parameters, tag, flags
-       1,    0,  154,    2, 0x06 /* Public */,
+       1,    0,  124,    2, 0x06 /* Public */,
 
  // slots: name, argc, parameters, tag, flags
-       3,    0,  155,    2, 0x08 /* Private */,
-       4,    0,  156,    2, 0x08 /* Private */,
-       5,    0,  157,    2, 0x08 /* Private */,
-       6,    0,  158,    2, 0x08 /* Private */,
-       7,    0,  159,    2, 0x08 /* Private */,
-       8,    0,  160,    2, 0x08 /* Private */,
-       9,    0,  161,    2, 0x08 /* Private */,
-      10,    0,  162,    2, 0x08 /* Private */,
-      11,    0,  163,    2, 0x08 /* Private */,
-      12,    0,  164,    2, 0x08 /* Private */,
-      13,    0,  165,    2, 0x08 /* Private */,
-      14,    0,  166,    2, 0x08 /* Private */,
-      15,    0,  167,    2, 0x08 /* Private */,
-      16,    0,  168,    2, 0x08 /* Private */,
-      17,    0,  169,    2, 0x08 /* Private */,
-      18,    0,  170,    2, 0x08 /* Private */,
-      19,    1,  171,    2, 0x08 /* Private */,
-      21,    1,  174,    2, 0x08 /* Private */,
-      23,    1,  177,    2, 0x0a /* Public */,
-      26,    2,  180,    2, 0x0a /* Public */,
-      26,    2,  185,    2, 0x0a /* Public */,
-      31,    4,  190,    2, 0x0a /* Public */,
-      31,    3,  199,    2, 0x2a /* Public | MethodCloned */,
-      31,    2,  206,    2, 0x2a /* Public | MethodCloned */,
-      31,    2,  211,    2, 0x0a /* Public */,
-      31,    1,  216,    2, 0x2a /* Public | MethodCloned */,
-      37,    0,  219,    2, 0x0a /* Public */,
+       3,    0,  125,    2, 0x08 /* Private */,
+       4,    0,  126,    2, 0x08 /* Private */,
+       5,    0,  127,    2, 0x08 /* Private */,
+       6,    0,  128,    2, 0x08 /* Private */,
+       7,    0,  129,    2, 0x08 /* Private */,
+       8,    0,  130,    2, 0x08 /* Private */,
+       9,    0,  131,    2, 0x08 /* Private */,
+      10,    0,  132,    2, 0x08 /* Private */,
+      11,    0,  133,    2, 0x08 /* Private */,
+      12,    1,  134,    2, 0x08 /* Private */,
+      14,    1,  137,    2, 0x08 /* Private */,
+      16,    0,  140,    2, 0x08 /* Private */,
+      17,    1,  141,    2, 0x0a /* Public */,
+      20,    2,  144,    2, 0x0a /* Public */,
+      20,    2,  149,    2, 0x0a /* Public */,
+      25,    4,  154,    2, 0x0a /* Public */,
+      25,    3,  163,    2, 0x2a /* Public | MethodCloned */,
+      25,    2,  170,    2, 0x2a /* Public | MethodCloned */,
+      25,    2,  175,    2, 0x0a /* Public */,
+      25,    1,  180,    2, 0x2a /* Public | MethodCloned */,
+      31,    0,  183,    2, 0x0a /* Public */,
 
  // signals: parameters
     QMetaType::Void,
@@ -155,23 +137,17 @@ static const uint qt_meta_data_MainWindow[] = {
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
+    QMetaType::Void, QMetaType::QString,   13,
+    QMetaType::Void, QMetaType::Int,   15,
     QMetaType::Void,
-    QMetaType::Void,
-    QMetaType::Void,
-    QMetaType::Void,
-    QMetaType::Void,
-    QMetaType::Void,
-    QMetaType::Void,
-    QMetaType::Void, QMetaType::QString,   20,
-    QMetaType::Void, QMetaType::Int,   22,
-    QMetaType::Void, 0x80000000 | 24,   25,
-    QMetaType::Void, 0x80000000 | 27, QMetaType::QString,   28,   29,
-    QMetaType::Void, QMetaType::QString, QMetaType::QString,   30,   29,
-    QMetaType::Void, 0x80000000 | 32, QMetaType::QString, QMetaType::Bool, QMetaType::Int,   33,   30,   34,   35,
-    QMetaType::Void, 0x80000000 | 32, QMetaType::QString, QMetaType::Bool,   33,   30,   34,
-    QMetaType::Void, 0x80000000 | 32, QMetaType::QString,   33,   30,
-    QMetaType::Void, 0x80000000 | 36, QMetaType::Bool,   28,   34,
-    QMetaType::Void, 0x80000000 | 36,   28,
+    QMetaType::Void, 0x80000000 | 18,   19,
+    QMetaType::Void, 0x80000000 | 21, QMetaType::QString,   22,   23,
+    QMetaType::Void, QMetaType::QString, QMetaType::QString,   24,   23,
+    QMetaType::Void, 0x80000000 | 26, QMetaType::QString, QMetaType::Bool, QMetaType::Int,   27,   24,   28,   29,
+    QMetaType::Void, 0x80000000 | 26, QMetaType::QString, QMetaType::Bool,   27,   24,   28,
+    QMetaType::Void, 0x80000000 | 26, QMetaType::QString,   27,   24,
+    QMetaType::Void, 0x80000000 | 30, QMetaType::Bool,   22,   28,
+    QMetaType::Void, 0x80000000 | 30,   22,
     QMetaType::Void,
 
        0        // eod
@@ -188,29 +164,23 @@ void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         case 2: _t->on_sphereButton_clicked(); break;
         case 3: _t->on_treeButton_clicked(); break;
         case 4: _t->on_defaultShaderButton_clicked(); break;
-        case 5: _t->on_animMoveButton_clicked(); break;
-        case 6: _t->on_animNoneButton_clicked(); break;
-        case 7: _t->on_animScaleButton_clicked(); break;
-        case 8: _t->on_animScaleMoveButton_clicked(); break;
-        case 9: _t->on_animRotate1Button_clicked(); break;
-        case 10: _t->on_animRotate2Button_clicked(); break;
-        case 11: _t->on_shader1Button_clicked(); break;
-        case 12: _t->on_shader2Button_clicked(); break;
-        case 13: _t->on_summerRadioButton_clicked(); break;
-        case 14: _t->on_fallRadioButton_clicked(); break;
-        case 15: _t->on_winterRadioButton_clicked(); break;
-        case 16: _t->on_springRadioButton_clicked(); break;
-        case 17: _t->on_treeOptionsComboBox_activated((*reinterpret_cast< const QString(*)>(_a[1]))); break;
-        case 18: _t->on_treeOptionsComboBox_currentIndexChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 19: _t->handleUniformDeleted((*reinterpret_cast< UniformWidget*(*)>(_a[1]))); break;
-        case 20: _t->changeUniform((*reinterpret_cast< const UniformVariable*(*)>(_a[1])),(*reinterpret_cast< const QString(*)>(_a[2]))); break;
-        case 21: _t->changeUniform((*reinterpret_cast< const QString(*)>(_a[1])),(*reinterpret_cast< const QString(*)>(_a[2]))); break;
-        case 22: _t->addUniform((*reinterpret_cast< UniformVariable::Type(*)>(_a[1])),(*reinterpret_cast< const QString(*)>(_a[2])),(*reinterpret_cast< bool(*)>(_a[3])),(*reinterpret_cast< int(*)>(_a[4]))); break;
-        case 23: _t->addUniform((*reinterpret_cast< UniformVariable::Type(*)>(_a[1])),(*reinterpret_cast< const QString(*)>(_a[2])),(*reinterpret_cast< bool(*)>(_a[3]))); break;
-        case 24: _t->addUniform((*reinterpret_cast< UniformVariable::Type(*)>(_a[1])),(*reinterpret_cast< const QString(*)>(_a[2]))); break;
-        case 25: _t->addUniform((*reinterpret_cast< UniformVariable*(*)>(_a[1])),(*reinterpret_cast< bool(*)>(_a[2]))); break;
-        case 26: _t->addUniform((*reinterpret_cast< UniformVariable*(*)>(_a[1]))); break;
-        case 27: _t->settingsChanged(); break;
+        case 5: _t->on_shader2Button_clicked(); break;
+        case 6: _t->on_summerRadioButton_clicked(); break;
+        case 7: _t->on_fallRadioButton_clicked(); break;
+        case 8: _t->on_winterRadioButton_clicked(); break;
+        case 9: _t->on_springRadioButton_clicked(); break;
+        case 10: _t->on_treeOptionsComboBox_activated((*reinterpret_cast< const QString(*)>(_a[1]))); break;
+        case 11: _t->on_treeOptionsComboBox_currentIndexChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 12: _t->on_bumpMapCheckbox_clicked(); break;
+        case 13: _t->handleUniformDeleted((*reinterpret_cast< UniformWidget*(*)>(_a[1]))); break;
+        case 14: _t->changeUniform((*reinterpret_cast< const UniformVariable*(*)>(_a[1])),(*reinterpret_cast< const QString(*)>(_a[2]))); break;
+        case 15: _t->changeUniform((*reinterpret_cast< const QString(*)>(_a[1])),(*reinterpret_cast< const QString(*)>(_a[2]))); break;
+        case 16: _t->addUniform((*reinterpret_cast< UniformVariable::Type(*)>(_a[1])),(*reinterpret_cast< const QString(*)>(_a[2])),(*reinterpret_cast< bool(*)>(_a[3])),(*reinterpret_cast< int(*)>(_a[4]))); break;
+        case 17: _t->addUniform((*reinterpret_cast< UniformVariable::Type(*)>(_a[1])),(*reinterpret_cast< const QString(*)>(_a[2])),(*reinterpret_cast< bool(*)>(_a[3]))); break;
+        case 18: _t->addUniform((*reinterpret_cast< UniformVariable::Type(*)>(_a[1])),(*reinterpret_cast< const QString(*)>(_a[2]))); break;
+        case 19: _t->addUniform((*reinterpret_cast< UniformVariable*(*)>(_a[1])),(*reinterpret_cast< bool(*)>(_a[2]))); break;
+        case 20: _t->addUniform((*reinterpret_cast< UniformVariable*(*)>(_a[1]))); break;
+        case 21: _t->settingsChanged(); break;
         default: ;
         }
     } else if (_c == QMetaObject::IndexOfMethod) {
@@ -254,13 +224,13 @@ int MainWindow::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 28)
+        if (_id < 22)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 28;
+        _id -= 22;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 28)
+        if (_id < 22)
             *reinterpret_cast<int*>(_a[0]) = -1;
-        _id -= 28;
+        _id -= 22;
     }
     return _id;
 }

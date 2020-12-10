@@ -11,6 +11,7 @@
 
 #include <QtCore/QVariant>
 #include <QtWidgets/QApplication>
+#include <QtWidgets/QCheckBox>
 #include <QtWidgets/QComboBox>
 #include <QtWidgets/QFrame>
 #include <QtWidgets/QGridLayout>
@@ -35,7 +36,6 @@ public:
     QVBoxLayout *verticalLayout;
     QLabel *label;
     QPushButton *defaultShaderButton;
-    QPushButton *shader1Button;
     QPushButton *shader2Button;
     QFrame *line;
     QLabel *label_2;
@@ -61,13 +61,7 @@ public:
     QRadioButton *winterRadioButton;
     QRadioButton *springRadioButton;
     QSpacerItem *horizontalSpacer_2;
-    QLabel *label_3;
-    QPushButton *animNoneButton;
-    QPushButton *animMoveButton;
-    QPushButton *animScaleButton;
-    QPushButton *animScaleMoveButton;
-    QPushButton *animRotate1Button;
-    QPushButton *animRotate2Button;
+    QCheckBox *bumpMapCheckbox;
     QSpacerItem *verticalSpacer;
     QFrame *line_2;
     QFrame *line_3;
@@ -107,11 +101,6 @@ public:
         defaultShaderButton->setAutoDefault(false);
 
         verticalLayout->addWidget(defaultShaderButton);
-
-        shader1Button = new QPushButton(centralWidget);
-        shader1Button->setObjectName(QString::fromUtf8("shader1Button"));
-
-        verticalLayout->addWidget(shader1Button);
 
         shader2Button = new QPushButton(centralWidget);
         shader2Button->setObjectName(QString::fromUtf8("shader2Button"));
@@ -252,40 +241,10 @@ public:
 
         verticalLayout->addItem(horizontalSpacer_2);
 
-        label_3 = new QLabel(centralWidget);
-        label_3->setObjectName(QString::fromUtf8("label_3"));
+        bumpMapCheckbox = new QCheckBox(centralWidget);
+        bumpMapCheckbox->setObjectName(QString::fromUtf8("bumpMapCheckbox"));
 
-        verticalLayout->addWidget(label_3);
-
-        animNoneButton = new QPushButton(centralWidget);
-        animNoneButton->setObjectName(QString::fromUtf8("animNoneButton"));
-
-        verticalLayout->addWidget(animNoneButton);
-
-        animMoveButton = new QPushButton(centralWidget);
-        animMoveButton->setObjectName(QString::fromUtf8("animMoveButton"));
-
-        verticalLayout->addWidget(animMoveButton);
-
-        animScaleButton = new QPushButton(centralWidget);
-        animScaleButton->setObjectName(QString::fromUtf8("animScaleButton"));
-
-        verticalLayout->addWidget(animScaleButton);
-
-        animScaleMoveButton = new QPushButton(centralWidget);
-        animScaleMoveButton->setObjectName(QString::fromUtf8("animScaleMoveButton"));
-
-        verticalLayout->addWidget(animScaleMoveButton);
-
-        animRotate1Button = new QPushButton(centralWidget);
-        animRotate1Button->setObjectName(QString::fromUtf8("animRotate1Button"));
-
-        verticalLayout->addWidget(animRotate1Button);
-
-        animRotate2Button = new QPushButton(centralWidget);
-        animRotate2Button->setObjectName(QString::fromUtf8("animRotate2Button"));
-
-        verticalLayout->addWidget(animRotate2Button);
+        verticalLayout->addWidget(bumpMapCheckbox);
 
         verticalSpacer = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
 
@@ -342,8 +301,7 @@ public:
         MainWindow->setWindowTitle(QCoreApplication::translate("MainWindow", "Shader Visualizer", nullptr));
         label->setText(QCoreApplication::translate("MainWindow", "Shaders:", nullptr));
         defaultShaderButton->setText(QCoreApplication::translate("MainWindow", "Default", nullptr));
-        shader1Button->setText(QCoreApplication::translate("MainWindow", "Metal", nullptr));
-        shader2Button->setText(QCoreApplication::translate("MainWindow", "Glass", nullptr));
+        shader2Button->setText(QCoreApplication::translate("MainWindow", "Load Island", nullptr));
         label_2->setText(QCoreApplication::translate("MainWindow", "Shapes:", nullptr));
         sphereButton->setText(QCoreApplication::translate("MainWindow", "Sphere", nullptr));
         treeButton->setText(QCoreApplication::translate("MainWindow", "Tree", nullptr));
@@ -356,13 +314,7 @@ public:
         fallRadioButton->setText(QCoreApplication::translate("MainWindow", "Fall", nullptr));
         winterRadioButton->setText(QCoreApplication::translate("MainWindow", "Winter", nullptr));
         springRadioButton->setText(QCoreApplication::translate("MainWindow", "Spring", nullptr));
-        label_3->setText(QCoreApplication::translate("MainWindow", "Animations:", nullptr));
-        animNoneButton->setText(QCoreApplication::translate("MainWindow", "None", nullptr));
-        animMoveButton->setText(QCoreApplication::translate("MainWindow", "Move", nullptr));
-        animScaleButton->setText(QCoreApplication::translate("MainWindow", "Scale", nullptr));
-        animScaleMoveButton->setText(QCoreApplication::translate("MainWindow", "Move + Scale", nullptr));
-        animRotate1Button->setText(QCoreApplication::translate("MainWindow", "Rotate1", nullptr));
-        animRotate2Button->setText(QCoreApplication::translate("MainWindow", "Rotate2", nullptr));
+        bumpMapCheckbox->setText(QCoreApplication::translate("MainWindow", "Bump Mapping", nullptr));
     } // retranslateUi
 
 };
