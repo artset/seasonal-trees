@@ -49,8 +49,8 @@ void CircleComponent::setData(){
 //            t2.getTriangleData(triangles);
 
             // primitive type could also be cylinder
-            Utilities::setTriangleVertexData(m_vertexData, PrimitiveType::PRIMITIVE_CYLINDER, m_transformation, { v2, n0 }, { v1, n0 }, { v0, n0 });
-            Utilities::setTriangleVertexData(m_vertexData, PrimitiveType::PRIMITIVE_CYLINDER, m_transformation, { v3, n1 }, { v1, n1 }, { v2, n1 });
+            Utilities::setTriangleVertexData(m_vertexData, PrimitiveType::PRIMITIVE_CONE, m_transformation, { v2, n0 }, { v1, n0 }, { v0, n0 });
+            Utilities::setTriangleVertexData(m_vertexData, PrimitiveType::PRIMITIVE_CONE, m_transformation, { v3, n1 }, { v1, n1 }, { v2, n1 });
         }
     }
 
@@ -67,7 +67,7 @@ void CircleComponent::setFanData(int angleIndex, float rad, float angle) {
     glm::vec3 n = t.getNormal();
 
 //    t1.getTriangleData(vertexData);
-    Utilities::setTriangleVertexData(m_vertexData, PrimitiveType::PRIMITIVE_CYLINDER, m_transformation, { v0, n }, { v2, n }, { v1, n });
+    Utilities::setTriangleVertexData(m_vertexData, PrimitiveType::PRIMITIVE_CONE, m_transformation, { v0, n }, { v2, n }, { v1, n });
 }
 
 

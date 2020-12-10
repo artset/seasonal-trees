@@ -3,9 +3,10 @@
 
 #include "glm/ext.hpp"
 
+
 namespace Utilities{
 
-
+    const float UTIL_EPSILON = 1e-5;
 
     void insertVec2(std::vector<float> &data, glm::vec2 v) {
         data.push_back(v.x);
@@ -145,15 +146,20 @@ namespace Utilities{
             }
             case PrimitiveType::PRIMITIVE_CONE:
             case PrimitiveType::PRIMITIVE_CYLINDER: {
-                if (fabs(oscNormal.y - 1.f) < 1e-5) {
+                if (fabs(oscNormal.y - 1.f) < UTIL_EPSILON) {
                     // case for cap
                     uv = computeUVPlane(oscPoint, oscNormal);
                 }
                 else {
                     // case for body
-                    float coneHeight = 1.f;
-                    float inverseY = lerp(oscPoint.y, 0, 1, 1, 0);
-                    uv = glm::vec2(computeUTrunk(oscPoint), inverseY + (coneHeight / 2));
+                    float height = 1.f;
+                    float v = lerp(oscPoint.y, -height/2, height/2, 1, 0);
+                    uv = glm::vec2(computeUTrunk(oscPoint), v);
+
+                    if (oscPoint.x > 0 && fabs(oscPoint.z) > UTIL_EPSILON && fabs(uv.x) < UTIL_EPSILON && shape == PrimitiveType::PRIMITIVE_CYLINDER) {
+                        std::cout << "point: " << glm::to_string(oscPoint) << std::endl;
+                        std::cout << "u: " << uv.x << std::endl<< std::endl;
+                    }
                 }
                 break;
             }
@@ -185,28 +191,28 @@ namespace Utilities{
 
         // TODO: generalize
         // this isn't really good, only works for planes of 6 orientations
-        if (equals(oscNormal.x, 1.f, 1e-5)) {
+        if (equals(oscNormal.x, 1.f, UTIL_EPSILON)) {
             u = z;
             v = inverseY;
         }
-        else if (equals(oscNormal.x, -1.f, 1e-5)) {
+        else if (equals(oscNormal.x, -1.f, UTIL_EPSILON)) {
             u = inverseZ;
             v = inverseY;
         }
-        else if (equals(oscNormal.y, 1.f, 1e-5)) {
+        else if (equals(oscNormal.y, 1.f, UTIL_EPSILON)) {
             u = x;
             v = z;
         }
-        else if (equals(oscNormal.y, -1.f, 1e-5)) {
+        else if (equals(oscNormal.y, -1.f, UTIL_EPSILON)) {
             u = x;
             v = inverseZ;
             std::cout << glm::to_string(glm::vec2(u,v)) << std::endl;
         }
-        else if (equals(oscNormal.z, 1.f, 1e-5)) {
+        else if (equals(oscNormal.z, 1.f, UTIL_EPSILON)) {
             u = x;
             v = inverseY;
         }
-        else if (equals(oscNormal.z, -1.f, 1e-5)) {
+        else if (equals(oscNormal.z, -1.f, UTIL_EPSILON)) {
             u = inverseX;
             v = inverseY;
         }
@@ -220,8 +226,8 @@ namespace Utilities{
 
         float u = 0;
 
-        if (x == 0) {
-            if (z == 0) {
+        if (equals(x, 0, UTIL_EPSILON)) {
+            if (equals(z, 0, UTIL_EPSILON)) {
                 // special case for poles of spheres
                 u = 0.5f;
             }
@@ -236,10 +242,10 @@ namespace Utilities{
             float theta = std::atan2(z, x);
 
             float partialU = -theta / (2 * M_PI);
-            u = theta < 0 ? partialU : 1 + partialU;
+            u = theta < UTIL_EPSILON ? partialU : 1.f + partialU;
         }
 
-        return u;
+        return glm::clamp(u, 0.f, 1.f);
     }
 
     float computeVTrunk(float y) {
