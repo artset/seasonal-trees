@@ -27,6 +27,7 @@ UniformVariable *GLWidget::s_time = NULL;
 UniformVariable *GLWidget::s_size = NULL;
 UniformVariable *GLWidget::s_mouse = NULL;
 UniformVariable *GLWidget::s_normalMap = NULL;
+UniformVariable *GLWidget::s_textureMap = NULL;
 
 std::vector<UniformVariable*> *GLWidget::s_staticVars = NULL;
 
@@ -35,7 +36,8 @@ QGLShaderProgram *const_shader = nullptr;
 GLWidget::GLWidget(QGLFormat format, QWidget *parent)
     : QGLWidget(format, parent), m_sphere(nullptr), m_cube(nullptr), m_shape(nullptr), skybox_cube(nullptr),
       m_tree(std::make_unique<Tree>()),
-      m_textureID(0)
+      m_normalTexID(0),
+      m_diffuseTexID(0)
 {
     camera = new OrbitingCamera();
     QObject::connect(camera, SIGNAL(viewChanged(glm::mat4)), this, SLOT(viewChanged(glm::mat4)));
@@ -75,7 +77,8 @@ GLWidget::~GLWidget() {
         delete v;
     }
 
-    glDeleteTextures(1, &m_textureID);
+    glDeleteTextures(1, &m_diffuseTexID);
+    glDeleteTextures(1, &m_normalTexID);
 }
 
 bool GLWidget::saveUniforms(QString path)
@@ -188,6 +191,11 @@ void GLWidget::initializeGL() {
     s_normalMap->setType(UniformVariable::TYPE_TEX2D);
     s_normalMap->parse(":/images/images/brickwall_normal.jpg");
 
+    s_textureMap = new UniformVariable(this->context()->contextHandle());
+    s_textureMap->setName("textureMap");
+    s_textureMap->setType(UniformVariable::TYPE_TEX2D);
+    s_textureMap->parse(":/images/images/brickwall.jpg");
+
     s_staticVars->push_back(s_skybox);
     s_staticVars->push_back(s_model);
     s_staticVars->push_back(s_projection);
@@ -198,12 +206,13 @@ void GLWidget::initializeGL() {
     s_staticVars->push_back(s_mouse);
 
     s_staticVars->push_back(s_normalMap);
+    s_staticVars->push_back(s_textureMap);
 
     gl = QOpenGLFunctions(context()->contextHandle());
 
     const int NUM_FLOATS_PER_VERTEX = 11; // 3(vert) + 3(norm) + 2(uv) + 3(tangent)
 
-    std::unique_ptr<Shape> sphere = std::make_unique<Sphere>(10, 20);
+    std::unique_ptr<Shape> sphere = std::make_unique<Cylinder>(10, 20);
     std::vector<GLfloat> sphereData = sphere->getData();
     m_sphere = std::make_unique<OpenGLShape>();
     m_sphere->setVertexData(&sphereData[0], sphereData.size(), VBO::GEOMETRY_LAYOUT::LAYOUT_TRIANGLES, sphereData.size() / NUM_FLOATS_PER_VERTEX);
@@ -266,15 +275,29 @@ void GLWidget::initializeGL() {
 
     m_shape = m_sphere.get();
 
-    glGenTextures(1, &m_textureID);
-    glBindTexture(GL_TEXTURE_2D, m_textureID);
+    glGenTextures(1, &m_diffuseTexID);
+    glBindTexture(GL_TEXTURE_2D, m_diffuseTexID);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
-    QImage image(":/images/images/brickwall_normal.jpg");
+    QImage image(":/images/images/brickwall.jpg");
     if (!image.isNull()) {
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, image.width(), image.height(), 0, GL_RGBA, GL_UNSIGNED_BYTE, image.bits());
+    } else {
+        std::cout << "Failed to load texture image" << std::endl;
+    }
+    glBindTexture(GL_TEXTURE_2D, 0);
+
+    glGenTextures(1, &m_normalTexID);
+    glBindTexture(GL_TEXTURE_2D, m_normalTexID);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+    QImage image2(":/images/images/brickwall.jpg");
+    if (!image2.isNull()) {
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, image2.width(), image2.height(), 0, GL_RGBA, GL_UNSIGNED_BYTE, image2.bits());
     } else {
         std::cout << "Failed to load texture image" << std::endl;
     }
@@ -484,6 +507,7 @@ bool GLWidget::hasSettingsChanged() {
         m_settings.treeOption = settings.treeOption;
         return true;
     }
+
     if (m_settings.season != settings.season){
         m_settings.season = settings.season;
         return true;
@@ -526,7 +550,9 @@ void GLWidget::paintGL() {
             }
         } else {// todo: remove this once texture mapping is done, along with the corresponding button.
             bindAndUpdateShader(const_shader);
-            glBindTexture(GL_TEXTURE_2D, m_textureID);
+//            glActiveTexture(GL_TEXTURE0);
+            glBindTexture(GL_TEXTURE_2D, m_diffuseTexID);
+            glBindTexture(GL_TEXTURE_2D, m_normalTexID);
             m_shape->draw();
             glBindTexture(GL_TEXTURE_2D, 0);
             releaseShader(const_shader);

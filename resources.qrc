@@ -34,5 +34,6 @@
         <file>images/chessboard.jpg</file>
         <file>images/bark.png</file>
         <file>images/brickwall_normal.jpg</file>
+        <file>images/brickwall.jpg</file>
     </qresource>
 </RCC>
