@@ -48,5 +48,4 @@ void main() {
     float attenuation = lightIntensity * min(1.0, 1 / (attConstant + attLinear * d + attQuadratic * pow(d, 2)));
 
     fragColor = ambient + attenuation * (diffuse + specular);
-//    fragColor = mix(uvColor, vec4(surfaceNormal, 1.0), 0.8);
 }
