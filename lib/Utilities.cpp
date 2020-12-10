@@ -148,7 +148,6 @@ namespace Utilities{
                 if (fabs(oscNormal.y - 1.f) < 1e-5) {
                     // case for cap
                     uv = computeUVPlane(oscPoint, oscNormal);
-                    std::cout << "cap" << std::endl;
                 }
                 else {
                     // case for body
@@ -186,27 +185,28 @@ namespace Utilities{
 
         // TODO: generalize
         // this isn't really good, only works for planes of 6 orientations
-        if (oscNormal.x == 1) {
+        if (equals(oscNormal.x, 1.f, 1e-5)) {
             u = z;
             v = inverseY;
         }
-        else if (oscNormal.x == -1) {
+        else if (equals(oscNormal.x, -1.f, 1e-5)) {
             u = inverseZ;
             v = inverseY;
         }
-        else if (oscNormal.y == 1) {
+        else if (equals(oscNormal.y, 1.f, 1e-5)) {
             u = x;
             v = z;
         }
-        else if (oscNormal.y == -1) {
+        else if (equals(oscNormal.y, -1.f, 1e-5)) {
             u = x;
             v = inverseZ;
+            std::cout << glm::to_string(glm::vec2(u,v)) << std::endl;
         }
-        else if (oscNormal.z == 1) {
+        else if (equals(oscNormal.z, 1.f, 1e-5)) {
             u = x;
             v = inverseY;
         }
-        else if (oscNormal.z == -1) {
+        else if (equals(oscNormal.z, -1.f, 1e-5)) {
             u = inverseX;
             v = inverseY;
         }
