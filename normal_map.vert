@@ -10,6 +10,8 @@ out vec2 texCoords;
 out vec3 tangentLightPos;
 out vec3 tangentViewPos;
 
+out vec3 test;
+
 uniform mat4 mvp;
 uniform mat4 model;
 uniform mat4 trans;
@@ -20,8 +22,6 @@ const vec3 lightPos = vec3(0, 0, 3);
 void main(void) {
     vec4 pos = mvp * vec4(position, 1);
     gl_Position = pos;
-
-//    model = model.
 
     vec3 N = normalize(vec3(model * vec4(normal, 0.0)));
     vec3 T = normalize(vec3(model * vec4(tangent, 0.0)));
@@ -37,4 +37,6 @@ void main(void) {
     texCoords = aTexCoords;
     tangentLightPos = TBN_inv * lightPos;
     tangentViewPos = TBN_inv * viewPos;
+
+    test = tangent;
 }
