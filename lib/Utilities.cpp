@@ -67,23 +67,6 @@ namespace Utilities{
 
         glm::vec3 edge0 = v1 - v0;
         glm::vec3 edge1 = v2 - v0;
-        glm::vec3 edge2 = v2 - v1;
-
-        glm::vec3 finalEdge0, finalEdge1;
-        glm::vec2 finalDeltaUV0, finalDeltaUV1;
-
-//        if (equals(glm::dot(edge0, edge1), 0, UTIL_EPSILON)) {
-
-//        } else if (equals(glm::dot(edge0, edge1), 0, UTIL_EPSILON)) {
-
-//        } else if (equals(glm::dot(edge0, edge1), 0, UTIL_EPSILON)) {
-
-//        } else {
-
-//        }
-
-//        glm::vec2 deltaUV0 = uv1 - uv0;
-//        glm::vec2 deltaUV1 = uv2 - uv0;
 
         glm::vec2 deltaUV0 = {0,-1};
         glm::vec2 deltaUV1 = {1,-1};
@@ -99,9 +82,9 @@ namespace Utilities{
             n1 = (transformation * glm::vec4(n1, 1)).xyz();
             n2 = (transformation * glm::vec4(n2, 1)).xyz();
 
-    //        uv0 = (transformation * glm::vec4(uv0, 0, 1)).xy();
-    //        uv1 = (transformation * glm::vec4(uv1, 0, 1)).xy();
-    //        uv2 = (transformation * glm::vec4(uv2, 0, 1)).xy();
+            uv0 = (transformation * glm::vec4(uv0, 0, 1)).xy();
+            uv1 = (transformation * glm::vec4(uv1, 0, 1)).xy();
+            uv2 = (transformation * glm::vec4(uv2, 0, 1)).xy();
 
             tangent = (transformation * glm::vec4(tangent, 1)).xyz();
         }

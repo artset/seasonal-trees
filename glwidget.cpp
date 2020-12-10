@@ -31,13 +31,12 @@ UniformVariable *GLWidget::s_textureMap = NULL;
 
 std::vector<UniformVariable*> *GLWidget::s_staticVars = NULL;
 
-QGLShaderProgram *const_shader = nullptr;
+QGLShaderProgram *selected_shader = nullptr;
 
 GLWidget::GLWidget(QGLFormat format, QWidget *parent)
     : QGLWidget(format, parent), m_sphere(nullptr), m_cube(nullptr), m_shape(nullptr), skybox_cube(nullptr),
       m_tree(std::make_unique<Tree>()),
-      m_normalTexID(0),
-      m_diffuseTexID(0)
+      m_textureID(0)
 {
     camera = new OrbitingCamera();
     QObject::connect(camera, SIGNAL(viewChanged(glm::mat4)), this, SLOT(viewChanged(glm::mat4)));
@@ -77,8 +76,7 @@ GLWidget::~GLWidget() {
         delete v;
     }
 
-    glDeleteTextures(1, &m_diffuseTexID);
-//    glDeleteTextures(1, &m_normalTexID);
+    glDeleteTextures(1, &m_textureID);
 }
 
 bool GLWidget::saveUniforms(QString path)
@@ -212,7 +210,7 @@ void GLWidget::initializeGL() {
 
     const int NUM_FLOATS_PER_VERTEX = 11; // 3(vert) + 3(norm) + 2(uv) + 3(tangent)
 
-    std::unique_ptr<Shape> sphere = std::make_unique<Cylinder>(10, 20);
+    std::unique_ptr<Shape> sphere = std::make_unique<Cone>(10, 20);
     std::vector<GLfloat> sphereData = sphere->getData();
     m_sphere = std::make_unique<OpenGLShape>();
     m_sphere->setVertexData(&sphereData[0], sphereData.size(), VBO::GEOMETRY_LAYOUT::LAYOUT_TRIANGLES, sphereData.size() / NUM_FLOATS_PER_VERTEX);
@@ -275,8 +273,8 @@ void GLWidget::initializeGL() {
 
     m_shape = m_sphere.get();
 
-    glGenTextures(1, &m_diffuseTexID);
-    glBindTexture(GL_TEXTURE_2D, m_diffuseTexID);
+    glGenTextures(1, &m_textureID);
+    glBindTexture(GL_TEXTURE_2D, m_textureID);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
@@ -289,21 +287,7 @@ void GLWidget::initializeGL() {
     }
     glBindTexture(GL_TEXTURE_2D, 0);
 
-//    glGenTextures(1, &m_normalTexID);
-//    glBindTexture(GL_TEXTURE_2D, m_normalTexID);
-//    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-//    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-//    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
-//    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
-//    QImage image2(":/images/images/brickwall.jpg");
-//    if (!image2.isNull()) {
-//        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, image2.width(), image2.height(), 0, GL_RGBA, GL_UNSIGNED_BYTE, image2.bits());
-//    } else {
-//        std::cout << "Failed to load texture image" << std::endl;
-//    }
-//    glBindTexture(GL_TEXTURE_2D, 0);
-
-    const_shader = normal_mapping_shader;
+    selected_shader = phong_shader;
 }
 
 void GLWidget::resizeGL(int w, int h) {
@@ -408,7 +392,7 @@ void GLWidget::renderBranches() {
         modelChanged(model);
         modelviewProjectionChanged(camera->getProjectionMatrix() * camera->getModelviewMatrix());
         // TODO: restore as current_shader
-        bindAndUpdateShader(const_shader); // needed before calling draw.
+        bindAndUpdateShader(selected_shader); // needed before calling draw.
         m_shape->draw();
     }
 
@@ -421,14 +405,14 @@ void GLWidget::renderBranches() {
         modelviewProjectionChanged(camera->getProjectionMatrix() * camera->getModelviewMatrix());
 
         // TODO: restore as current_shader
-        bindAndUpdateShader(const_shader); // needed before calling draw.
+        bindAndUpdateShader(selected_shader); // needed before calling draw.
         m_shape->draw();
     }
 
     changeRenderMode(oldRenderType);
     model = original; // resets model back to the init
     // TODO: restore as current_shader
-    releaseShader(const_shader);
+    releaseShader(selected_shader);
 }
 
 void GLWidget::renderLeaves() {
@@ -544,7 +528,7 @@ void GLWidget::paintGL() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 
-    const_shader = settings.ifBumpMap ? normal_mapping_shader : phong_shader;
+    selected_shader = settings.ifBumpMap ? normal_mapping_shader : phong_shader;
 
     if (m_shape) {
         if (m_renderMode == SHAPE_TREE) {
@@ -556,13 +540,11 @@ void GLWidget::paintGL() {
                 renderIsland();
             }
         } else {// todo: remove this once texture mapping is done, along with the corresponding button.
-            bindAndUpdateShader(const_shader);
-//            glActiveTexture(GL_TEXTURE0);
-            glBindTexture(GL_TEXTURE_2D, m_diffuseTexID);
-//            glBindTexture(GL_TEXTURE_2D, m_normalTexID);
+            bindAndUpdateShader(selected_shader);
+            glBindTexture(GL_TEXTURE_2D, m_textureID);
             m_shape->draw();
             glBindTexture(GL_TEXTURE_2D, 0);
-            releaseShader(const_shader);
+            releaseShader(selected_shader);
         }
         renderWireframe();
     }
