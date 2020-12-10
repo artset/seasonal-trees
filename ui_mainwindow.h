@@ -303,7 +303,7 @@ public:
         defaultShaderButton->setText(QCoreApplication::translate("MainWindow", "Default", nullptr));
         shader2Button->setText(QCoreApplication::translate("MainWindow", "Load Island", nullptr));
         label_2->setText(QCoreApplication::translate("MainWindow", "Shapes:", nullptr));
-        sphereButton->setText(QCoreApplication::translate("MainWindow", "Sphere", nullptr));
+        sphereButton->setText(QCoreApplication::translate("MainWindow", "Branch", nullptr));
         treeButton->setText(QCoreApplication::translate("MainWindow", "Tree", nullptr));
         treeOptionsLabel->setText(QCoreApplication::translate("MainWindow", "Tree Options:", nullptr));
         recursionsLabel->setText(QCoreApplication::translate("MainWindow", "Number of recursions:", nullptr));

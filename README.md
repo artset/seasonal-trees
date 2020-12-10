@@ -11,7 +11,7 @@ cslogins: ksang1, lqu2, gkupsaw
 ### Known Bugs
 
 The shader for the island (.glass) does not always load on init. The user may need
-to press the "glass" button, then "default" again to get the island and trees
+to press the "load island" button, then "default" again to get the island and trees
 to render. This only occurs upon initialization.
 
 

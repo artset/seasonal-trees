@@ -85,7 +85,7 @@
       <item>
        <widget class="QPushButton" name="sphereButton">
         <property name="text">
-         <string>Sphere</string>
+         <string>Branch</string>
         </property>
        </widget>
       </item>
