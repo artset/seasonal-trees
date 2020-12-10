@@ -393,7 +393,11 @@ void GLWidget::renderBranches() {
         modelviewProjectionChanged(camera->getProjectionMatrix() * camera->getModelviewMatrix());
         // TODO: restore as current_shader
         bindAndUpdateShader(selected_shader); // needed before calling draw.
+
+        glBindTexture(GL_TEXTURE_2D, m_textureID);
         m_shape->draw();
+        glBindTexture(GL_TEXTURE_2D, 0);
+
     }
 
     changeRenderMode(SHAPE_CONE);
@@ -406,7 +410,9 @@ void GLWidget::renderBranches() {
 
         // TODO: restore as current_shader
         bindAndUpdateShader(selected_shader); // needed before calling draw.
+        glBindTexture(GL_TEXTURE_2D, m_textureID);
         m_shape->draw();
+        glBindTexture(GL_TEXTURE_2D, 0);
     }
 
     changeRenderMode(oldRenderType);
