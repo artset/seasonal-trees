@@ -10,6 +10,8 @@ out vec2 texCoords;
 out vec3 tangentLightPos;
 out vec3 tangentViewPos;
 
+out vec3 test;
+
 uniform mat4 mvp;
 uniform mat4 model;
 uniform mat4 trans;
@@ -35,4 +37,6 @@ void main(void) {
     texCoords = aTexCoords;
     tangentLightPos = TBN_inv * lightPos;
     tangentViewPos = TBN_inv * viewPos;
+
+    test = tangent;
 }

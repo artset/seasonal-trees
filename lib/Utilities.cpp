@@ -228,10 +228,10 @@ namespace Utilities{
                 (otherUV1.x > uvMidpoint || otherUV2.x > uvMidpoint)) {
             uv->x = 1.f;
         }
-        if (equals(uv->y, 0, UTIL_EPSILON) &&
-                (otherUV1.y > uvMidpoint || otherUV2.y > uvMidpoint)) {
-            uv->y = 1.f;
-        }
+//        if (equals(uv->y, 0, UTIL_EPSILON) &&
+//                (otherUV1.y > uvMidpoint || otherUV2.y > uvMidpoint)) {
+//            uv->y = 1.f;
+//        }
     }
 
 }

@@ -210,7 +210,7 @@ void GLWidget::initializeGL() {
 
     const int NUM_FLOATS_PER_VERTEX = 11; // 3(vert) + 3(norm) + 2(uv) + 3(tangent)
 
-    std::unique_ptr<Shape> sphere = std::make_unique<Cylinder>(10, 20, glm::rotate((float) M_PI / 2.f, glm::vec3(1.f, 0, 0)));
+    std::unique_ptr<Shape> sphere = std::make_unique<Cone>(1, 20);
     std::vector<GLfloat> sphereData = sphere->getData();
     m_sphere = std::make_unique<OpenGLShape>();
     m_sphere->setVertexData(&sphereData[0], sphereData.size(), VBO::GEOMETRY_LAYOUT::LAYOUT_TRIANGLES, sphereData.size() / NUM_FLOATS_PER_VERTEX);
@@ -239,7 +239,7 @@ void GLWidget::initializeGL() {
     skybox_cube->buildVAO();
 
     m_cylinder = std::make_unique<OpenGLShape>();
-    std::unique_ptr<Shape> cyl = std::make_unique<Cylinder>(10, 7);
+    std::unique_ptr<Shape> cyl = std::make_unique<Cylinder>(1, 7);
     std::vector<GLfloat> cylinderData = cyl->getData();
     m_cylinder = std::make_unique<OpenGLShape>();
     m_cylinder->setVertexData(&cylinderData[0], cylinderData.size(), VBO::GEOMETRY_LAYOUT::LAYOUT_TRIANGLES, cylinderData.size() / NUM_FLOATS_PER_VERTEX);
