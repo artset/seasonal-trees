@@ -520,6 +520,9 @@ bool GLWidget::hasSettingsChanged() {
     } if (m_settings.leafSize != settings.leafSize) {
         m_settings.leafSize = settings.leafSize;
         return true;
+    } if (m_settings.ifBumpMap != settings.ifBumpMap) {
+        m_settings.ifBumpMap = settings.ifBumpMap;
+        return true;
     }
     return false;
 }

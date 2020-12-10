@@ -855,6 +855,7 @@ qrc_resources.cpp: resources.qrc \
 		images/mandril.jpg \
 		images/ostrich.jpg \
 		images/topleft.jpg \
+		images/brickwall_normal.jpg \
 		images/chessboard.jpg \
 		negx.jpg \
 		posx.jpg \
