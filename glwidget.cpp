@@ -22,7 +22,7 @@ UniformVariable *GLWidget::s_skybox = NULL;
 UniformVariable *GLWidget::s_projection = NULL;
 UniformVariable *GLWidget::s_model = NULL;
 UniformVariable *GLWidget::s_view = NULL;
-UniformVariable *GLWidget::s_mvp = NULL;
+UniformVariablei *GLWidget::s_mvp = NULL;
 UniformVariable *GLWidget::s_time = NULL;
 UniformVariable *GLWidget::s_size = NULL;
 UniformVariable *GLWidget::s_mouse = NULL;
@@ -495,6 +495,9 @@ bool GLWidget::hasSettingsChanged() {
         return true;
     } if (m_settings.leafSize != settings.leafSize) {
         m_settings.leafSize = settings.leafSize;
+        return true;
+    } if (m_settings.ifBumpMap != settings.ifBumpMap) {
+        m_settings.ifBumpMap = settings.ifBumpMap;
         return true;
     }
     return false;
