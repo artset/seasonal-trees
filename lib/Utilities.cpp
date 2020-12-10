@@ -60,6 +60,11 @@ namespace Utilities{
         glm::vec2 uv0 = computeUV(shape, v0, n0);
         glm::vec2 uv1 = computeUV(shape, v1, n1);
         glm::vec2 uv2 = computeUV(shape, v2, n2);
+
+        checkTriangleUV(&uv0, uv1, uv2);
+        checkTriangleUV(&uv1, uv0, uv2);
+        checkTriangleUV(&uv2, uv0, uv1);
+
         glm::vec3 edge0 = v1 - v0;
         glm::vec3 edge1 = v2 - v0;
 //        glm::vec2 deltaUV0 = uv1 - uv0;
@@ -255,6 +260,18 @@ namespace Utilities{
         float v = (phi / M_PI) + 0.5f;
 
         return v;
+    }
+
+    void checkTriangleUV(glm::vec2* uv, const glm::vec2 &otherUV1, const glm::vec2 &otherUV2) {
+        float uvMidpoint = 1.f / 2;
+        if (equals(uv->x, 0, UTIL_EPSILON) &&
+                (otherUV1.x > uvMidpoint || otherUV2.x > uvMidpoint)) {
+            uv->x = 1.f;
+        }
+        if (equals(uv->y, 0, UTIL_EPSILON) &&
+                (otherUV1.y > uvMidpoint || otherUV2.y > uvMidpoint)) {
+            uv->y = 1.f;
+        }
     }
 
 }

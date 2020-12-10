@@ -49,6 +49,7 @@ namespace Utilities {
     glm::vec2 computeUVPlane(const glm::vec3 &oscPoint, const glm::vec3 &oscNormal);
     float computeUTrunk(const glm::vec3 &oscPoint);
     float computeVTrunk(float y);
+    void checkTriangleUV(glm::vec2* uv, const glm::vec2 &otherUV1, const glm::vec2 &otherUV2);
 };
 
 
