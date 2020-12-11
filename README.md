@@ -6,13 +6,14 @@ and [Katherine Sang](https://github.com/artset).
 
 cslogins: ksang1, lqu2, gkupsaw
 
-
+[Demo](https://www.youtube.com/watch?v=vp3SM3boIeA&feature=youtu.be)
 
 ### Known Bugs
 
 The shader for the island (.glass) does not always load on init. The user may need
 to press the "load island" button, then "default" again to get the island and trees
 to render. This only occurs upon initialization.
+
 
 
 
