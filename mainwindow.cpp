@@ -211,11 +211,6 @@ QString tipsText = "<h2>Attributes</h2>\n"
         "</li></ul>"
         "<p>Any questions or bugs can be emailed to the cs123 tas (cs123tas@cs.brown.edu).</p>";
 
-//void MainWindow::on_shader1Button_clicked()
-//{
-//    loadShader(":/shaders/metal.vert", ":/shaders/metal.frag");
-//}
-
 void MainWindow::on_shader2Button_clicked()
 {
     loadShader(":/shaders/glass.vert", ":/shaders/glass.frag");
