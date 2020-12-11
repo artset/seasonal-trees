@@ -50,8 +50,8 @@ protected:
     static const int COORDINATES_PER_TRIANGLE;
     void applyTransformation(std::vector<glm::vec3> &triangles);
 
-    void setTriangleVertexData(PrimitiveType shape, const glm::mat4 &transformation,
-                               const Vertex &vert0, const Vertex &vert1, const Vertex &vert2);
+//    void setTriangleVertexData(PrimitiveType shape, const glm::mat4 &transformation,
+//                               const Vertex &vert0, const Vertex &vert1, const Vertex &vert2);
 
 };
 

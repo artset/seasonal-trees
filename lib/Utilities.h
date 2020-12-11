@@ -40,7 +40,7 @@ namespace Utilities {
                                      const Vertex &vert0, const Vertex &vert1, const Vertex &vert2);
 
     // NormalMappingUtils
-//    glm::vec3 getTriangleTangentVec(const std::vector<glm::vec3> &triangleVerts);
+    glm::vec3 reorthogonalize(const glm::vec3 &v, const glm::vec3 &wrt);
     glm::vec3 getTriangleTangentVec(const glm::vec3 &edge0, const glm::vec3 &edge1,
                                                               const glm::vec2 &deltaUV0, const glm::vec2 &deltaUV1);
 
@@ -49,6 +49,7 @@ namespace Utilities {
     glm::vec2 computeUVPlane(const glm::vec3 &oscPoint, const glm::vec3 &oscNormal);
     float computeUTrunk(const glm::vec3 &oscPoint);
     float computeVTrunk(float y);
+    void checkTriangleUV(glm::vec2* uv, const glm::vec2 &otherUV1, const glm::vec2 &otherUV2);
 };
 
 

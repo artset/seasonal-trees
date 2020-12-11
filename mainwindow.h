@@ -35,29 +35,13 @@ private slots:
 
     void on_sphereButton_clicked();
 
-//    void on_cubeButton_clicked();
-
     void on_treeButton_clicked();
-
-//    void on_coneTreeButton_clicked();
 
     void on_defaultShaderButton_clicked();
 
-    void on_animMoveButton_clicked();
-
-    void on_animNoneButton_clicked();
-
-    void on_animScaleButton_clicked();
-
-    void on_animScaleMoveButton_clicked();
-
-    void on_animRotate1Button_clicked();
-
-    void on_animRotate2Button_clicked();
-
 //    void on_tipsButton_clicked();
 
-    void on_shader1Button_clicked();
+//    void on_shader1Button_clicked();
 
     void on_shader2Button_clicked();
 
@@ -72,6 +56,8 @@ private slots:
     void on_treeOptionsComboBox_activated(const QString &arg1);
 
     void on_treeOptionsComboBox_currentIndexChanged(int index);
+
+    void on_bumpMapCheckbox_clicked();
 
 public slots:
     void handleUniformDeleted(UniformWidget *deleted);

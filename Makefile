@@ -851,10 +851,13 @@ qrc_resources.cpp: resources.qrc \
 		color.frag \
 		skybox.frag \
 		light.vert \
+		images/brickwall.jpg \
 		images/bark.png \
 		images/mandril.jpg \
 		images/ostrich.jpg \
+		images/bark_normal.jpg \
 		images/topleft.jpg \
+		images/brickwall_normal.jpg \
 		images/chessboard.jpg \
 		negx.jpg \
 		posx.jpg \

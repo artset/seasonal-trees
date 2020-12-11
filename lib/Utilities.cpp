@@ -3,9 +3,10 @@
 
 #include "glm/ext.hpp"
 
+
 namespace Utilities{
 
-
+    const float UTIL_EPSILON = 1e-5;
 
     void insertVec2(std::vector<float> &data, glm::vec2 v) {
         data.push_back(v.x);
@@ -60,11 +61,15 @@ namespace Utilities{
         glm::vec2 uv1 = computeUV(shape, v1, n1);
         glm::vec2 uv2 = computeUV(shape, v2, n2);
 
-        // I don't believe the order of these matters, but I could totally be wrong
+        checkTriangleUV(&uv0, uv1, uv2);
+        checkTriangleUV(&uv1, uv0, uv2);
+        checkTriangleUV(&uv2, uv0, uv1);
+
         glm::vec3 edge0 = v1 - v0;
         glm::vec3 edge1 = v2 - v0;
-        glm::vec2 deltaUV0 = glm::abs(uv0 - uv1);
-        glm::vec2 deltaUV1 = glm::abs(uv0 - uv2);
+
+        glm::vec2 deltaUV0 = {0,-1};
+        glm::vec2 deltaUV1 = {1,-1};
 
         glm::vec3 tangent = getTriangleTangentVec(edge0, edge1, deltaUV0, deltaUV1);
 
@@ -77,52 +82,26 @@ namespace Utilities{
             n1 = (transformation * glm::vec4(n1, 1)).xyz();
             n2 = (transformation * glm::vec4(n2, 1)).xyz();
 
-    //        uv0 = (transformation * glm::vec4(uv0, 0, 1)).xy();
-    //        uv1 = (transformation * glm::vec4(uv1, 0, 1)).xy();
-    //        uv2 = (transformation * glm::vec4(uv2, 0, 1)).xy();
-
             tangent = (transformation * glm::vec4(tangent, 1)).xyz();
         }
 
-        insertVertexData(data, {v0, n0, uv0, tangent});
-        insertVertexData(data, {v1, n1, uv1, tangent});
-        insertVertexData(data, {v2, n2, uv2, tangent});
+        insertVertexData(data, {v0, n0, uv0, reorthogonalize(tangent, n0)});
+        insertVertexData(data, {v1, n1, uv1, reorthogonalize(tangent, n1)});
+        insertVertexData(data, {v2, n2, uv2, reorthogonalize(tangent, n2)});
     }
 
-//     NormalMappingUtils
-
-//    /**
-//     * @brief getTriangleTangentVec
-//     * @param triangle1Verts: bottom left triangle, 0=>topLeft, 1=>bottomLeft, 2=>bottomRight
-//     * @return
-//     */
-//    glm::vec3 getTriangleTangentVec(const std::vector<glm::vec3> &triangleVerts) {
-//        glm::vec2 uv0 = { 1, 0 };
-//        glm::vec2 uv1 = { 0, 0 };
-//        glm::vec2 uv2 = { 0, 1 };
-//        glm::vec2 uv3 = { 1, 1 };
-
-//        glm::vec3 v0 = triangleVerts[0];
-//        glm::vec3 v1 = triangleVerts[1];
-//        glm::vec3 v2 = triangleVerts[2];
-
-//        return calculateTriangleTangentVec(
-//                    v1 - v0,
-//                    v2 - v0,
-//                    uv1 - uv0,
-//                    uv2 - uv0);
-//    }
+    // NormalMappingUtils
 
     glm::vec3 getTriangleTangentVec(const glm::vec3 &edge0, const glm::vec3 &edge1,
                                                               const glm::vec2 &deltaUV0, const glm::vec2 &deltaUV1) {
         float f = 1.0f / (deltaUV0.x * deltaUV1.y - deltaUV1.x * deltaUV0.y);
-        glm::vec3 tangent;
-
-        tangent.x = f * (deltaUV1.y * edge0.x - deltaUV0.y * edge1.x);
-        tangent.y = f * (deltaUV1.y * edge0.y - deltaUV0.y * edge1.y);
-        tangent.z = f * (deltaUV1.y * edge0.z - deltaUV0.y * edge1.z);
-
+        glm::vec3 tangent = f * (edge0 * deltaUV1.y - edge1 * deltaUV1.y);
         return tangent;
+    }
+
+    // Gram-Schmidt re-orthogonalization for tangent with respect to surface normal (gives slightly nicer results)
+    glm::vec3 reorthogonalize(const glm::vec3 &v, const glm::vec3 &wrt) {
+        return glm::normalize(v - glm::dot(v, wrt) * wrt);
     }
 
     // TextureMappingUtils
@@ -137,21 +116,22 @@ namespace Utilities{
             }
             case PrimitiveType::PRIMITIVE_CONE:
             case PrimitiveType::PRIMITIVE_CYLINDER: {
-                if (fabs(oscNormal.y) == 1.f) {
+                if (equals(fabs(oscNormal.y), 1.f, UTIL_EPSILON)) {
                     // case for cap
                     uv = computeUVPlane(oscPoint, oscNormal);
                 }
                 else {
                     // case for body
-                    float coneHeight = 1.f;
-                    float inverseY = lerp(oscPoint.y, 0, 1, 1, 0);
-                    uv = glm::vec2(computeUTrunk(oscPoint), inverseY + (coneHeight / 2));
+                    float r = 0.5f;
+                    float v = lerp(oscPoint.y, -r, r, 1, 0);
+                    uv = glm::vec2(computeUTrunk(oscPoint), v);
                 }
                 break;
             }
             case PrimitiveType::PRIMITIVE_SPHERE: {
                 float u = computeUTrunk(oscPoint);
-                float inverseY = lerp(oscPoint.y, -1, 1, 1, -1);
+                float r = 0.5f;
+                float inverseY = lerp(oscPoint.y, -r, r, r, -r);
                 float v = computeVTrunk(inverseY);
                 uv = glm::vec2(u, v);
                 break;
@@ -177,27 +157,27 @@ namespace Utilities{
 
         // TODO: generalize
         // this isn't really good, only works for planes of 6 orientations
-        if (oscNormal.x == 1) {
+        if (equals(oscNormal.x, 1.f, UTIL_EPSILON)) {
             u = z;
             v = inverseY;
         }
-        else if (oscNormal.x == -1) {
+        else if (equals(oscNormal.x, -1.f, UTIL_EPSILON)) {
             u = inverseZ;
             v = inverseY;
         }
-        else if (oscNormal.y == 1) {
+        else if (equals(oscNormal.y, 1.f, UTIL_EPSILON)) {
             u = x;
             v = z;
         }
-        else if (oscNormal.y == -1) {
+        else if (equals(oscNormal.y, -1.f, UTIL_EPSILON)) {
             u = x;
             v = inverseZ;
         }
-        else if (oscNormal.z == 1) {
+        else if (equals(oscNormal.z, 1.f, UTIL_EPSILON)) {
             u = x;
             v = inverseY;
         }
-        else if (oscNormal.z == -1) {
+        else if (equals(oscNormal.z, -1.f, UTIL_EPSILON)) {
             u = inverseX;
             v = inverseY;
         }
@@ -211,8 +191,8 @@ namespace Utilities{
 
         float u = 0;
 
-        if (x == 0) {
-            if (z == 0) {
+        if (equals(x, 0, UTIL_EPSILON)) {
+            if (equals(z, 0, UTIL_EPSILON)) {
                 // special case for poles of spheres
                 u = 0.5f;
             }
@@ -227,10 +207,10 @@ namespace Utilities{
             float theta = std::atan2(z, x);
 
             float partialU = -theta / (2 * M_PI);
-            u = theta < 0 ? partialU : 1 + partialU;
+            u = theta < UTIL_EPSILON ? partialU : 1.f + partialU;
         }
 
-        return u;
+        return glm::clamp(u, 0.f, 1.f);
     }
 
     float computeVTrunk(float y) {
@@ -240,6 +220,18 @@ namespace Utilities{
         float v = (phi / M_PI) + 0.5f;
 
         return v;
+    }
+
+    void checkTriangleUV(glm::vec2* uv, const glm::vec2 &otherUV1, const glm::vec2 &otherUV2) {
+        float uvMidpoint = 1.f / 2;
+        if (equals(uv->x, 0, UTIL_EPSILON) &&
+                (otherUV1.x > uvMidpoint || otherUV2.x > uvMidpoint)) {
+            uv->x = 1.f;
+        }
+//        if (equals(uv->y, 0, UTIL_EPSILON) &&
+//                (otherUV1.y > uvMidpoint || otherUV2.y > uvMidpoint)) {
+//            uv->y = 1.f;
+//        }
     }
 
 }

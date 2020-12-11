@@ -25,7 +25,7 @@
    </property>
    <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,3,0">
     <item>
-     <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0">
+     <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0">
       <property name="spacing">
        <number>0</number>
       </property>
@@ -62,16 +62,9 @@
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="shader1Button">
-        <property name="text">
-         <string>Metal</string>
-        </property>
-       </widget>
-      </item>
-      <item>
        <widget class="QPushButton" name="shader2Button">
         <property name="text">
-         <string>Glass</string>
+         <string>Load Island</string>
         </property>
        </widget>
       </item>
@@ -92,7 +85,7 @@
       <item>
        <widget class="QPushButton" name="sphereButton">
         <property name="text">
-         <string>Sphere</string>
+         <string>Branch</string>
         </property>
        </widget>
       </item>
@@ -274,51 +267,9 @@
        </spacer>
       </item>
       <item>
-       <widget class="QLabel" name="label_3">
+       <widget class="QCheckBox" name="bumpMapCheckbox">
         <property name="text">
-         <string>Animations:</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="animNoneButton">
-        <property name="text">
-         <string>None</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="animMoveButton">
-        <property name="text">
-         <string>Move</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="animScaleButton">
-        <property name="text">
-         <string>Scale</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="animScaleMoveButton">
-        <property name="text">
-         <string>Move + Scale</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="animRotate1Button">
-        <property name="text">
-         <string>Rotate1</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="animRotate2Button">
-        <property name="text">
-         <string>Rotate2</string>
+         <string>Bump Mapping</string>
         </property>
        </widget>
       </item>

@@ -43,6 +43,7 @@ public:
     static UniformVariable* s_mouse;
 
     static UniformVariable* s_normalMap;
+    static UniformVariable* s_textureMap;
 
     static std::vector<UniformVariable*> *s_staticVars;
 

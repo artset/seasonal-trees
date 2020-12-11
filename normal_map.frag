@@ -5,8 +5,12 @@ in vec2 texCoords;
 in vec3 tangentLightPos;
 in vec3 tangentViewPos;
 
+in vec3 test;
+
 //uniform vec4 color;
-const vec4 color = vec4(0, 1.0, 0, 1);
+const vec4 ambientColor = vec4(1, 1, 1, 1);
+const vec4 diffuseColor = vec4(.32,.19,.09, 1);
+const vec4 specularColor = vec4(1, 1, 1, 1);
 out vec4 fragColor;
 
 uniform float time;
@@ -24,28 +28,36 @@ const float attQuadratic = 1.0;
 const vec4 lightColor = vec4(1.0,1.0,1.0,1);
 const float lightIntensity = 5.0;
 
+const float blend = 0;
+
+const vec4 uvColor = vec4(1,1,1,1);
+
 void main() {
-    fragColor = texture(normalMap, texCoords);
-    fragColor = vec4(1,1,1,1);
+    vec3 tangentNormal = texture(normalMap, texCoords).rgb;
+    tangentNormal = normalize(tangentNormal * 2.0 - 1.0);
 
-//    vec3 tangentNormal = texture(normalMap, texCoords).rgb;
-//    tangentNormal = normalize(tangentNormal * 2.0 - 1.0);
+    // total hack, but r and b vals are swapped for some reason in the sampler2D
+    float temp = tangentNormal.x;
+    tangentNormal.x = tangentNormal.z;
+    tangentNormal.z = temp;
 
-//    vec4 N = vec4(tangentNormal, 0);
-//    vec4 L = vec4(normalize(tangentLightPos - tangentFragPos), 0);
-//    vec4 V = vec4(normalize(tangentViewPos - tangentFragPos), 0);
-//    vec4 R = normalize(reflect(L, N));
+    vec4 N = vec4(tangentNormal, 0);
+    vec4 L = vec4(normalize(tangentLightPos - tangentFragPos), 0);
+    vec4 V = vec4(normalize(tangentViewPos - tangentFragPos), 0);
+    vec4 R = normalize(reflect(L, N));
 
-//    // compute lighting...
-//    float d = sqrt(
-//                pow(tangentLightPos.x - tangentFragPos.x, 2) +
-//                pow(tangentLightPos.y - tangentFragPos.y, 2) +
-//                pow(tangentLightPos.z - tangentFragPos.z, 2));
+    // compute lighting...
+    float d = sqrt(
+                pow(tangentLightPos.x - tangentFragPos.x, 2) +
+                pow(tangentLightPos.y - tangentFragPos.y, 2) +
+                pow(tangentLightPos.z - tangentFragPos.z, 2));
 
-//    vec4 ambient = color * ambientIntensity;
-//    vec4 diffuse = color * lightColor * diffuseIntensity * clamp(dot(N, L), 0.0, 1.0);
-//    vec4 specular = color * lightColor * specularIntensity * pow(clamp(dot(V, R), 0.0, 1.0), shininess);
-//    vec4 attenuation = color * lightIntensity * min(1.0, 1 / (attConstant + attLinear * d + attQuadratic * pow(d, 2)));
+    vec4 ambient = ambientColor * ambientIntensity;
+    vec4 diffuse = diffuseColor * lightColor * diffuseIntensity * clamp(dot(N, L), 0.0, 1.0);
+    diffuse = blend * uvColor + (1 - blend) * diffuse;
+    vec4 specular = specularColor * lightColor * specularIntensity * pow(clamp(dot(V, R), 0.0, 1.0), shininess);
+    float attenuation = lightIntensity * min(1.0, 1 / (attConstant + attLinear * d + attQuadratic * pow(d, 2)));
 
-//    fragColor = ambient + attenuation * (diffuse + specular);
+    fragColor = ambient + attenuation * (diffuse + specular);
+//    fragColor = vec4(test, 1);
 }

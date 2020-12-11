@@ -16,7 +16,7 @@ uniform mat4 model;
 uniform mat4 trans;
 
 uniform mat4 view;
-const vec3 testLightPos = vec3(2, 2, 2);
+const vec3 testLightPos = vec3(0, 0, 3);
 //uniform vec3 lightPos;
 
 void main(void) {
