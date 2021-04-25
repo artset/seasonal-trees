@@ -5,6 +5,7 @@ created by [Griffin Kupsaw](https://github.com/gkupsaw), [Lucy Qu](https://githu
 and [Katherine Sang](https://github.com/artset). Utilizes L-Systems, sky box, normal mapping.
 
 
+[Demo](https://www.youtube.com/watch?v=vp3SM3boIeA&feature=youtu.be)
 
 
 

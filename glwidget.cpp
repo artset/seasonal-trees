@@ -189,11 +189,6 @@ void GLWidget::initializeGL() {
     s_normalMap->setType(UniformVariable::TYPE_TEX2D);
     s_normalMap->parse(":/images/images/brickwall_normal.jpg");
 
-//    s_textureMap = new UniformVariable(this->context()->contextHandle());
-//    s_textureMap->setName("textureMap");
-//    s_textureMap->setType(UniformVariable::TYPE_TEX2D);
-//    s_textureMap->parse(":/images/images/brickwall.jpg");
-
     s_staticVars->push_back(s_skybox);
     s_staticVars->push_back(s_model);
     s_staticVars->push_back(s_projection);
@@ -204,7 +199,6 @@ void GLWidget::initializeGL() {
     s_staticVars->push_back(s_mouse);
 
     s_staticVars->push_back(s_normalMap);
-//    s_staticVars->push_back(s_textureMap);
 
     gl = QOpenGLFunctions(context()->contextHandle());
 
